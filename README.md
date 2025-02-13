@@ -1,5 +1,5 @@
 <!-- ---
-!-- Timestamp: 2025-02-13 15:08:19
+!-- Timestamp: 2025-02-13 16:44:51
 !-- Author: ywatanabe
 !-- File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/README.md
 !-- --- -->
@@ -55,9 +55,9 @@ M-t r    ; Rename tab
 (setq etm-protected-buffers '("*scratch*" "*Messages*")) ; Not killed but hidden by `etm-buffer-kill-or-bury'
 
 ;; Key bindings
-(etm-define-buffer-jump-to-function "docs") ;; Defines etm-buffer-jump-to-docs
-(etm-define-buffer-set-function "docs")     ;; Defines etm-buffer-set-docs
-(define-key etm-command-map (kbd "d") #'etm-buffer-jump-to-docs)
+(etm-buffer-define-buffer-type-jumper-function "docs") ;; Defines etm-navigation-jump-by-buffer-type-docs
+(etm-buffer-define-buffer-type-setter-function "docs") ;; Defines etm-buffer-set-docs
+(define-key etm-command-map (kbd "d") #'etm-navigation-jump-by-buffer-type-docs)
 (define-key etm-command-map (kbd "D") #'etm-buffer-set-docs)
 ```
 

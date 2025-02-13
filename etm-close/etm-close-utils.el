@@ -12,7 +12,7 @@
 
 (defun --etm-close-1
     ()
-  (etm-navigation-jump-to 1)
+  (etm-navigation-jump-by-index 1)
   (tab-close))
 
 (defun --etm-close-and-next

@@ -25,21 +25,21 @@
    (etm-buffer-set "invalid-type")
    :type 'error))
 
-(ert-deftest test-etm-define-buffer-set-function
+(ert-deftest test-etm-buffer-define-buffer-type-setter-function
     ()
   (let
       ((etm-registered-buffer-types
         '("test")))
-    (etm-define-buffer-set-function "test")
+    (etm-buffer-define-buffer-type-setter-function "test")
     (should
      (fboundp 'etm-buffer-set-test))))
 
-(ert-deftest test-etm-define-buffer-set-functions
+(ert-deftest test-etm-buffer-define-buffer-type-setter-functions
     ()
   (let
       ((etm-registered-buffer-types
         '("home" "semi-home")))
-    (etm-define-buffer-set-functions)
+    (etm-buffer-define-buffer-type-setter-functions)
     (should
      (fboundp 'etm-buffer-set-home))
     (should

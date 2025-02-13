@@ -6,7 +6,7 @@
 (require 'ert)
 (require 'etm-buffer-jumpers)
 
-(ert-deftest test-etm-buffer-jump-to-existing
+(ert-deftest test-etm-navigation-jump-by-buffer-type-existing
     ()
   (with-temp-buffer
     (let
@@ -17,13 +17,13 @@
           '((name . "tab1"))))
       (rename-buffer "test-buffer")
       (should
-       (etm-buffer-jump-to "home"))
+       (etm-navigation-jump-by-buffer-type "home"))
       (should
        (string=
         (buffer-name)
         "test-buffer")))))
 
-(ert-deftest test-etm-buffer-jump-to-nonexistent
+(ert-deftest test-etm-navigation-jump-by-buffer-type-nonexistent
     ()
   (let
       ((etm-registered-buffers nil))
@@ -32,27 +32,27 @@
       (let
           ((message-text nil))
         (setq message-text
-              (etm-buffer-jump-to "home"))
+              (etm-navigation-jump-by-buffer-type "home"))
         (should
          (string= message-text
                   "No home buffer set for current tab"))))))
 
-(ert-deftest test-etm-define-buffer-jump-to-function
+(ert-deftest test-etm-buffer-define-buffer-type-jumper-function
     ()
-  (etm-define-buffer-jump-to-function "test")
+  (etm-buffer-define-buffer-type-jumper-function "test")
   (should
-   (fboundp 'etm-buffer-jump-to-test)))
+   (fboundp 'etm-navigation-jump-by-buffer-type-test)))
 
-(ert-deftest test-etm-define-buffer-jump-to-functions
+(ert-deftest test-etm-buffer-define-buffer-type-jumper-functions
     ()
   (let
       ((etm-registered-buffer-types
         '("home" "semi-home")))
-    (etm-define-buffer-jump-to-functions)
+    (etm-buffer-define-buffer-type-jumper-functions)
     (should
-     (fboundp 'etm-buffer-jump-to-home))
+     (fboundp 'etm-navigation-jump-by-buffer-type-home))
     (should
-     (fboundp 'etm-buffer-jump-to-semi-home))))
+     (fboundp 'etm-navigation-jump-by-buffer-type-semi-home))))
 
 (provide 'test-etm-buffer-jumpers)
 

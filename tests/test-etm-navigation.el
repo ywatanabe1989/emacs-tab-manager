@@ -14,7 +14,7 @@
 (ert-deftest test-etm-navigation-functions-exist
     ()
   (should
-   (fboundp 'etm-navigation-jump-to))
+   (fboundp 'etm-navigation-jump-by-index))
   (should
    (fboundp 'etm-navigation-jump-by-name))
   (should

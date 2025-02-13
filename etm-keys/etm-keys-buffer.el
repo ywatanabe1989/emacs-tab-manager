@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 14:18:43>
+;;; Timestamp: <2025-02-13 16:42:11>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-keys/etm-keys-buffer.el
 
 (require 'etm-navigation)
@@ -27,15 +27,15 @@
 
 (define-key etm-command-map
             (kbd "h")
-            #'etm-buffer-jump-to-home)
+            #'etm-navigation-jump-by-buffer-type-home)
 
 (define-key etm-command-map
             (kbd "s")
-            #'etm-buffer-jump-to-semi-home)
+            #'etm-navigation-jump-by-buffer-type-semi-home)
 
 (define-key etm-command-map
             (kbd "r")
-            #'etm-buffer-jump-to-results)
+            #'etm-navigation-jump-by-buffer-type-results)
 
 ;; Killer
 ;; ----------------------------------------
