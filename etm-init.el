@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-12 23:47:33>
+;;; Timestamp: <2025-02-14 01:42:41>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-init.el
 
 (require 'etm-variables)
@@ -24,7 +24,7 @@
        (:background "gray20" :foreground "white"))))
    '(tab-bar-tab
      ((t
-       (:inherit tab-bar :background "dark green" :foreground "gray 60"))))
+       (:inherit tab-bar :background "dark green" :foreground "gray60"))))
    '(tab-bar-tab-inactive
      ((t
        (:inherit tab-bar :background "gray20" :foreground "gray80"))))))

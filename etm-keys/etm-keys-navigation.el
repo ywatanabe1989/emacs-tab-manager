@@ -11,63 +11,63 @@
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 1)))
+   (etm-navigation-jump-by-index 1)))
 
 (global-set-key
  (kbd "M-2")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 2)))
+   (etm-navigation-jump-by-index 2)))
 
 (global-set-key
  (kbd "M-3")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 3)))
+   (etm-navigation-jump-by-index 3)))
 
 (global-set-key
  (kbd "M-4")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 4)))
+   (etm-navigation-jump-by-index 4)))
 
 (global-set-key
  (kbd "M-5")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 5)))
+   (etm-navigation-jump-by-index 5)))
 
 (global-set-key
  (kbd "M-6")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 6)))
+   (etm-navigation-jump-by-index 6)))
 
 (global-set-key
  (kbd "M-7")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 7)))
+   (etm-navigation-jump-by-index 7)))
 
 (global-set-key
  (kbd "M-8")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 8)))
+   (etm-navigation-jump-by-index 8)))
 
 (global-set-key
  (kbd "M-9")
  (lambda
    ()
    (interactive)
-   (etm-navigation-jump-to 9)))
+   (etm-navigation-jump-by-index 9)))
 
 (provide 'etm-keys-navigation)
 

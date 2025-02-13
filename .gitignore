@@ -1,2 +1,2 @@
-!./etm-layout/saved-layouts/.gitkeep
-./etm-layout/saved-layouts
+!etm-layout/saved-layouts/.gitkeep
+etm-layout/saved-layouts/*

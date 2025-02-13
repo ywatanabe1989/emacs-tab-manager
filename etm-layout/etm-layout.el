@@ -3,7 +3,7 @@
 ;;; Timestamp: <2025-02-13 00:04:05>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout.el
 
-(require 'etm-layout-core)
+(require 'etm-layout-create)
 (require 'etm-layout-save)
 (require 'etm-layout-window)
 (require 'etm-layout-load)

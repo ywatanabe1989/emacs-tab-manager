@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 15:55:16>
+;;; Timestamp: <2025-02-13 16:45:08>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-setters.el
 
 (require 'etm-variables)
@@ -43,7 +43,7 @@
   (message "Set %s buffer for tab %s: %s" type tab-name buffer-name))
 
 ;; Define functions
-(defun etm-define-buffer-set-function
+(defun etm-buffer-define-buffer-type-setter-function
     (type)
   "Define a buffer setting function for the given TYPE.
 Example: For type 'home', creates `etm-buffer-set-home'."
@@ -59,7 +59,7 @@ Example: For type 'home', creates `etm-buffer-set-home'."
       (interactive)
       (etm-buffer-set ,type))))
 
-(defun etm-define-buffer-set-functions
+(defun etm-buffer-define-buffer-type-setter-functions
     ()
   "Define buffer setting functions for all registered buffer types.
 Examples:
@@ -68,9 +68,9 @@ Examples:
 `etm-buffer-set-results'"
   (dolist
       (type etm-registered-buffer-types)
-    (etm-define-buffer-set-function type)))
+    (etm-buffer-define-buffer-type-setter-function type)))
 
-;; (defun etm-define-buffer-set-functions
+;; (defun etm-buffer-define-buffer-type-setter-functions
 ;;     ()
 ;;   "Define buffer setting functions for all registered buffer types.
 ;; Examples:
@@ -89,7 +89,7 @@ Examples:
 ;;         (etm-buffer-set ,type)))))
 
 ;; Create buffer setting functions initially
-(etm-define-buffer-set-functions)
+(etm-buffer-define-buffer-type-setter-functions)
 
 (provide 'etm-buffer-setters)
 

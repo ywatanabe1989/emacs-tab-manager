@@ -1,7 +1,7 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-12 23:53:19>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-core.el
+;;; Timestamp: <2025-02-14 02:00:51>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-create.el
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 
 (defun --etm-layout-cleanup
@@ -63,10 +63,10 @@ WINDOW-CONFIGS is a list of (type . path) pairs for each window."
             (other-window 1))))))
   (--etm-layout-cleanup tab-name))
 
-(provide 'etm-layout-core)
+(provide 'etm-layout-create)
 
 (when
     (not load-file-name)
-  (message "etm-layout-core.el loaded."
+  (message "etm-layout-create.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))

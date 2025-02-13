@@ -1,36 +1,69 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 00:03:39>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-save.el
-;;; -*- coding: utf-8; lexical-binding: t -*-
+;;; Timestamp: <2025-02-14 04:02:00>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-save.el
 
 (defun etm-layout-save
     (layout-name)
   "Save current layout to a new elisp file in the tab configuration directory."
   (interactive "sEnter layout name: ")
   (let*
-      ((full-path
+      ((layout-name
+        (format "%s" layout-name))
+       (full-path
         (expand-file-name
          (format "etm-open-%s.el" layout-name)
          etm-layout-save-dir))
        (host
         (read-string "Enter host (or leave empty): "))
+       (captured-layout
+        (--etm-layout-capture-current-layout layout-name host))
        (contents
-        (concat ";;; -*- coding: utf-8; lexical-binding: t -*-\n"
-                (format ";;; Author: %s\n"
-                        (format-time-string "%Y-%m-%d %H:%M:%S"))
-                (format ";;; Timestamp: <%s>\n"
-                        (format-time-string "%Y-%m-%d %H:%M:%S"))
-                (format ";;; File: %s\n\n" full-path)
-                (format "(defun etm-open-%s ()\n" layout-name)
-                "  \"Create tab layout for specific configuration.\"\n"
-                "  (interactive)\n"
-                (--etm-layout-capture-current-layout layout-name host)
-                ")\n"
-                (format "(defalias '%s 'etm-open-%s)\n" layout-name layout-name))))
-    (message contents)
-    (write-region contents nil full-path)
+        (--etm-layout-construct-contents layout-name captured-layout)))
+    (with-current-buffer
+        (find-file-noselect full-path)
+      (erase-buffer)
+      (insert contents)
+      (save-buffer)
+      (kill-buffer))
     (load-file full-path)))
+
+;; (defun etm-layout-save
+;;     (layout-name)
+;;   "Save current layout to a new elisp file in the tab configuration directory."
+;;   (interactive "sEnter layout name: ")
+;;   (let*
+;;       ((layout-name
+;;         (format "%s" layout-name))
+;;        (full-path
+;;         (expand-file-name
+;;          (format "etm-open-%s.el" layout-name)
+;;          etm-layout-save-dir))
+;;        (host
+;;         (read-string "Enter host (or leave empty): "))
+;;        (captured-layout
+;;         (--etm-layout-capture-current-layout layout-name host))
+;;        (contents
+;;         (--etm-layout-construct-contents layout-name captured-layout)))
+;;     ;; (message contents)
+;;     (write-region contents nil full-path)
+;;     (load-file full-path)))
+
+(defun --etm-layout-construct-contents
+    (layout-name captured-layout)
+  "Construct contents for layout file.
+LAYOUT-NAME is the name of the layout.
+CAPTURED-LAYOUT is the layout configuration string."
+  (format "(defun etm-open-%s ()
+  \"Create tab layout for specific configuration.\"
+  (interactive)
+  %s)
+(defalias '%s 'etm-open-%s)"
+          layout-name
+          captured-layout
+          layout-name
+          layout-name
+          layout-name))
 
 (defun --etm-layout-capture-current-layout
     (layout-name &optional host)
@@ -55,7 +88,8 @@
             (file
              (buffer-file-name buffer))
             (is-term
-             (string-match-p "term-" buffer-name))
+             (with-current-buffer buffer
+               (derived-mode-p 'term-mode)))
             (is-dired
              (with-current-buffer buffer
                (eq major-mode 'dired-mode)))

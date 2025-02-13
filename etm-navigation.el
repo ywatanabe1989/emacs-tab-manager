@@ -1,11 +1,26 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-12 23:09:15>
+;;; Timestamp: <2025-02-13 16:42:11>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-navigation.el
 
 (require 'etm-variables)
 
-(defun etm-navigation-jump-to
+(defun etm-navigation-jump-by-buffer-type
+    (type)
+  "Jump to buffer of TYPE in current tab."
+  (interactive
+   (list
+    (completing-read "Jump to buffer type: "
+                     (append etm-registered-buffer-types
+                             etm-custom-buffer-types))))
+  (let
+      ((buf
+        (etm-buffer-get type)))
+    (if buf
+        (switch-to-buffer buf)
+      (message "No %s buffer set for current tab" type))))
+
+(defun etm-navigation-jump-by-index
     (index)
   "Jump to tab at INDEX."
   (interactive "p")
