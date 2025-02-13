@@ -1,0 +1,54 @@
+;;; -*- coding: utf-8; lexical-binding: t -*-
+;;; Author: ywatanabe
+;;; Timestamp: <2025-02-13 15:29:50>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/tests/test-etm-buffer-setters.el
+
+(require 'ert)
+(require 'etm-buffer-setters)
+
+(ert-deftest test-etm-buffer-set-basic
+    ()
+  (with-temp-buffer
+    (let*
+        ((buffer-name
+          (buffer-name))
+         (etm-registered-buffer-types
+          '("home"))
+         (etm-custom-buffer-types nil))
+      (etm-buffer-set "home" "tab1" buffer-name)
+      (should
+       (--etm-buffer-registered-p buffer-name "home")))))
+
+(ert-deftest test-etm-buffer-set-invalid-type
+    ()
+  (should-error
+   (etm-buffer-set "invalid-type")
+   :type 'error))
+
+(ert-deftest test-etm-define-buffer-set-function
+    ()
+  (let
+      ((etm-registered-buffer-types
+        '("test")))
+    (etm-define-buffer-set-function "test")
+    (should
+     (fboundp 'etm-buffer-set-test))))
+
+(ert-deftest test-etm-define-buffer-set-functions
+    ()
+  (let
+      ((etm-registered-buffer-types
+        '("home" "semi-home")))
+    (etm-define-buffer-set-functions)
+    (should
+     (fboundp 'etm-buffer-set-home))
+    (should
+     (fboundp 'etm-buffer-set-semi-home))))
+
+(provide 'test-etm-buffer-setters)
+
+(when
+    (not load-file-name)
+  (message "test-etm-buffer-setters.el loaded."
+           (file-name-nondirectory
+            (or load-file-name buffer-file-name))))
