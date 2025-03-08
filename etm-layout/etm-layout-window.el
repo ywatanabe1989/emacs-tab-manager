@@ -1,5 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
+;;; Timestamp: <2025-02-27 12:13:03>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
+
+;;; -*- coding: utf-8; lexical-binding: t -*-
+;;; Author: ywatanabe
 ;;; Timestamp: <2025-02-12 23:15:59>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
 ;;; -*- coding: utf-8; lexical-binding: t -*-
@@ -32,9 +37,9 @@ Split horizontally first, then vertically within each side."
        (is-remote
         (and selected-host
              (not
-              (member selected-host --my/local-host-names))
+              (member selected-host etm-localhost-names))
              (not
-              (string= selected-host --my/host-ignored))))
+              (string= selected-host etm-ignored-host))))
        (effective-path
         (if is-remote
             (if

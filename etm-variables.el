@@ -1,10 +1,23 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 15:46:58>
+;;; Timestamp: <2025-02-27 12:12:54>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-variables.el
 
 ;; Basic
 ;; ----------------------------------------
+
+(defcustom etm-localhost-names
+  '("" "ywata-note-win" "localhost")
+  "List of names considered as localhost in ETM."
+  :type
+  '(repeat string)
+  :group 'etm)
+
+(defcustom etm-ignored-host
+  "ignored-host"
+  "Host name to be ignored in ETM."
+  :type 'string
+  :group 'etm)
 
 (defconst etm-version "0.1.0")
 
