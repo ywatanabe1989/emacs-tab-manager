@@ -1,5 +1,5 @@
 <!-- ---
-!-- Timestamp: 2025-02-14 06:33:31
+!-- Timestamp: 2025-02-26 16:36:29
 !-- Author: ywatanabe
 !-- File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/README.md
 !-- --- -->
