@@ -1,13 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-27 12:13:03>
+;;; Timestamp: <2025-04-05 14:16:12>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
 
-;;; -*- coding: utf-8; lexical-binding: t -*-
-;;; Author: ywatanabe
-;;; Timestamp: <2025-02-12 23:15:59>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
-;;; -*- coding: utf-8; lexical-binding: t -*-
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 (defun --etm-layout-init-windows
     (tab-name num-left num-right)
@@ -53,12 +49,13 @@ Split horizontally first, then vertically within each side."
      ((eq window-type 'file)
       (find-file effective-path))
      ((eq window-type 'shell)
-      (my/term-new
+      (--my/vterm-new
        (format "term-%d" n))
       (when is-remote
         (term-send-raw-string
-         (format "if [[ \"$(hostname)\" != *\"%s\"* ]]; then ssh -Y %s; fi\n"
-                 selected-host selected-host)))
+         (format
+          "if [[ \"$(hostname)\" != *\"%s\"* ]]; then ssh -Y %s; fi\n"
+          selected-host selected-host)))
       (term-send-raw-string
        (format "cd %s && clear\n" effective-path))))))
 
