@@ -1,7 +1,11 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 00:11:54>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-core.el
+;;; Timestamp: <2025-04-24 09:25:50>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-core.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+(require 'etm-tab-id)
 
 (defun etm-reset
     ()
@@ -16,7 +20,9 @@
   "Close current tab and move to next."
   (interactive)
   (tab-close)
-  (tab-next))
+  (tab-next)
+  (if (etm-tab-first-tab-p)
+      (tab-previous)))
 
 (defun etm-close-all
     ()
