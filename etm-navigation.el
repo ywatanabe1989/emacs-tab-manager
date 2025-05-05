@@ -1,7 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 16:42:11>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-navigation.el
+;;; Timestamp: <2025-04-24 09:24:47>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-navigation.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 (require 'etm-variables)
 
