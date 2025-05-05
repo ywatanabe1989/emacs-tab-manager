@@ -1,7 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-27 12:12:54>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-variables.el
+;;; Timestamp: <2025-04-24 08:50:20>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-variables.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 ;; Basic
 ;; ----------------------------------------
@@ -28,6 +30,7 @@
 
 ;; Appearance
 ;; ----------------------------------------
+
 (defcustom etm-show-tab-bar t
   "Whether to show tab bar in ETM."
   :type 'boolean
@@ -35,6 +38,7 @@
 
 ;; Buffer types
 ;; ----------------------------------------
+
 (defconst etm-default-buffer-types
   '("home" "semi-home" "results")
   "List of default buffer types supported by ETM.
@@ -75,12 +79,18 @@ and CONFIG is a buffer configuration sexp."
 
 ;; Registered Layouts
 ;; ----------------------------------------
+
 (defcustom etm-layout-save-dir
   (expand-file-name "etm-layout/saved-layouts"
                     (file-name-directory
                      (or load-file-name buffer-file-name)))
   "Directory path for saving ETM layouts."
   :type 'directory
+  :group 'etm)
+
+(defcustom etm-layout-default-hosts (make-hash-table :test 'equal)
+  "Default hosts for layouts, stored as hash table."
+  :type '(alist :key-type string :value-type string)
   :group 'etm)
 
 (add-to-list 'load-path etm-layout-save-dir)
