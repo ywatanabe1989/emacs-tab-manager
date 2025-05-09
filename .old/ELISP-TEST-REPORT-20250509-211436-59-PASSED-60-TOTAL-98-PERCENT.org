@@ -1,0 +1,135 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:14:38 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 59
+- Failed: 1
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 60
+- Total Time: 0.71 seconds
+- Success Rate: 98.3%
+
+* Passed Tests (60)
+** test-etm-core-helpers.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-loadable][test-etm-core-helpers-loadable]]
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-functions-exist][test-etm-core-helpers-functions-exist]]
+** test-etm-core-variables.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-loadable][test-etm-core-variables-loadable]]
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-constants-exist][test-etm-core-variables-constants-exist]]
+** test-etm-buffer-checkers.el (4 tests)
+- [[file:tests/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-name-only][test-etm-buffer-registered-p-with-name-only]]
+- [[file:tests/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-type][test-etm-buffer-registered-p-with-type]]
+- [[file:tests/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-tab][test-etm-buffer-registered-p-with-tab]]
+- [[file:tests/test-etm-buffer-checkers.el::test-etm-buffer-protected-p][test-etm-buffer-protected-p]]
+** test-etm-buffer-getters.el (3 tests)
+- [[file:tests/test-etm-buffer-getters.el::test-etm-buffer-get-basic][test-etm-buffer-get-basic]]
+- [[file:tests/test-etm-buffer-getters.el::test-etm-buffer-get-nonexistent][test-etm-buffer-get-nonexistent]]
+- [[file:tests/test-etm-buffer-getters.el::test-etm-buffer-get-wrong-tab][test-etm-buffer-get-wrong-tab]]
+** test-etm-buffer-jumpers.el (4 tests)
+- [[file:tests/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-existing][test-etm-navigation-jump-by-buffer-type-existing]]
+- [[file:tests/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-nonexistent][test-etm-navigation-jump-by-buffer-type-nonexistent]]
+- [[file:tests/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-function][test-etm-buffer-define-buffer-type-jumper-function]]
+- [[file:tests/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-functions][test-etm-buffer-define-buffer-type-jumper-functions]]
+** test-etm-buffer-kill-or-bury.el (3 tests)
+- [[file:tests/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-registered][test-etm-buffer-kill-or-bury-registered]]
+- [[file:tests/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-protected][test-etm-buffer-kill-or-bury-protected]]
+- [[file:tests/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-unregistered][test-etm-buffer-kill-or-bury-unregistered]]
+** test-etm-buffer-setters.el (4 tests)
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-set-basic][test-etm-buffer-set-basic]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-set-invalid-type][test-etm-buffer-set-invalid-type]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-function][test-etm-buffer-define-buffer-type-setter-function]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-functions][test-etm-buffer-define-buffer-type-setter-functions]]
+** test-etm-close-core.el (3 tests)
+- [[file:tests/test-etm-close-core.el::test-etm-close-by-name][test-etm-close-by-name]]
+- [[file:tests/test-etm-close-core.el::test-etm-close-by-name-last-tab][test-etm-close-by-name-last-tab]]
+- [[file:tests/test-etm-close-core.el::test-etm-close-all][test-etm-close-all]]
+** test-etm-close-utils.el (4 tests)
+- [[file:tests/test-etm-close-utils.el::test-etm-close-by-id][test-etm-close-by-id]]
+- [[file:tests/test-etm-close-utils.el::test-etm-close-and-next][test-etm-close-and-next]]
+- [[file:tests/test-etm-close-utils.el::test-etm-close-by-name-and-prev][test-etm-close-by-name-and-prev]]
+- [[file:tests/test-etm-close-utils.el::test-etm-close-others][test-etm-close-others]]
+  + Error details:
+    Selector: test-etm-close-others
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-09 21:14:37+1000
+    Finished.
+    Finished at:  2025-05-09 21:14:37+1000
+    
+    F
+    
+    F test-etm-close-others
+        (user-error "Attempt to delete the sole tab in a frame")
+    
+    
+    
+** test-etm-init.el (2 tests)
+- [[file:tests/test-etm-init.el::test-etm-init-loads][test-etm-init-loads]]
+- [[file:tests/test-etm-init.el::test-etm-init-function][test-etm-init-function]]
+** test-etm-keys-command-map.el (2 tests)
+- [[file:tests/test-etm-keys-command-map.el::test-etm-keys-command-map-loads][test-etm-keys-command-map-loads]]
+- [[file:tests/test-etm-keys-command-map.el::test-etm-command-map-binding][test-etm-command-map-binding]]
+** test-etm-keys-layout.el (2 tests)
+- [[file:tests/test-etm-keys-layout.el::test-etm-keys-layout-loadable][test-etm-keys-layout-loadable]]
+- [[file:tests/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+** test-etm-keys-navigation.el (10 tests)
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-loadable][test-etm-keys-navigation-loadable]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m1-bound][test-etm-keys-navigation-m1-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m2-bound][test-etm-keys-navigation-m2-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m3-bound][test-etm-keys-navigation-m3-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m4-bound][test-etm-keys-navigation-m4-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m5-bound][test-etm-keys-navigation-m5-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m6-bound][test-etm-keys-navigation-m6-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m7-bound][test-etm-keys-navigation-m7-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m8-bound][test-etm-keys-navigation-m8-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m9-bound][test-etm-keys-navigation-m9-bound]]
+** test-etm-layout-core.el (3 tests)
+- [[file:tests/test-etm-layout-core.el::test-etm-layout-create-loadable][test-etm-layout-create-loadable]]
+- [[file:tests/test-etm-layout-core.el::test-etm-layout-cleanup-exists][test-etm-layout-cleanup-exists]]
+- [[file:tests/test-etm-layout-core.el::test-etm-layout-create-exists][test-etm-layout-create-exists]]
+** test-etm-layout-load.el (2 tests)
+- [[file:tests/test-etm-layout-load.el::test-etm-layout-load-loadable][test-etm-layout-load-loadable]]
+- [[file:tests/test-etm-layout-load.el::test-etm-layout-load-function-exists][test-etm-layout-load-function-exists]]
+** test-etm-layout-save.el (2 tests)
+- [[file:tests/test-etm-layout-save.el::test-etm-layout-save-loadable][test-etm-layout-save-loadable]]
+- [[file:tests/test-etm-layout-save.el::test-etm-layout-save-functions-exist][test-etm-layout-save-functions-exist]]
+** test-etm-layout-window.el (2 tests)
+- [[file:tests/test-etm-layout-window.el::test-etm-layout-window-loadable][test-etm-layout-window-loadable]]
+- [[file:tests/test-etm-layout-window.el::test-etm-layout-window-functions-exist][test-etm-layout-window-functions-exist]]
+** test-etm-navigation.el (2 tests)
+- [[file:tests/test-etm-navigation.el::test-etm-navigation-loadable][test-etm-navigation-loadable]]
+- [[file:tests/test-etm-navigation.el::test-etm-navigation-functions-exist][test-etm-navigation-functions-exist]]
+** test-etm-new-and-rename.el (2 tests)
+- [[file:tests/test-etm-new-and-rename.el::test-etm-new-and-rename-loadable][test-etm-new-and-rename-loadable]]
+- [[file:tests/test-etm-new-and-rename.el::test-etm-new-and-rename-functions-exist][test-etm-new-and-rename-functions-exist]]
+** test-etm-variables.el (2 tests)
+- [[file:tests/test-etm-variables.el::test-etm-variables-loadable][test-etm-variables-loadable]]
+- [[file:tests/test-etm-variables.el::test-etm-variables-constants-exist][test-etm-variables-constants-exist]]
+* Failed Tests (1)
+** test-etm-close-utils.el (1 tests)
+- [[file:tests/test-etm-close-utils.el::test-etm-close-others][test-etm-close-others]]
+  + Error details:
+    Selector: test-etm-close-others
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-09 21:14:37+1000
+    Finished.
+    Finished at:  2025-05-09 21:14:37+1000
+    
+    F
+    
+    F test-etm-close-others
+        (user-error "Attempt to delete the sole tab in a frame")
+    
+    
+    

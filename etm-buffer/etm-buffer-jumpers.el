@@ -1,13 +1,16 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 16:44:27>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-jumpers.el
+;;; Timestamp: <2025-04-24 08:39:04>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-jumpers.el
 
-(require 'etm-variables)
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
-(require 'etm-navigation)
+(require 'etm-buffer-navigation)
 
 ;; Define jump functions
+
 (defun etm-buffer-define-buffer-type-jumper-function
     (type)
   "Define a buffer jump function for the given TYPE.

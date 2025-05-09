@@ -1,0 +1,20 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:24:00 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 3
+- Failed: 0
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 3
+- Total Time: 0.07 seconds
+- Success Rate: 100.0%
+
+* Passed Tests (3)
+** test-etm-close-core.el (3 tests)
+- [[file:tests/test-etm-close-core.el::test-etm-close-by-name][test-etm-close-by-name]]
+- [[file:tests/test-etm-close-core.el::test-etm-close-by-name-last-tab][test-etm-close-by-name-last-tab]]
+- [[file:tests/test-etm-close-core.el::test-etm-close-all][test-etm-close-all]]

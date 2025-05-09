@@ -1,9 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-05 14:16:12>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
+;;; Timestamp: <2025-04-27 21:57:03>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+(require 'etm-core-helpers)
+
 
 (defun --etm-layout-init-windows
     (tab-name num-left num-right)
@@ -58,6 +61,13 @@ Split horizontally first, then vertically within each side."
           selected-host selected-host)))
       (term-send-raw-string
        (format "cd %s && clear\n" effective-path))))))
+
+(defun --etm-layout-setup-window-with-host
+    (n window-type path &optional host)
+  "Setup window N with WINDOW-TYPE at PATH with HOST.
+Delegates to --etm-layout-setup-window."
+  (--etm-layout-setup-window n window-type path host))
+
 
 (provide 'etm-layout-window)
 

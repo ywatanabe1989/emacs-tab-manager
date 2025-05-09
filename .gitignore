@@ -1,3 +1,11 @@
 !etm-layout/saved-layouts/.gitkeep
 etm-layout/saved-layouts/*
 **/*~undo-tree~
+**/.claude/settings.local.json
+.old/
+*.log
+ELISP-TEST-REPORT-*.org
+ELISP-TEST-REPORT-*.pdf
+!ELISP-TEST-REPORT-20250510-092728-60-PASSED-60-TOTAL-100-PERCENT.org
+!ELISP-TEST-REPORT-20250510-092728-60-PASSED-60-TOTAL-100-PERCENT.pdf
+resolve_timestamp_conflicts.sh

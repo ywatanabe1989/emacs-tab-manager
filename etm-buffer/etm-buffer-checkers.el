@@ -1,9 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 14:23:21>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-checkers.el
+;;; Timestamp: <2025-05-09 23:40:09>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-checkers.el
 
-(require 'etm-variables)
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+
+(require 'etm-core-variables)
 
 ;; Checker
 ;; ----------------------------------------
@@ -44,6 +47,7 @@ If TAB is specified, check only in that tab."
   (member
    buffer-name
    etm-protected-buffers))
+
 
 (provide 'etm-buffer-checkers)
 

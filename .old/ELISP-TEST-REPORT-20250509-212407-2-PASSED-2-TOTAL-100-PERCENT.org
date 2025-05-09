@@ -1,0 +1,19 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:24:07 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 2
+- Failed: 0
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 2
+- Total Time: 0.05 seconds
+- Success Rate: 100.0%
+
+* Passed Tests (2)
+** test-etm-keys-command-map.el (2 tests)
+- [[file:tests/test-etm-keys-command-map.el::test-etm-keys-command-map-loads][test-etm-keys-command-map-loads]]
+- [[file:tests/test-etm-keys-command-map.el::test-etm-command-map-binding][test-etm-command-map-binding]]

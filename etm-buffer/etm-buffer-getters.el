@@ -1,12 +1,15 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 14:23:21>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-getters.el
+;;; Timestamp: <2025-05-10 08:18:22>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-getters.el
 
-(require 'etm-variables)
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
-(defun etm-buffer-get
+(defun --etm-buffer-get
     (type &optional tab)
   "Get buffer of TYPE from TAB."
   (interactive
@@ -26,6 +29,7 @@
         (assoc type
                (cdr tab-entry))))
     (cdr buffer-entry)))
+
 
 (provide 'etm-buffer-getters)
 

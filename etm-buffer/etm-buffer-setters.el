@@ -1,9 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 16:45:08>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-setters.el
+;;; Timestamp: <2025-05-10 09:05:01>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-setters.el
 
-(require 'etm-variables)
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
+
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
 (defun etm-buffer-set
@@ -16,7 +19,8 @@
                              etm-custom-buffer-types))))
   (unless
       (member type
-              (append etm-registered-buffer-types etm-custom-buffer-types))
+              (append etm-registered-buffer-types
+                      etm-custom-buffer-types))
     (error "Invalid buffer type"))
   (unless tab-name
     (setq tab-name
@@ -43,6 +47,7 @@
   (message "Set %s buffer for tab %s: %s" type tab-name buffer-name))
 
 ;; Define functions
+
 (defun etm-buffer-define-buffer-type-setter-function
     (type)
   "Define a buffer setting function for the given TYPE.
@@ -70,26 +75,9 @@ Examples:
       (type etm-registered-buffer-types)
     (etm-buffer-define-buffer-type-setter-function type)))
 
-;; (defun etm-buffer-define-buffer-type-setter-functions
-;;     ()
-;;   "Define buffer setting functions for all registered buffer types.
-;; Examples:
-;; `etm-buffer-set-home'
-;; `etm-buffer-set-semi-home'
-;; `etm-buffer-set-results'
-;; "
-;;   (dolist
-;;       (type etm-registered-buffer-types)
-;;     (eval
-;;      `(defun ,(intern
-;;                (format "etm-buffer-set-%s" type))
-;;           ()
-;;         ,(format "Set current buffer as %s buffer for current tab." type)
-;;         (interactive)
-;;         (etm-buffer-set ,type)))))
-
 ;; Create buffer setting functions initially
 (etm-buffer-define-buffer-type-setter-functions)
+
 
 (provide 'etm-buffer-setters)
 
