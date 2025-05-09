@@ -85,7 +85,7 @@ and CONFIG is a buffer configuration sexp."
 ;; ----------------------------------------
 
 (defcustom etm-layout-save-dir
-  (expand-file-name "etm-layout/saved-layouts"
+  (expand-file-name "../etm-layout/saved-layouts"
                     (file-name-directory
                      (or load-file-name buffer-file-name)))
   "Directory path for saving ETM layouts."
