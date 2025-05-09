@@ -1,12 +1,12 @@
 <!-- ---
-!-- Timestamp: 2025-02-26 16:36:29
+!-- Timestamp: 2025-05-09 19:17:29
 !-- Author: ywatanabe
-!-- File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/README.md
+!-- File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/README.md
 !-- --- -->
 
 # Emacs Tab Manager (ETM)
 
-[![Build Status](https://github.com/ywatanabe1989/emacs-tab-manager/workflows/tests/badge.svg)](https://github.com/ywatanabe1989/emacs-header-footer/actions)
+[![Build Status](https://github.com/ywatanabe1989/emacs-tab-manager/workflows/run_tests/badge.svg)](https://github.com/ywatanabe1989/emacs-header-footer/actions)
 
 Extension for [tab-bar.el](https://github.com/emacs-mirror/emacs/blob/master/lisp/tab-bar.el)
 

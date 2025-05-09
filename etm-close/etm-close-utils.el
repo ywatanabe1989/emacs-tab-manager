@@ -1,43 +1,57 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-12 23:12:39>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close-utils.el
+;;; Timestamp: <2025-05-09 19:45:10>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-utils.el
 
-;;; -*- coding: utf-8; lexical-binding: t -*-
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-(defun --etm-close-by-id
-    (tab-id)
-  (tab-bar-close-tab
-   (- tab-id 1)))
+(defun etm-close-by-id (tab-id)
+  "Close the tab with ID TAB-ID."
+  (interactive "nTab ID to close: ")
+  (tab-bar-close-tab (- tab-id 1)))
 
-(defun --etm-close-1
-    ()
-  (etm-navigation-jump-by-index 1)
+(defun etm-close-1 ()
+  "Close tab with index 1."
+  (interactive)
+  (tab-bar-select-tab 1)
   (tab-close))
 
-(defun --etm-close-and-next
-    ()
+(defun etm-close-and-next ()
   "Close the current tab and move to the next one."
-  (tab-close)
-  (tab-next))
+  (interactive)
+  (let ((current-name (alist-get 'name (tab-bar--current-tab))))
+    (tab-bar-close-tab)  ;; Use tab-bar-close-tab instead of tab-close
+    (tab-next)))
 
-(defun --etm-close-by-name-and-prev
-    ()
+(defun etm-close-by-name-and-prev ()
   "Close the current tab and move to the previous one."
-  (let
-      ((prev-tab-index
-        (1-
-         (tab-bar--current-tab-index))))
+  (interactive)
+  (let* ((tabs (tab-bar-tabs))
+        (current-index (tab-bar--current-tab-index))
+        (prev-tab-index (1- current-index)))
     (tab-close)
-    (when
-        (>= prev-tab-index 0)
-      (tab-bar-select-tab
-       (1+ prev-tab-index)))))
+    (when (and (>= prev-tab-index 0) 
+               (< prev-tab-index (length (tab-bar-tabs))))
+      (tab-bar-select-tab (1+ prev-tab-index)))))
+
+(defun etm-close-others ()
+  "Close all tabs except the current one."
+  (interactive)
+  (let ((current-tab (tab-bar--current-tab))
+        (tabs (tab-bar-tabs))
+        (tab-count (length (tab-bar-tabs))))
+    (when (> tab-count 1)  ;; Only proceed if there's more than one tab
+      (let ((tabs-to-close (delq current-tab (copy-sequence tabs))))
+        (dolist (tab tabs-to-close)
+          (condition-case nil
+              (tab-bar-close-tab-by-name (alist-get 'name tab))
+            (user-error nil)))))))
 
 (provide 'etm-close-utils)
 
-(when
-    (not load-file-name)
+(when (not load-file-name)
   (message "etm-close-utils.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))
+
+;;; etm-close-utils.el ends here

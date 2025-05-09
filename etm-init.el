@@ -5,9 +5,10 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-(require 'etm-variables)
+(require 'etm-core-variables)
 (require 'etm-layout)
 
+;;;###autoload
 (defun etm-init
     ()
   "Initialize Emacs Tab Manager."

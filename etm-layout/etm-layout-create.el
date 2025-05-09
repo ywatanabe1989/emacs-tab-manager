@@ -6,7 +6,7 @@
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 (require 'etm-layout-default)
-(require 'etm-helpers)
+(require 'etm-core-helpers)
 
 (defun --etm-layout-cleanup
     (tab-name)
