@@ -13,13 +13,12 @@
   (add-to-list 'load-path this-dir)
   (dolist
       (dir
-       '("etm-new-and-rename" "etm-buffer" "etm-close" "etm-layout"
+       '("etm-core" "etm-new-and-rename" "etm-buffer" "etm-close" "etm-layout"
          "etm-keys" "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
 
-(require 'etm-variables)
-(require 'etm-helpers)
+(require 'etm-core)
 (require 'etm-new-and-rename)
 (require 'etm-buffer)
 (require 'etm-close)
