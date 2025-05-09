@@ -1,0 +1,30 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:19:03 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 0
+- Failed: 4
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 1
+- Total: 4
+- Total Time: 0.05 seconds
+- Success Rate: 0.0%
+
+* Failed Tests (4)
+** test-emacs-buffer-navigation-history-tracking.el (1 tests)
+- [[file:../../../.dotfiles/.emacs.d/lisp/emacs-buffer-navigation/tests/test-emacs-buffer-navigation-history-tracking.el::test-emacs-buffer-navigation-history-tracking][test-emacs-buffer-navigation-history-tracking]] [DUPLICATE]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "emacs-buffer-navigation")
+** test-emacs-buffer-navigation.el (3 tests)
+- [[file:../../../.dotfiles/.emacs.d/lisp/emacs-buffer-navigation/tests/test-emacs-buffer-navigation.el::test-emacs-buffer-navigation-history-tracking][test-emacs-buffer-navigation-history-tracking]] [DUPLICATE]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "emacs-buffer-navigation-variables")
+- [[file:../../../.dotfiles/.emacs.d/lisp/emacs-buffer-navigation/tests/test-emacs-buffer-navigation.el::test-emacs-buffer-navigation-history-order][test-emacs-buffer-navigation-history-order]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "emacs-buffer-navigation-variables")
+- [[file:../../../.dotfiles/.emacs.d/lisp/emacs-buffer-navigation/tests/test-emacs-buffer-navigation.el::test-emacs-buffer-navigation-clean-history][test-emacs-buffer-navigation-clean-history]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "emacs-buffer-navigation-variables")

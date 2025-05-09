@@ -47,6 +47,15 @@
               (tab-bar-close-tab-by-name (alist-get 'name tab))
             (user-error nil)))))))
 
+(defun etm-close-others ()
+  "Close all tabs except the current one."
+  (interactive)
+  (let ((current-tab-index (tab-bar--current-tab-index)))
+    (dotimes (i (length (tab-bar-tabs)))
+      (unless (= i current-tab-index)
+        (tab-bar-close-tab-by-position i)))
+    (message "All other tabs closed.")))
+
 (provide 'etm-close-utils)
 
 (when (not load-file-name)

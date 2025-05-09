@@ -12,6 +12,9 @@
 (require 'etm-core-variables)
 (require 'etm-core-ssh-helpers)
 
+;; This file provides core utility functions used throughout the ETM package.
+;; SSH-related helpers and terminal helpers are now in etm-core-ssh-helpers.el
+
 (provide 'etm-core-helpers)
 
 (when (not load-file-name)

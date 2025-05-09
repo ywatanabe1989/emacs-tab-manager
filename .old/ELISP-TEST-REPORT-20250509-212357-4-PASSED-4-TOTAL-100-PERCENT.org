@@ -1,0 +1,21 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:23:57 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 4
+- Failed: 0
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 4
+- Total Time: 0.06 seconds
+- Success Rate: 100.0%
+
+* Passed Tests (4)
+** test-etm-buffer-setters.el (4 tests)
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-set-basic][test-etm-buffer-set-basic]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-set-invalid-type][test-etm-buffer-set-invalid-type]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-function][test-etm-buffer-define-buffer-type-setter-function]]
+- [[file:tests/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-functions][test-etm-buffer-define-buffer-type-setter-functions]]

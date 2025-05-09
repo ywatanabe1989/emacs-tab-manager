@@ -5,9 +5,9 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-(require 'etm-variables)
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
-(require 'etm-navigation)
+(require 'etm-buffer-navigation)
 
 ;; Define jump functions
 

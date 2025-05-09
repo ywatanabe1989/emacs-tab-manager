@@ -1,12 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-09 23:58:01>
+;;; Timestamp: <2025-05-10 09:05:01>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-setters.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 
-(require 'etm-variables)
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
 (defun etm-buffer-set

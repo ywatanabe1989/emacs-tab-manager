@@ -3,7 +3,7 @@
 ;;; Timestamp: <2025-02-13 16:42:11>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-keys/etm-keys-buffer.el
 
-(require 'etm-navigation)
+(require 'etm-buffer-navigation)
 (require 'etm-buffer)
 (require 'etm-keys-command-map)
 

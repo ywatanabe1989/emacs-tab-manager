@@ -1,12 +1,12 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-09 23:57:52>
+;;; Timestamp: <2025-05-10 09:04:52>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-kill-or-bury.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
 
-(require 'etm-variables)
+(require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
 ;; Kill or Bury

@@ -4,6 +4,8 @@
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-keys/etm-keys-layout.el
 
 (require 'etm-keys-command-map)
+(require 'etm-close-utils)
+(require 'etm-tabs-new-and-rename)
 
 (define-key
  etm-command-map

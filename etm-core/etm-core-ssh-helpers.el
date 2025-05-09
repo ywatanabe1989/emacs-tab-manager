@@ -10,14 +10,14 @@
 
 (require 'etm-core-variables)
 
-(defvar --my/local-host-names
+(defvar --etm-local-host-names
   '("" "ywata-note-win" "localhost")
   "List of host names considered as local machines.")
 
-(defvar --my/ssh-hostname-username nil
+(defvar --etm-ssh-hostname-username nil
   "Cache for SSH configuration cache: ((hostname . username) ...).")
 
-(defun --my/ssh-parse-dot-ssh ()
+(defun --etm-ssh-parse-dot-ssh ()
   "Update the SSH configuration cache from config files."
   (interactive)
   (let* ((command
@@ -30,18 +30,18 @@
              (let ((parts (split-string line)))
                (cons (nth 0 parts) (nth 1 parts))))
            (split-string output "\n" t))))
-    (setq --my/ssh-hostname-username
+    (setq --etm-ssh-hostname-username
           (cons '("localhost" . "ywatanabe")
                 pairs))))
 
-(defun --my/ssh-select-host ()
+(defun --etm-ssh-select-host ()
   "Select an SSH host from cached config."
   (interactive)
-  (--my/ssh-parse-dot-ssh)
+  (--etm-ssh-parse-dot-ssh)
   (completing-read "Choose host: "
-                   (mapcar #'car --my/ssh-hostname-username)))
+                   (mapcar #'car --etm-ssh-hostname-username)))
 
-(defun --my/ssh-rename-username (path &optional host)
+(defun --etm-ssh-rename-username (path &optional host)
   "Handle path transformations for remote connections.
 PATH is the local path to transform.
 HOST is the remote hostname."
@@ -50,7 +50,7 @@ HOST is the remote hostname."
                                              path)))
     (concat "/home/ywatanabe" clean-path)))
 
-(defun --my/vterm-new (name)
+(defun --etm-vterm-new (name)
   "Create a new vterm buffer with NAME.
 Falls back to term if vterm is not available."
   (if (fboundp 'vterm)

@@ -18,9 +18,9 @@
   (require 'etm-core-helpers)
   
   ;; Test SSH helper functions
-  (should (fboundp '--my/ssh-select-host))
-  (should (fboundp '--my/ssh-rename-username))
-  (should (fboundp '--my/vterm-new)))
+  (should (fboundp '--etm-ssh-select-host))
+  (should (fboundp '--etm-ssh-rename-username))
+  (should (fboundp '--etm-vterm-new)))
 
 (provide 'test-etm-core-helpers)
 

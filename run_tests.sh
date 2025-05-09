@@ -113,9 +113,12 @@ run_tests_elisp() {
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-keys\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout/saved-layouts\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-tabs\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-core\\\")\" "
     
-    # Load elisp-test
+    # Load elisp-test and etm
     emacs_cmd+=" --eval \"(require 'elisp-test)\" "
+    emacs_cmd+=" --eval \"(require 'etm)\" "
     
     # Set debug level if needed
     if $DEBUG_MODE; then
@@ -136,7 +139,6 @@ run_tests_elisp() {
         # Execute quietly in normal mode
         eval $emacs_cmd >> "$LOG_PATH" 2>&1
     fi
-    
     local exit_status=$?
 
     if [ $exit_status -eq 124 ] || [ $exit_status -eq 137 ]; then

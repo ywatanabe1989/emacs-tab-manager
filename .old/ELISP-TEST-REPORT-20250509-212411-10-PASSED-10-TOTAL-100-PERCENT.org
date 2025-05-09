@@ -1,0 +1,27 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:24:12 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 10
+- Failed: 0
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 10
+- Total Time: 0.07 seconds
+- Success Rate: 100.0%
+
+* Passed Tests (10)
+** test-etm-keys-navigation.el (10 tests)
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-loadable][test-etm-keys-navigation-loadable]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m1-bound][test-etm-keys-navigation-m1-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m2-bound][test-etm-keys-navigation-m2-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m3-bound][test-etm-keys-navigation-m3-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m4-bound][test-etm-keys-navigation-m4-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m5-bound][test-etm-keys-navigation-m5-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m6-bound][test-etm-keys-navigation-m6-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m7-bound][test-etm-keys-navigation-m7-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m8-bound][test-etm-keys-navigation-m8-bound]]
+- [[file:tests/test-etm-keys-navigation.el::test-etm-keys-navigation-m9-bound][test-etm-keys-navigation-m9-bound]]
