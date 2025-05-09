@@ -11,30 +11,18 @@
 
 (ert-deftest test-etm-keys-layout-bindings
     ()
-  (should
-   (eq
-    (lookup-key etm-command-map
-                (kbd "1"))
-    'etm-close-others))
-  (should
-   (eq
-    (lookup-key etm-command-map
-                (kbd "2"))
-    'etm-new))
-  (should
-   (eq
-    (lookup-key etm-command-map
-                (kbd "n"))
-    'etm-new))
-  (should
-   (eq
-    (lookup-key etm-command-map
-                (kbd "r"))
-    'etm-rename))
-  (should
-   (commandp
-    (lookup-key global-map
-                (kbd "M-w")))))
+  ;; First load the required keys modules
+  (require 'etm-keys-command-map)
+  (require 'etm-keys-layout)
+  (require 'etm-close-utils)
+  (require 'etm-new-and-rename)
+
+  ;; Now check the bindings
+  (should (eq (lookup-key etm-command-map (kbd "1")) 'etm-close-others))
+  (should (eq (lookup-key etm-command-map (kbd "2")) 'etm-new))
+  (should (eq (lookup-key etm-command-map (kbd "n")) 'etm-new))
+  (should (eq (lookup-key etm-command-map (kbd "r")) 'etm-rename))
+  (should (commandp (lookup-key global-map (kbd "M-w")))))
 
 (provide 'test-etm-keys-layout)
 

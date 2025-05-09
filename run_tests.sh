@@ -99,20 +99,20 @@ run_tests_elisp() {
     # Prepare command
     local emacs_cmd="emacs -Q --batch"
     
-    # Add load paths
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$(pwd)\\\")\" "
+    # Add load paths - only use absolute paths to avoid working directory issues
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$TESTS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$target\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$ELISP_TEST_PATH\\\")\" "
     
-    # Add module subdirectories to load path
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-core\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-buffer\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-close\\\")\" " 
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-keys\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-layout\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR/etm-layout/saved-layouts\\\")\" "
+    # Add module subdirectories to load path - make sure we use full absolute paths
+    DOTFILES_PATH="$(readlink -f $THIS_DIR)"
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-core\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-buffer\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-close\\\")\" " 
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-keys\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout/saved-layouts\\\")\" "
     
     # Load elisp-test
     emacs_cmd+=" --eval \"(require 'elisp-test)\" "

@@ -13,10 +13,11 @@
 
 (ert-deftest test-etm-new-and-rename-functions-exist
     ()
-  (should
-   (fboundp 'etm-new))
-  (should
-   (fboundp 'etm-rename)))
+  ;; First load the required module
+  (require 'etm-new-and-rename)
+  ;; Now the functions should be defined
+  (should (fboundp 'etm-new))
+  (should (fboundp 'etm-rename)))
 
 (provide 'test-etm-new-and-rename)
 

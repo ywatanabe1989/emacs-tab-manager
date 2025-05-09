@@ -8,6 +8,7 @@
 (require 'etm-core-variables)
 (require 'etm-layout)
 
+;;;###autoload
 (defun etm-init
     ()
   "Initialize Emacs Tab Manager."

@@ -13,6 +13,11 @@
 
 (ert-deftest test-etm-core-helpers-functions-exist
     ()
+  ;; Load required modules
+  (require 'etm-core-ssh-helpers)
+  (require 'etm-core-helpers)
+  
+  ;; Test SSH helper functions
   (should (fboundp '--my/ssh-select-host))
   (should (fboundp '--my/ssh-rename-username))
   (should (fboundp '--my/vterm-new)))

@@ -1,5 +1,5 @@
-# Timestamp: "2025-05-09 19:17:12 (ywatanabe)"
-# File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/.github/workflows/test.yml
+# Timestamp: "2025-05-09 20:26:46 (ywatanabe)"
+# File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/.github/workflows/run_test.yml
 
 name: run_tests
 on:

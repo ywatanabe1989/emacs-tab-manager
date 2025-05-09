@@ -3,20 +3,24 @@
 ;;; Timestamp: <2025-02-13 14:43:33>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-new-and-rename.el
 
+;;;###autoload
 (defun etm-new
     (arg)
+  "Create a new tab with name ARG."
   (interactive
    (list
-    (read-string "Enter string: ")))
+    (read-string "Enter tab name: ")))
   (tab-new)
   (tab-rename
    (message "%s" arg)))
 
+;;;###autoload
 (defun etm-rename
     (arg)
+  "Rename current tab to ARG."
   (interactive
    (list
-    (read-string "Enter string: ")))
+    (read-string "Enter tab name: ")))
   (tab-rename
    (message "%s" arg)))
 

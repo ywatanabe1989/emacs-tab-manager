@@ -19,8 +19,9 @@
 (defun etm-close-and-next ()
   "Close the current tab and move to the next one."
   (interactive)
-  (tab-close)
-  (tab-next))
+  (let ((current-name (alist-get 'name (tab-bar--current-tab))))
+    (tab-bar-close-tab)  ;; Use tab-bar-close-tab instead of tab-close
+    (tab-next)))
 
 (defun etm-close-by-name-and-prev ()
   "Close the current tab and move to the previous one."
@@ -37,11 +38,14 @@
   "Close all tabs except the current one."
   (interactive)
   (let ((current-tab (tab-bar--current-tab))
-        (tabs (tab-bar-tabs)))
-    (when (> (length tabs) 1)  ;; Only proceed if there's more than one tab
-      (dolist (tab tabs)
-        (unless (eq tab current-tab)
-          (tab-bar-close-tab-by-name (alist-get 'name tab)))))))
+        (tabs (tab-bar-tabs))
+        (tab-count (length (tab-bar-tabs))))
+    (when (> tab-count 1)  ;; Only proceed if there's more than one tab
+      (let ((tabs-to-close (delq current-tab (copy-sequence tabs))))
+        (dolist (tab tabs-to-close)
+          (condition-case nil
+              (tab-bar-close-tab-by-name (alist-get 'name tab))
+            (user-error nil)))))))
 
 (provide 'etm-close-utils)
 
@@ -49,3 +53,5 @@
   (message "etm-close-utils.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))
+
+;;; etm-close-utils.el ends here
