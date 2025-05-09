@@ -4,6 +4,8 @@ etm-layout/saved-layouts/*
 **/.claude/settings.local.json
 .old/
 *.log
-*TEST-REPORT*.org
-*TEST-REPORT*.pdf
+ELISP-TEST-REPORT-*.org
+ELISP-TEST-REPORT-*.pdf
+!ELISP-TEST-REPORT-20250510-092728-60-PASSED-60-TOTAL-100-PERCENT.org
+!ELISP-TEST-REPORT-20250510-092728-60-PASSED-60-TOTAL-100-PERCENT.pdf
 resolve_timestamp_conflicts.sh
