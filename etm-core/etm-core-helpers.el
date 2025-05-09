@@ -14,7 +14,7 @@
 ;; 1. SSH-related helpers
 ;; ----------------------------------------
 
-(defun --my/ssh-select-host ()
+(defun --etm-ssh-select-host ()
   "Select a host from predefined list for remote connections."
   (let ((default-host (gethash (tab-bar-tab-name-current) 
                               etm-layout-default-hosts)))
@@ -24,7 +24,7 @@
                           '("localhost" "ywata-note-win"))
           "localhost"))))
 
-(defun --my/ssh-rename-username (path &optional _host)
+(defun --etm-ssh-rename-username (path &optional _host)
   "Handle path transformations for remote connections.
 PATH is the local path to transform.
 _HOST is the remote hostname (unused in this implementation)."
@@ -36,7 +36,7 @@ _HOST is the remote hostname (unused in this implementation)."
 ;; 2. Terminal helpers
 ;; ----------------------------------------
 
-(defun --my/vterm-new (name)
+(defun --etm-vterm-new (name)
   "Create a new vterm buffer with NAME.
 Falls back to term if vterm is not available."
   (if (fboundp 'vterm)

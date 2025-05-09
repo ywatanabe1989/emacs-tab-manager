@@ -1,90 +1,17 @@
-
-Running tests in /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/tests...
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-No home buffer set for current tab
-Ran 1 tests, 1 results were as expected
-No home buffer set for current tab
-Ran 1 tests, 1 results were as expected
-Killed
-Ran 1 tests, 1 results were as expected
-Buried
-Ran 1 tests, 1 results were as expected
-Buried
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Set home buffer for tab tab1:  *temp*-763458
-Ran 1 tests, 1 results were as expected
-All tabs closed except the current one.
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Ran 1 tests, 1 results were as expected
-Directory for report: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/
-Processing LaTeX file ELISP-TEST-REPORT-20250510-090213-59-PASSED-59-TOTAL-100-PERCENT.tex...
-PDF file produced.
-[0;32mReport created: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/ELISP-TEST-REPORT-20250510-090213-59-PASSED-59-TOTAL-100-PERCENT.org[0m
-[0;32mReport created: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/ELISP-TEST-REPORT-20250510-090213-59-PASSED-59-TOTAL-100-PERCENT.org[0m
 #+TITLE: Elisp Test Report
 #+AUTHOR: ywatanabe
-#+DATE: 2025-05-10 09:02:14 Created by https://github.com/ywatanabe1989/emacs-test
+#+DATE: 2025-05-10 09:01:50 Created by https://github.com/ywatanabe1989/emacs-test
 
 * Test Results Summary
 
-- Passed: 59
-- Failed: 0
+- Passed: 58
+- Failed: 1
 - Skipped: 0
 - Timeout (= 10 s): 0
 - Duplicates: 0
 - Total: 59
-- Total Time: 0.66 seconds
-- Success Rate: 100.0%
+- Total Time: 0.64 seconds
+- Success Rate: 98.3%
 
 * Passed Tests (59)
 ** test-etm-buffer-checkers.el (4 tests)
@@ -124,6 +51,26 @@ PDF file produced.
 ** test-etm-core-helpers.el (2 tests)
 - [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-loadable][test-etm-core-helpers-loadable]]
 - [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-functions-exist][test-etm-core-helpers-functions-exist]]
+  + Error details:
+    Selector: test-etm-core-helpers-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 09:01:49+1000
+    Finished.
+    Finished at:  2025-05-10 09:01:49+1000
+    
+    F
+    
+    F test-etm-core-helpers-functions-exist
+        (ert-test-failed
+         ((should (fboundp '--my/ssh-select-host)) :form
+          (fboundp --my/ssh-select-host) :value nil))
+    
+    
+    
 ** test-etm-core-init.el (2 tests)
 - [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-loads][test-etm-init-loads]]
 - [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-function][test-etm-init-function]]
@@ -166,4 +113,26 @@ PDF file produced.
 ** test-etm-new-and-rename.el (2 tests)
 - [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-loadable][test-etm-new-and-rename-loadable]]
 - [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-functions-exist][test-etm-new-and-rename-functions-exist]]
-[0;32mTests completed successfully with exit code: 0[0m
+* Failed Tests (1)
+** test-etm-core-helpers.el (1 tests)
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-functions-exist][test-etm-core-helpers-functions-exist]]
+  + Error details:
+    Selector: test-etm-core-helpers-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 09:01:49+1000
+    Finished.
+    Finished at:  2025-05-10 09:01:49+1000
+    
+    F
+    
+    F test-etm-core-helpers-functions-exist
+        (ert-test-failed
+         ((should (fboundp '--my/ssh-select-host)) :form
+          (fboundp --my/ssh-select-host) :value nil))
+    
+    
+    
