@@ -6,7 +6,7 @@
 (require 'ert)
 (require 'etm-buffer-getters)
 
-(ert-deftest test-etm-buffer-get-basic
+(ert-deftest test---etm-buffer-get-basic
     ()
   (let
       ((etm-registered-buffers
@@ -14,11 +14,11 @@
            (("home" . "buffer1"))))))
     (should
      (string=
-      (etm-buffer-get "home"
+      (--etm-buffer-get "home"
                       '((name . "tab1")))
       "buffer1"))))
 
-(ert-deftest test-etm-buffer-get-nonexistent
+(ert-deftest test---etm-buffer-get-nonexistent
     ()
   (let
       ((etm-registered-buffers
@@ -26,10 +26,10 @@
            (("home" . "buffer1"))))))
     (should
      (null
-      (etm-buffer-get "results"
+      (--etm-buffer-get "results"
                       '((name . "tab1")))))))
 
-(ert-deftest test-etm-buffer-get-wrong-tab
+(ert-deftest test---etm-buffer-get-wrong-tab
     ()
   (let
       ((etm-registered-buffers
@@ -37,15 +37,15 @@
            (("home" . "buffer1"))))))
     (should
      (null
-      (etm-buffer-get "home"
+      (--etm-buffer-get "home"
                       '((name . "tab2")))))))
 
-(provide 'test-etm-buffer-getters)
+(provide 'test---etm-buffer-getters)
 
-(provide 'test-etm-buffer-getters)
+(provide 'test---etm-buffer-getters)
 
 (when
     (not load-file-name)
-  (message "test-etm-buffer-getters.el loaded."
+  (message "test---etm-buffer-getters.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))

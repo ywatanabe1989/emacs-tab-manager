@@ -13,6 +13,8 @@
 
 (ert-deftest test-etm-core-helpers-functions-exist
     ()
+  (require 'etm-core-helpers)
+  ;; Quote function names properly to prevent evaluation
   (should (fboundp '--my/ssh-select-host))
   (should (fboundp '--my/ssh-rename-username))
   (should (fboundp '--my/vterm-new)))

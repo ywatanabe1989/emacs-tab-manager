@@ -13,7 +13,15 @@
 
 (ert-deftest test-etm-init-function
     ()
-  (etm-init)
+  (require 'etm-init)
+  (require 'etm-layout)
+  (require 'etm-layout-load)
+  (require 'etm-core-variables)
+  
+  ;; Call etm-init function explicitly with function symbol
+  (funcall #'etm-init)
+  
+  ;; Check tab-bar settings that should be set by etm-init
   (should tab-bar-mode)
   (should
    (eq tab-bar-show etm-show-tab-bar))

@@ -1,7 +1,7 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-09 18:56:01>
-;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/emacs-tab-manager.el
+;;; Timestamp: <2025-05-10 08:24:08>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
@@ -13,7 +13,8 @@
   (add-to-list 'load-path this-dir)
   (dolist
       (dir
-       '("etm-core" "etm-new-and-rename" "etm-buffer" "etm-close" "etm-layout"
+       '("etm-core" "etm-new-and-rename" "etm-buffer" "etm-close"
+         "etm-layout"
          "etm-keys" "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
@@ -28,16 +29,11 @@
 (require 'etm-init)
 (require 'etm-startup)
 
-(defalias 'emacs-tab-manager-save-layout 'etm-layout-save)
 
-(defalias 'emacs-tab-manager-save-layout-startup
-  'etm-startup-edit-layouts)
-
-
-(provide 'emacs-tab-manager)
+(provide 'etm)
 
 (when
     (not load-file-name)
-  (message "emacs-tab-manager.el loaded."
+  (message "etm.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))

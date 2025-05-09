@@ -13,6 +13,7 @@
 
 (ert-deftest test-etm-new-and-rename-functions-exist
     ()
+  (require 'etm-new-and-rename)
   (should
    (fboundp 'etm-new))
   (should

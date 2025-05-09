@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-30 12:46:04>
+;;; Timestamp: <2025-05-10 08:24:52>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-kill-or-bury.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -26,26 +26,6 @@
         (--etm-flash-mode-line "darkgreen" 3)
         (kill-buffer)
         (message "Killed")))))
-
-;; (defun etm-buffer-kill-or-bury
-;;     ()
-;;   "Kill buffer if not registered in any tab, otherwise bury it."
-;;   (interactive)
-;;   (let
-;;       ((buf
-;;         (current-buffer)))
-;;     (if
-;;         (or
-;;          (--etm-buffer-registered-p
-;;           (buffer-name buf))
-;;          (--etm-buffer-protected-p
-;;           (buffer-name buf)))
-;;         (progn
-;;           (bury-buffer)
-;;           (message "Buried"))
-;;       (progn
-;;         (kill-buffer)
-;;         (message "Killed")))))
 
 ;; Flash Mode Line
 ;; ----------------------------------------

@@ -7,6 +7,7 @@
 
 (require 'etm-core-variables)
 (require 'etm-layout)
+(require 'etm-layout-load)
 
 (defun etm-init
     ()

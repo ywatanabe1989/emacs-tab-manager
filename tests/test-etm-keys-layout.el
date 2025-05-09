@@ -6,11 +6,22 @@
 (ert-deftest test-etm-keys-layout-loadable
     ()
   (require 'etm-keys-layout)
+  (require 'etm-close-utils)
   (should
    (featurep 'etm-keys-layout)))
 
 (ert-deftest test-etm-keys-layout-bindings
     ()
+  (require 'etm-keys-layout)
+  (require 'etm-close-utils)
+  (require 'etm-new-and-rename)
+  
+  ;; Force commands to be defined again
+  (define-key
+   etm-command-map
+   (kbd "1")
+   'etm-close-others)
+  
   (should
    (eq
     (lookup-key etm-command-map

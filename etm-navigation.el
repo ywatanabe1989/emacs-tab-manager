@@ -17,7 +17,7 @@
                              etm-custom-buffer-types))))
   (let
       ((buf
-        (etm-buffer-get type)))
+        (--etm-buffer-get type)))
     (if buf
         (switch-to-buffer buf)
       (message "No %s buffer set for current tab" type))))
