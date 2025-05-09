@@ -2,3 +2,5 @@
 etm-layout/saved-layouts/*
 **/*~undo-tree~
 **/.claude/settings.local.json
+.old
+.old
