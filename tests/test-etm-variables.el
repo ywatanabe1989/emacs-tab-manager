@@ -7,9 +7,9 @@
 
 (ert-deftest test-etm-variables-loadable
     ()
-  (require 'etm-variables)
+  (require 'etm-core-variables)
   (should
-   (featurep 'etm-variables)))
+   (featurep 'etm-core-variables)))
 
 (ert-deftest test-etm-variables-constants-exist
     ()

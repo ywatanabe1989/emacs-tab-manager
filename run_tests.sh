@@ -86,11 +86,13 @@ run_tests_elisp() {
         --eval "(add-to-list 'load-path \"$TESTS_DIR\")" \
         --eval "(add-to-list 'load-path \"$directory\")" \
         --eval "(add-to-list 'load-path \"$ELISP_TEST_PATH\")" \
+        --eval "(add-to-list 'load-path \"$THIS_DIR/etm-core\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-buffer\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-close\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-keys\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-layout\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-layout/saved-layouts\")" \
+        --eval "(add-to-list 'load-path \"$THIS_DIR/tests/etm-core\")" \
         --eval "(require 'elisp-test)" \
         --eval "(elisp-test-run \"$directory\" $TEST_TIMEOUT t)" \
         >> "$LOG_PATH" 2>&1
