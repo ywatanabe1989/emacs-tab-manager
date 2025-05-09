@@ -14,7 +14,7 @@
       ((num-tabs
         (length
          (tab-bar-tabs))))
-    (--etm-close-by-id 2)
+    (etm-close-by-id 2)
     (should
      (=
       (length
@@ -30,7 +30,7 @@
   (tab-bar-rename-tab "tab2")
   (let
       ((current-name "tab2"))
-    (--etm-close-and-next)
+    (etm-close-and-next)
     (should-not
      (member current-name
              (mapcar
@@ -48,11 +48,23 @@
         (alist-get 'name
                    (tab-bar--current-tab))))
     (tab-bar-new-tab)
-    (--etm-close-by-name-and-prev)
+    (etm-close-by-name-and-prev)
     (should
      (string= prev-name
               (alist-get 'name
                          (tab-bar--current-tab))))))
+
+(ert-deftest test-etm-close-others
+    ()
+  (tab-bar-mode 1)
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab "tab1")
+  (tab-bar-new-tab)
+  (tab-bar-rename-tab "tab2")
+  (let ((current-tab (tab-bar--current-tab)))
+    (etm-close-others)
+    (should (= (length (tab-bar-tabs)) 1))
+    (should (equal current-tab (tab-bar--current-tab)))))
 
 (provide 'test-etm-close-utils)
 
