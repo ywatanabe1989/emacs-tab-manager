@@ -5,6 +5,8 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
+(require 'etm-helpers)
+
 
 (defun --etm-layout-init-windows
     (tab-name num-left num-right)
