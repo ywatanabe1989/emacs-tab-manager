@@ -13,22 +13,48 @@
   (add-to-list 'load-path this-dir)
   (dolist
       (dir
-       '("etm-core" "etm-new-and-rename" "etm-buffer" "etm-close"
-         "etm-layout"
-         "etm-keys" "etm-layout/saved-layouts"))
+       '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
+         "etm-layout" "etm-keys" 
+         "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
 
+;; Core functionality
 (require 'etm-core)
-(require 'etm-new-and-rename)
+
+;; Module specific features
+(require 'etm-tabs)
 (require 'etm-buffer)
 (require 'etm-close)
 (require 'etm-layout)
-(require 'etm-navigation)
 (require 'etm-keys)
-(require 'etm-init)
-(require 'etm-startup)
 
+;; Load initialization and startup
+(require 'etm-core-init)
+(require 'etm-core-startup)
+
+;; -------------------------
+;; Backward compatibility layer
+;; -------------------------
+
+;; Module compatibility for old module names
+(require 'etm-buffer-navigation)
+(provide 'etm-navigation)
+
+(require 'etm-tabs-new-and-rename)
+(provide 'etm-new-and-rename)
+
+(require 'etm-core-variables)
+(provide 'etm-variables)
+
+(require 'etm-core-init)
+(provide 'etm-init)
+
+(require 'etm-core-tab-id)
+(provide 'etm-tab-id)
+
+;; Function aliases not needed for these functions since
+;; they kept their original names in the new modules
 
 (provide 'etm)
 

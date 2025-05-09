@@ -1,0 +1,666 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-10 08:44:27 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 25
+- Failed: 34
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 59
+- Total Time: 0.28 seconds
+- Success Rate: 42.4%
+
+* Passed Tests (38)
+** test-etm-buffer-navigation.el (2 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-loadable][test-etm-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-functions-exist][test-etm-navigation-functions-exist]]
+  + Error details:
+    Selector: test-etm-navigation-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-navigation-functions-exist
+        (ert-test-failed
+         ((should (fboundp 'etm-navigation-jump-by-index)) :form
+          (fboundp etm-navigation-jump-by-index) :value nil))
+    
+    
+    
+** test-etm-close-utils.el (3 tests)
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-by-id][test-etm-close-by-id]]
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-and-next][test-etm-close-and-next]]
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-by-name-and-prev][test-etm-close-by-name-and-prev]]
+** test-etm-core-helpers.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-loadable][test-etm-core-helpers-loadable]]
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-functions-exist][test-etm-core-helpers-functions-exist]]
+** test-etm-core-init.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-loads][test-etm-init-loads]]
+  + Error details:
+    Selector: test-etm-init-loads
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-init-loads
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-init")
+    
+    
+    
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-function][test-etm-init-function]]
+  + Error details:
+    Selector: test-etm-init-function
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-init-function
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-init")
+    
+    
+    
+** test-etm-core-variables-custom.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-variables-custom.el::test-etm-variables-loadable][test-etm-variables-loadable]]
+- [[file:tests/etm-core/test-etm-core-variables-custom.el::test-etm-variables-constants-exist][test-etm-variables-constants-exist]]
+** test-etm-core-variables.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-loadable][test-etm-core-variables-loadable]]
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-constants-exist][test-etm-core-variables-constants-exist]]
+** test-etm-keys-command-map.el (2 tests)
+- [[file:tests/etm-keys/test-etm-keys-command-map.el::test-etm-keys-command-map-loads][test-etm-keys-command-map-loads]]
+- [[file:tests/etm-keys/test-etm-keys-command-map.el::test-etm-command-map-binding][test-etm-command-map-binding]]
+** test-etm-keys-layout.el (2 tests)
+- [[file:tests/etm-keys/test-etm-keys-layout.el::test-etm-keys-layout-loadable][test-etm-keys-layout-loadable]]
+- [[file:tests/etm-keys/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+  + Error details:
+    Selector: test-etm-keys-layout-bindings
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-keys-layout-bindings
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    
+** test-etm-keys-navigation.el (10 tests)
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-loadable][test-etm-keys-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-keys-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-keys-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m1-bound][test-etm-keys-navigation-m1-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m2-bound][test-etm-keys-navigation-m2-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m3-bound][test-etm-keys-navigation-m3-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m4-bound][test-etm-keys-navigation-m4-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m5-bound][test-etm-keys-navigation-m5-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m6-bound][test-etm-keys-navigation-m6-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m7-bound][test-etm-keys-navigation-m7-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m8-bound][test-etm-keys-navigation-m8-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m9-bound][test-etm-keys-navigation-m9-bound]]
+** test-etm-layout-core.el (3 tests)
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-loadable][test-etm-layout-create-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-cleanup-exists][test-etm-layout-cleanup-exists]]
+  + Error details:
+    Selector: test-etm-layout-cleanup-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-cleanup-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-cleanup)) :form
+          (fboundp --etm-layout-cleanup) :value nil))
+    
+    
+    
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-exists][test-etm-layout-create-exists]]
+  + Error details:
+    Selector: test-etm-layout-create-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-create-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-create)) :form
+          (fboundp --etm-layout-create) :value nil))
+    
+    
+    
+** test-etm-layout-load.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-load.el::test-etm-layout-load-loadable][test-etm-layout-load-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-load.el::test-etm-layout-load-function-exists][test-etm-layout-load-function-exists]]
+  + Error details:
+    Selector: test-etm-layout-load-function-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-load-function-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-load-all)) :form
+          (fboundp --etm-layout-load-all) :value nil))
+    
+    
+    
+** test-etm-layout-save.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-save.el::test-etm-layout-save-loadable][test-etm-layout-save-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-save.el::test-etm-layout-save-functions-exist][test-etm-layout-save-functions-exist]]
+  + Error details:
+    Selector: test-etm-layout-save-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-save-functions-exist
+        (ert-test-failed
+         ((should (fboundp 'etm-layout-save)) :form (fboundp etm-layout-save)
+          :value nil))
+    
+    
+    
+** test-etm-layout-window.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-window.el::test-etm-layout-window-loadable][test-etm-layout-window-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-window.el::test-etm-layout-window-functions-exist][test-etm-layout-window-functions-exist]]
+  + Error details:
+    Selector: test-etm-layout-window-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-window-functions-exist
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-init-windows)) :form
+          (fboundp --etm-layout-init-windows) :value nil))
+    
+    
+    
+** test-etm-new-and-rename.el (2 tests)
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-loadable][test-etm-new-and-rename-loadable]]
+  + Error details:
+    Selector: test-etm-new-and-rename-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-new-and-rename-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-functions-exist][test-etm-new-and-rename-functions-exist]]
+  + Error details:
+    Selector: test-etm-new-and-rename-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-new-and-rename-functions-exist
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    
+* Failed Tests (34)
+** test-etm-buffer-checkers.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-name-only][test-etm-buffer-registered-p-with-name-only]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-type][test-etm-buffer-registered-p-with-type]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-tab][test-etm-buffer-registered-p-with-tab]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-protected-p][test-etm-buffer-protected-p]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+** test-etm-buffer-getters.el (3 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-basic][test---etm-buffer-get-basic]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-nonexistent][test---etm-buffer-get-nonexistent]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-wrong-tab][test---etm-buffer-get-wrong-tab]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+** test-etm-buffer-jumpers.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-existing][test-etm-navigation-jump-by-buffer-type-existing]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-nonexistent][test-etm-navigation-jump-by-buffer-type-nonexistent]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-function][test-etm-buffer-define-buffer-type-jumper-function]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-functions][test-etm-buffer-define-buffer-type-jumper-functions]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+** test-etm-buffer-kill-or-bury.el (3 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-registered][test-etm-buffer-kill-or-bury-registered]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-protected][test-etm-buffer-kill-or-bury-protected]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-unregistered][test-etm-buffer-kill-or-bury-unregistered]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+** test-etm-buffer-navigation.el (2 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-loadable][test-etm-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-functions-exist][test-etm-navigation-functions-exist]]
+  + Error details:
+    Selector: test-etm-navigation-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-navigation-functions-exist
+        (ert-test-failed
+         ((should (fboundp 'etm-navigation-jump-by-index)) :form
+          (fboundp etm-navigation-jump-by-index) :value nil))
+    
+    
+    
+** test-etm-buffer-setters.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-set-basic][test-etm-buffer-set-basic]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-set-invalid-type][test-etm-buffer-set-invalid-type]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-function][test-etm-buffer-define-buffer-type-setter-function]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-functions][test-etm-buffer-define-buffer-type-setter-functions]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-variables")
+** test-etm-close-core.el (3 tests)
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-by-name][test-etm-close-by-name]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-tab-id")
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-by-name-last-tab][test-etm-close-by-name-last-tab]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-tab-id")
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-all][test-etm-close-all]]
+  + Error details:
+    (file-missing "Cannot open load file" "No such file or directory" "etm-tab-id")
+** test-etm-core-init.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-loads][test-etm-init-loads]]
+  + Error details:
+    Selector: test-etm-init-loads
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-init-loads
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-init")
+    
+    
+    
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-function][test-etm-init-function]]
+  + Error details:
+    Selector: test-etm-init-function
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-init-function
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-init")
+    
+    
+    
+** test-etm-keys-layout.el (1 tests)
+- [[file:tests/etm-keys/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+  + Error details:
+    Selector: test-etm-keys-layout-bindings
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-keys-layout-bindings
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    
+** test-etm-keys-navigation.el (1 tests)
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-loadable][test-etm-keys-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-keys-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-keys-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+** test-etm-layout-core.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-cleanup-exists][test-etm-layout-cleanup-exists]]
+  + Error details:
+    Selector: test-etm-layout-cleanup-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-cleanup-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-cleanup)) :form
+          (fboundp --etm-layout-cleanup) :value nil))
+    
+    
+    
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-exists][test-etm-layout-create-exists]]
+  + Error details:
+    Selector: test-etm-layout-create-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-create-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-create)) :form
+          (fboundp --etm-layout-create) :value nil))
+    
+    
+    
+** test-etm-layout-load.el (1 tests)
+- [[file:tests/etm-layout/test-etm-layout-load.el::test-etm-layout-load-function-exists][test-etm-layout-load-function-exists]]
+  + Error details:
+    Selector: test-etm-layout-load-function-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-load-function-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-load-all)) :form
+          (fboundp --etm-layout-load-all) :value nil))
+    
+    
+    
+** test-etm-layout-save.el (1 tests)
+- [[file:tests/etm-layout/test-etm-layout-save.el::test-etm-layout-save-functions-exist][test-etm-layout-save-functions-exist]]
+  + Error details:
+    Selector: test-etm-layout-save-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-save-functions-exist
+        (ert-test-failed
+         ((should (fboundp 'etm-layout-save)) :form (fboundp etm-layout-save)
+          :value nil))
+    
+    
+    
+** test-etm-layout-window.el (1 tests)
+- [[file:tests/etm-layout/test-etm-layout-window.el::test-etm-layout-window-functions-exist][test-etm-layout-window-functions-exist]]
+  + Error details:
+    Selector: test-etm-layout-window-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-layout-window-functions-exist
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-init-windows)) :form
+          (fboundp --etm-layout-init-windows) :value nil))
+    
+    
+    
+** test-etm-new-and-rename.el (2 tests)
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-loadable][test-etm-new-and-rename-loadable]]
+  + Error details:
+    Selector: test-etm-new-and-rename-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-new-and-rename-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-functions-exist][test-etm-new-and-rename-functions-exist]]
+  + Error details:
+    Selector: test-etm-new-and-rename-functions-exist
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-10 08:44:26+1000
+    Finished.
+    Finished at:  2025-05-10 08:44:26+1000
+    
+    F
+    
+    F test-etm-new-and-rename-functions-exist
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-new-and-rename")
+    
+    
+    

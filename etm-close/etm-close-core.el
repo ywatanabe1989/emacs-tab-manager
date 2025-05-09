@@ -5,7 +5,7 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
-(require 'etm-tab-id)
+(require 'etm-core-tab-id)
 
 (defun etm-reset
     ()

@@ -92,8 +92,10 @@ run_tests_elisp() {
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-keys\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-layout\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/etm-layout/saved-layouts\")" \
+        --eval "(add-to-list 'load-path \"$THIS_DIR/etm-tabs\")" \
         --eval "(add-to-list 'load-path \"$THIS_DIR/tests/etm-core\")" \
         --eval "(require 'elisp-test)" \
+        --eval "(require 'etm)" \
         --eval "(elisp-test-run \"$directory\" $TEST_TIMEOUT t)" \
         >> "$LOG_PATH" 2>&1
 

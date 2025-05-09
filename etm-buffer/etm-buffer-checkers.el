@@ -3,7 +3,7 @@
 ;;; Timestamp: <2025-02-13 14:23:21>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-checkers.el
 
-(require 'etm-variables)
+(require 'etm-core-variables)
 
 ;; Checker
 ;; ----------------------------------------

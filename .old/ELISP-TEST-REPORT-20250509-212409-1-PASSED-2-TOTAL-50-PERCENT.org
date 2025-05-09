@@ -1,0 +1,60 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-09 21:24:09 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 1
+- Failed: 1
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 2
+- Total Time: 0.06 seconds
+- Success Rate: 50.0%
+
+* Passed Tests (2)
+** test-etm-keys-layout.el (2 tests)
+- [[file:tests/test-etm-keys-layout.el::test-etm-keys-layout-loadable][test-etm-keys-layout-loadable]]
+- [[file:tests/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+  + Error details:
+    Selector: test-etm-keys-layout-bindings
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-09 21:24:09+1000
+    Finished.
+    Finished at:  2025-05-09 21:24:09+1000
+    
+    F
+    
+    F test-etm-keys-layout-bindings
+        (end-of-file
+         "/home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-utils.el")
+    
+    
+    
+* Failed Tests (1)
+** test-etm-keys-layout.el (1 tests)
+- [[file:tests/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+  + Error details:
+    Selector: test-etm-keys-layout-bindings
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-09 21:24:09+1000
+    Finished.
+    Finished at:  2025-05-09 21:24:09+1000
+    
+    F
+    
+    F test-etm-keys-layout-bindings
+        (end-of-file
+         "/home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-utils.el")
+    
+    
+    
