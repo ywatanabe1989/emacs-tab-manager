@@ -26,6 +26,56 @@
   (tab-rename
    (message "%s" arg)))
 
+
+;; (defun etm-open-async (layout-name)
+;;   "Asynchronously open a layout by name."
+;;   (interactive
+;;    (list (completing-read 
+;;           "Open layout: " 
+;;           (mapcar (lambda (file)
+;;                     (string-remove-prefix 
+;;                      "etm-open-" 
+;;                      (string-remove-suffix ".el" (file-name-nondirectory file))))
+;;                   (directory-files etm-layout-save-dir t "etm-open-.*\\.el$")))))
+;;   (run-with-idle-timer 0.1 nil
+;;                        (lambda (name)
+;;                          (let ((layout-func (intern (concat "etm-open-" name))))
+;;                            (when (fboundp layout-func)
+;;                              (funcall layout-func))))
+;;                        layout-name)
+;;   (message "Opening %s layout..." layout-name))
+
+(defun etm-open-async (layout-name)
+  "Asynchronously open a layout by name."
+  (interactive
+   (list (completing-read 
+          "Open layout: " 
+          (mapcar (lambda (file)
+                    (string-remove-prefix 
+                     "etm-open-" 
+                     (string-remove-suffix ".el" (file-name-nondirectory file))))
+                  (directory-files etm-layout-save-dir t "etm-open-.*\\.el$")))))
+  (message "Opening %s layout..." layout-name)
+  ;; Check if function is already available
+  (let ((layout-func (intern (concat "etm-open-" layout-name))))
+    (if (fboundp layout-func)
+        ;; Function already loaded - run with timer
+        (run-with-idle-timer 0.1 nil layout-func)
+      ;; Function not loaded yet - load file then run
+      (let ((layout-file (expand-file-name (concat "etm-open-" layout-name ".el") 
+                                          etm-layout-save-dir)))
+        (if (file-exists-p layout-file)
+            (run-with-idle-timer 
+             0.1 nil
+             (lambda (file func-name)
+               (load file)
+               (when (fboundp (intern func-name))
+                 (funcall (intern func-name))))
+             layout-file
+             (concat "etm-open-" layout-name))
+          (message "Layout %s not found!" layout-name))))))
+
+
 ;; (defun etm-startup
 ;;     ()
 ;;   (interactive)

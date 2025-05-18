@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 09:25:50>
-;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-core.el
+;;; Timestamp: <2025-05-19 07:26:56>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-close/etm-close-core.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (require 'etm-core-tab-id)
 
@@ -42,30 +43,45 @@
         (message "All tabs closed except the current one."))
     (message "Tab functionality not available in this Emacs version.")))
 
-(defun etm-close-by-name
-    (tab-name)
+(defun etm-close-by-name (tab-name)
   "Close the specified tab if it exists and is not the only tab; otherwise, return nil."
   (interactive "sTab name to close: ")
-  (let*
-      ((tabs
-        (tab-bar-tabs))
-       (tab-index
-        (cl-position tab-name tabs
-                     :test
-                     (lambda
-                       (name tab)
-                       (string= name
-                                (alist-get 'name tab))))))
-    (if
-        (and tab-index
-             (>
-              (length tabs)
-              1))
-        (progn
-          (tab-bar-close-tab
-           (1+ tab-index))
-          t)
-      nil)))
+  (let* ((tabs (tab-bar-tabs))
+         (tab-index (cl-position tab-name tabs
+                                 :test
+                                 (lambda (name tab)
+                                   (string= name
+                                            (alist-get 'name tab))))))
+    (when (and tab-index
+               (> (length tabs) 1))
+      (tab-bar-close-tab (1+ tab-index))
+      t)))
+
+;; (defun etm-close-by-name
+;;     (tab-name)
+;;   "Close the specified tab if it exists and is not the only tab; otherwise, return nil."
+;;   (interactive "sTab name to close: ")
+;;   (let*
+;;       ((tabs
+;;         (tab-bar-tabs))
+;;        (tab-index
+;;         (cl-position tab-name tabs
+;;                      :test
+;;                      (lambda
+;;                        (name tab)
+;;                        (string= name
+;;                                 (alist-get 'name tab))))))
+;;     (if
+;;         (and tab-index
+;;              (>
+;;               (length tabs)
+;;               1))
+;;         (progn
+;;           (tab-bar-close-tab
+;;            (1+ tab-index))
+;;           t)
+;;       nil)))
+
 
 (provide 'etm-close-core)
 

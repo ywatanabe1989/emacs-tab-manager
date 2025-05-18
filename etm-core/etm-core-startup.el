@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-10 08:46:45>
+;;; Timestamp: <2025-05-19 06:57:12>
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-core/etm-core-startup.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (require 'etm-core-variables)
 (require 'etm-close)
@@ -20,7 +21,9 @@ Each name should match an existing layout function `etm-open-LAYOUTNAME'."
 Closes the default tab after opening configured layouts."
   (interactive)
   (dolist (layout-name etm-startup-layouts-list)
-    (let ((layout-func (intern (concat "etm-open-" layout-name))))
+    (let
+        ((layout-func
+          (intern (concat "etm-open-" layout-name))))
       (when (fboundp layout-func)
         (funcall layout-func))))
 
@@ -37,6 +40,7 @@ Closes the default tab after opening configured layouts."
   "Edit the list of startup layouts through customize interface."
   (interactive)
   (customize-variable 'etm-startup-layouts-list))
+
 
 (provide 'etm-core-startup)
 
