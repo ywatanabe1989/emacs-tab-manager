@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-04-24 08:53:13>
+;;; Timestamp: <2025-05-19 12:01:14>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-default.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (defun etm-layout-set-default-host (layout-name host)
   "Set HOST as the default for LAYOUT-NAME."
@@ -35,6 +36,7 @@
                        keys))))
   (remhash layout-name etm-layout-default-hosts)
   (message "Cleared default host for %s" layout-name))
+
 
 (provide 'etm-layout-default)
 

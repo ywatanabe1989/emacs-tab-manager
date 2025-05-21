@@ -1,12 +1,17 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 00:04:05>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout.el
+;;; Timestamp: <2025-05-20 00:56:11>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (require 'etm-layout-create)
 (require 'etm-layout-save)
 (require 'etm-layout-window)
 (require 'etm-layout-load)
+(require 'etm-layout-open)
+
 
 (provide 'etm-layout)
 

@@ -1,7 +1,7 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-19 07:44:43>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-save.el
+;;; Timestamp: <2025-05-19 12:01:15>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-save.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
@@ -43,20 +43,16 @@ CAPTURED-LAYOUT is the layout configuration string."
           layout-name
           layout-name))
 
-;; work with percentage?
-
 (defun --etm-layout-capture-current-layout
     (layout-name &optional host)
   "Capture the current tab layout and generate a function to recreate it."
 
-  ;; Force fullscreen mode
+  ;; Force fullscreen mode to keep x, y coordinates
   (toggle-frame-fullscreen)
   (sit-for 0.3)
 
-  (let* ((windows (window-list))
-         (windows-data '())
-         (frame-width (float (frame-width)))
-         (frame-height (float (frame-height))))
+  (let ((windows (window-list))
+        (windows-data '()))
     ;; Collect data for each window
     (dolist (window windows)
       (let* ((buffer (window-buffer window))
@@ -79,28 +75,19 @@ CAPTURED-LAYOUT is the layout configuration string."
              (path-host nil)
              (clean-path path)
              (edges (window-edges window))
-             ;; Convert to percentage values (0-100)
-             (x-percent
-              (round (* 100 (/ (float (nth 0 edges)) frame-width))))
-             (y-percent
-              (round (* 100 (/ (float (nth 1 edges)) frame-height))))
-             (width-percent (round (* 100 (/
-                                           (float
-                                            (- (nth 2 edges)
-                                               (nth 0 edges)))
-                                           frame-width))))
-             (height-percent (round (* 100 (/
-                                            (float
-                                             (- (nth 3 edges)
-                                                (nth 1 edges)))
-                                            frame-height)))))
+             (x (nth 0 edges))
+             (y (nth 1 edges))
+             (width (- (nth 2 edges) x))
+             (height (- (nth 3 edges) y)))
+
         ;; Extract host from SSH paths
         (when (string-match "^/ssh:\\([^:]+\\):\\(.*\\)" path)
           (setq path-host (match-string 1 path))
           (setq clean-path (match-string 2 path)))
-        (push (list type clean-path x-percent y-percent
-                    width-percent height-percent path-host)
+
+        (push (list type clean-path x y width height path-host)
               windows-data)))
+
     ;; Sort windows by position (top-left to bottom-right)
     (setq windows-data
           (sort windows-data
@@ -108,6 +95,7 @@ CAPTURED-LAYOUT is the layout configuration string."
                   (or (< (nth 3 a) (nth 3 b))  ; First by y
                       (and (= (nth 3 a) (nth 3 b))
                            (< (nth 2 a) (nth 2 b)))))))
+                                        ; Then by x
     ;; Generate layout recreation code
     (format
      "(--etm-layout-create-from-positions \"%s\"\n  '(%s)\n  %s)"
@@ -117,10 +105,10 @@ CAPTURED-LAYOUT is the layout configuration string."
         (format "(%s \"%s\" %d %d %d %d %s)"
                 (nth 0 win-data)    ; type
                 (nth 1 win-data)    ; path
-                (nth 2 win-data)    ; x-percent
-                (nth 3 win-data)    ; y-percent
-                (nth 4 win-data)    ; width-percent
-                (nth 5 win-data)    ; height-percent
+                (nth 2 win-data)    ; x
+                (nth 3 win-data)    ; y
+                (nth 4 win-data)    ; width
+                (nth 5 win-data)    ; height
                 (if (nth 6 win-data)
                     (format "\"%s\"" (nth 6 win-data))
                   "nil")))

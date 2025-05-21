@@ -1,7 +1,7 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-19 07:44:25>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-create.el
+;;; Timestamp: <2025-05-20 01:00:23>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-create.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
 
@@ -93,76 +93,47 @@ NUM-RIGHT is the number of windows on the right side."
 
 (defun --etm-layout-create-from-positions
     (tab-name window-specs &optional host)
-  "Create tab layout based on window positions using percentages.
-WINDOW-SPECS is a list of (type path x y width height [path-host]) where:
-- x and y are percentages (0-100) of frame width/height
-- width and height are percentages of frame dimensions."
+  "Create tab layout based on window positions asynchronously.
+WINDOW-SPECS is a list of (type path x y width height [path-host]) for each window."
+  (etm-new tab-name)
 
   ;; Force fullscreen mode
   (toggle-frame-fullscreen)
   (sit-for 0.3)
 
-  (etm-new tab-name)
   ;; Save the host as default if provided explicitly
   (when host
     (puthash tab-name host etm-layout-default-hosts))
   ;; Select host
-  (let* ((selected-host (or host
-                            (gethash tab-name etm-layout-default-hosts)
-                            (--etm-ssh-select-host)))
-         (main-window (selected-window))
-         (windows (list))
-         (frame-width (frame-width))
-         (frame-height (frame-height))
-         ;; Convert percentages to pixel values
-         (normalized-specs
-          (mapcar (lambda (spec)
-                    (let* ((type (nth 0 spec))
-                           (path (nth 1 spec))
-                           (x-percent (nth 2 spec))
-                           (y-percent (nth 3 spec))
-                           (width-percent (nth 4 spec))
-                           (height-percent (nth 5 spec))
-                           (path-host
-                            (and (> (length spec) 6) (nth 6 spec)))
-                           ;; Convert percentages to char-based positions
-                           (x (round (* x-percent 0.01 frame-width)))
-                           (y (round (* y-percent 0.01 frame-height))))
-                      (list type path x y width-percent height-percent
-                            path-host)))
-                  window-specs)))
-
+  (let ((selected-host (or host
+                           (gethash tab-name etm-layout-default-hosts)
+                           (--etm-ssh-select-host)))
+        (main-window (selected-window))
+        (windows (list)))
     ;; Create window structure first
     ;; Start with one window
     (push main-window windows)
-
     ;; First create all horizontal splits (columns)
     (let ((column-positions
            (seq-uniq
-            (mapcar (lambda (spec) (nth 2 spec)) normalized-specs))))
-      ;; Sort column positions
-      (setq column-positions (sort column-positions '<))
+            (mapcar (lambda (spec) (nth 2 spec)) window-specs))))
       (dolist (x-pos (cdr column-positions))
         (select-window main-window)
         (push (split-window-horizontally) windows)))
-
     ;; Then for each column, create the vertical splits
     (dolist (window windows)
       (let* ((window-edges (window-edges window))
              (x-pos (nth 0 window-edges))
              (rows-in-column (seq-filter
                               (lambda (spec) (= (nth 2 spec) x-pos))
-                              normalized-specs))
+                              window-specs))
              (row-positions
               (seq-uniq
                (mapcar (lambda (spec) (nth 3 spec)) rows-in-column))))
         (when (> (length row-positions) 1)
           (select-window window)
-          ;; Sort row positions
-          (setq row-positions (sort row-positions '<))
           (dolist (y-pos (cdr row-positions))
             (split-window-vertically)))))
-
     ;; Map windows to their positions
     (let ((windows-by-position (make-hash-table :test 'equal))
           (window-index 0))
@@ -232,11 +203,6 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) where:
                   (sit-for 0.3)
                   (vterm-send-string
                    (format "cd %s && clear \n" effective-path))
-                  ;; (when is-remote
-                  ;;   (vterm-send-string
-                  ;;    (format "ssh -Y %s 'cd %s && exec bash'\n"
-                  ;;            effective-host
-                  ;;            effective-path)))
                   ;; For local paths:
                   (unless is-remote
                     (vterm-send-string

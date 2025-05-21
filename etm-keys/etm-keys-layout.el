@@ -6,6 +6,7 @@
 (require 'etm-keys-command-map)
 (require 'etm-close-utils)
 (require 'etm-tabs-new-and-rename)
+(require 'etm-layout-open)
 
 (define-key
  etm-command-map
