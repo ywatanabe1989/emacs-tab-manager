@@ -9,6 +9,7 @@
 (require 'etm-layout-default)
 (require 'etm-core-helpers)
 (require 'etm-core-ssh-helpers)
+(require 'etm-core-ssh-connection)
 
 ;; Helper function for window counting
 
@@ -93,7 +94,7 @@ NUM-RIGHT is the number of windows on the right side."
 
 (defun --etm-layout-create-from-positions
     (tab-name window-specs &optional host)
-  "Create tab layout based on window positions asynchronously.
+  "Create tab layout based on window positions with proper connection reuse.
 WINDOW-SPECS is a list of (type path x y width height [path-host]) for each window."
   (etm-new tab-name)
 
@@ -104,6 +105,15 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
   ;; Save the host as default if provided explicitly
   (when host
     (puthash tab-name host etm-layout-default-hosts))
+
+  ;; Get or create SSH connection if host is specified
+  (when (and host 
+             (not (member host etm-localhost-names))
+             (not (string= host etm-ignored-host)))
+    (let ((connection-id (--etm-get-or-create-ssh-connection host)))
+      ;; Store this connection for this tab
+      (--etm-register-ssh-connection tab-name host connection-id)))
+
   ;; Select host
   (let ((selected-host (or host
                            (gethash tab-name etm-layout-default-hosts)
@@ -198,8 +208,20 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
                 (--etm-vterm-new (format "term-%d" window-index))
                 ;; Connect to remote host if needed
                 (when is-remote
-                  (vterm-send-string
-                   (format "ssh -Y %s\n" effective-host))
+                  ;; Check if we have a connection registered for this tab
+                  (let* ((connection-info (--etm-get-tab-ssh-connection tab-name))
+                         (connection-host (car-safe connection-info))
+                         (connection-id (cdr-safe connection-info)))
+                    
+                    ;; If we have a connection and it's for the same host, use ControlPath
+                    (if (and connection-info (string= connection-host effective-host))
+                        (vterm-send-string
+                         (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
+                                 connection-id effective-host))
+                      ;; Otherwise create a regular connection
+                      (vterm-send-string
+                       (format "ssh -Y %s\n" effective-host))))
+                  
                   (sit-for 0.3)
                   (vterm-send-string
                    (format "cd %s && clear \n" effective-path))
