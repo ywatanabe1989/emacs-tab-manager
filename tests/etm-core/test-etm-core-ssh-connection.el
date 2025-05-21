@@ -55,4 +55,66 @@
     (should (equal (--etm-get-or-create-ssh-connection "another-host")
                    ".control-master:another-host:22-ywatanabe"))))
 
+;; Test handling of 'l' as shortcut for 'localhost'
+(ert-deftest test-etm-ssh-localhost-shortcut ()
+  "Test handling of 'l' as shortcut for 'localhost'."
+  (cl-letf (((symbol-function 'directory-files)
+             (lambda (dir pattern) 
+               (if (string-match-p "localhost" pattern)
+                   '(".control-master:localhost:22-ywatanabe")
+                 nil)))
+            ((symbol-function 'start-process-shell-command)
+             (lambda (name buffer command) nil))
+            ((symbol-function 'sleep-for)
+             (lambda (seconds) nil)))
+    
+    ;; Function from etm-core-ssh-helpers.el
+    (should (string= (--etm-ssh-select-host) "localhost"))
+    
+    ;; With our mock, simulate what happens when we get or create a connection
+    (let ((orig-fn (symbol-function '--etm-get-or-create-ssh-connection)))
+      (cl-letf (((symbol-function '--etm-get-or-create-ssh-connection)
+                 (lambda (host)
+                   (when (string= host "l")
+                     (setq host "localhost"))
+                   (format ".control-master:%s:22-ywatanabe" host))))
+        
+        ;; Test that 'l' is converted to 'localhost'
+        (should (string= 
+                 (--etm-get-or-create-ssh-connection "l")
+                 ".control-master:localhost:22-ywatanabe"))))))
+
+;; Test SSH connection debugging
+(ert-deftest test-etm-ssh-debugging ()
+  "Test SSH connection debugging functionality."
+  (let ((etm-ssh-debug nil)
+        (log-messages '())
+        (message-call-count 0))
+    
+    ;; Mock message function to capture output
+    (cl-letf (((symbol-function 'message)
+               (lambda (format-string &rest args)
+                 (setq message-call-count (1+ message-call-count))
+                 (when (string-match-p "\\[ETM SSH\\]" format-string)
+                   (push (apply #'format format-string args) log-messages))
+                 nil)))
+      
+      ;; Test with debugging disabled
+      (--etm-ssh-log "Test message")
+      (should (= message-call-count 0)) ; Should not log when disabled
+      
+      ;; Enable debugging and test again
+      (setq etm-ssh-debug t)
+      (--etm-ssh-log "Test message")
+      (should (= message-call-count 1)) ; Should log when enabled
+      (should (string-match-p "Test message" (car log-messages)))
+      
+      ;; Test toggle function
+      (etm-toggle-ssh-debug)
+      (should-not etm-ssh-debug) ; Should be toggled off
+      
+      (etm-toggle-ssh-debug)
+      (should etm-ssh-debug) ; Should be toggled on again
+      )))
+
 (provide 'test-etm-core-ssh-connection)

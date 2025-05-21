@@ -12,8 +12,8 @@
 (require 'etm-core-variables)
 (require 'vterm)
 
-(defvar --etm-local-host-names
-  '("" "ywata-note-win" "localhost")
+;; Use the customizable variable instead of duplicating the list
+(defvar --etm-local-host-names etm-localhost-names
   "List of host names considered as local machines.")
 
 (defvar --etm-ssh-hostname-username nil
@@ -40,8 +40,10 @@
   "Select an SSH host from cached config."
   (interactive)
   (--etm-ssh-parse-dot-ssh)
-  (completing-read "Choose host: "
-                   (mapcar #'car --etm-ssh-hostname-username)))
+  (let ((host (completing-read "Choose host: "
+                             (mapcar #'car --etm-ssh-hostname-username))))
+    ;; If user enters 'l', convert it to 'localhost'
+    (if (string= host "l") "localhost" host)))
 
 (defun --etm-ssh-rename-username (path &optional host)
   "Rename username in PATH based on HOST.
