@@ -642,3 +642,4 @@ flycheck_*.el
 !.gitkeep
 ./docs/to_claude
 .claude/
+docs/to_claude
