@@ -201,7 +201,10 @@ PATH-HOST is the specific host for this window, WINDOW-INDEX is for unique namin
              (connection-id (cdr-safe connection-info)))
         
         ;; If we have a connection and it's for the same host, use ControlPath
-        (if (and connection-info (string= connection-host effective-host))
+        (if (and connection-info 
+                 (or (string= connection-host effective-host)
+                     (string= (--etm-ssh-resolve-hostname connection-host) 
+                              (--etm-ssh-resolve-hostname effective-host))))
             (vterm-send-string
              (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
                      connection-id effective-host))
