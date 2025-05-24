@@ -33,9 +33,11 @@ jobs:
       - name: run-tests
         run: |
           # Use native ERT testing instead of elisp-test framework to avoid compatibility issues
+          # Run all tests and capture results
+          test_results=0
           find tests -name "test-*.el" -type f | while read test_file; do
             echo "Testing: $test_file"
-            emacs -Q --batch \
+            if ! emacs -Q --batch \
               --eval "(add-to-list 'load-path \".\")" \
               --eval "(add-to-list 'load-path \"./etm-core\")" \
               --eval "(add-to-list 'load-path \"./etm-buffer\")" \
@@ -47,7 +49,11 @@ jobs:
               --eval "(add-to-list 'load-path \"./tests/mocks\")" \
               --eval "(require 'ert)" \
               --eval "(load-file \"$test_file\")" \
-              --eval "(ert-run-tests-batch-and-exit)"
+              --eval "(ert-run-tests-batch-and-exit)"; then
+              echo "FAILED: $test_file"
+              test_results=1
+            fi
           done
+          exit $test_results
 
 # EOF

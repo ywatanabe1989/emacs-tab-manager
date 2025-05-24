@@ -13,6 +13,7 @@
 
 (ert-deftest test-etm-layout-window-functions-exist
     ()
+  (require 'etm-layout-window)
   (should
    (fboundp '--etm-layout-init-windows))
   (should
