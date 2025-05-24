@@ -97,8 +97,9 @@ NUM-RIGHT is the number of windows on the right side."
 Returns the selected host for this tab."
   (etm-new tab-name)
   
-  ;; Force fullscreen mode
-  (toggle-frame-fullscreen)
+  ;; Ensure fullscreen mode
+  (unless (frame-parameter nil 'fullscreen)
+    (toggle-frame-fullscreen))
   (sit-for 0.3)
   
   ;; Save the host as default if provided explicitly
