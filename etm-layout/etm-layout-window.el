@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-19 12:01:16>
+;;; Timestamp: <2025-05-25 08:58:36>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-window.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -99,6 +99,30 @@ Split horizontally first, then vertically within each side."
       (sit-for 0.3)
       (vterm-send-string
        (format "cd %s && clear\n" effective-path))))))
+
+(defun --etm-layout-determine-effective-host (path-host selected-host)
+  "Determine effective host: PATH-HOST overrides SELECTED-HOST, allowing nil."
+  (if path-host
+      path-host
+    selected-host))
+
+(defun --etm-layout-is-remote-host (host)
+  "Check if HOST is remote (not localhost or ignored)."
+  (and host
+       (not (member host etm-localhost-names))
+       (not (string= host etm-ignored-host))))
+
+(defun --etm-layout-build-remote-path (host path window-type)
+  "Build remote path for HOST and PATH based on WINDOW-TYPE."
+  (if (eq window-type 'file)
+      (format "/ssh:%s:%s" host (--etm-ssh-rename-username path host))
+    (--etm-ssh-rename-username path host)))
+
+(defun --etm-layout-get-effective-path (path window-type host)
+  "Get effective path for PATH with WINDOW-TYPE and HOST."
+  (if (--etm-layout-is-remote-host host)
+      (--etm-layout-build-remote-path host path window-type)
+    path))
 
 
 (provide 'etm-layout-window)
