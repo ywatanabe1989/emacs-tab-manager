@@ -65,6 +65,12 @@ Example:
       (replace-regexp-in-string "ywatanabe" "yusukew" path)
     (replace-regexp-in-string "yusukew" "ywatanabe" path)))
 
+(defun --etm-ssh-resolve-hostname (hostname)
+  "Resolve hostname aliases to their canonical form for comparison.
+This helps identify when different aliases refer to the same host."
+  (or (cdr (assoc hostname --etm-ssh-hostname-username))
+      hostname))
+
 (defun --etm-vterm-new (term-name)
   (interactive "sVterm Name: ")
   (let* ((term-name
