@@ -111,6 +111,18 @@ and LAYOUT is a layout configuration sexp."
   '(alist :key-type string :value-type sexp)
   :group 'etm)
 
+;; Numeric buffer system
+;; ----------------------------------------
+
+(defcustom etm-max-numeric-buffers 9
+  "Maximum number of numeric buffer slots per tab."
+  :type 'integer
+  :group 'etm)
+
+(defvar etm-numeric-buffers nil
+  "Alist mapping tab names to numeric buffer configurations.
+Each entry is (TAB-NAME . ((ID . BUFFER-NAME) ...)).")
+
 ;; Add this near the other buffer-related variables
 
 (defvar-local etm-buffer-id nil
