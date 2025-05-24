@@ -1,18 +1,20 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
 ;;; Timestamp: <2025-02-13 15:29:50>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/tests/test-etm-navigation.el
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/tests/etm-buffer/test-etm-buffer-navigation.el
 
 (require 'ert)
+(require 'etm-buffer-navigation)
 
-(ert-deftest test-etm-navigation-loadable
+(ert-deftest test-etm-buffer-navigation-loadable
     ()
-  (require 'etm-navigation)
   (should
-   (featurep 'etm-navigation)))
+   (featurep 'etm-buffer-navigation)))
 
-(ert-deftest test-etm-navigation-functions-exist
+(ert-deftest test-etm-buffer-navigation-functions-exist
     ()
+  (should
+   (fboundp 'etm-navigation-jump-by-buffer-type))
   (should
    (fboundp 'etm-navigation-jump-by-index))
   (should
@@ -20,7 +22,7 @@
   (should
    (fboundp 'etm-navigation-move)))
 
-(provide 'test-etm-navigation)
+(provide 'test-etm-buffer-navigation)
 
 (when
     (not load-file-name)

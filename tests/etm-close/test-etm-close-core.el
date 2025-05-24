@@ -48,8 +48,6 @@
 
 (provide 'test-etm-close-core)
 
-(provide 'test-etm-close-core)
-
 (when
     (not load-file-name)
   (message "test-etm-close-core.el loaded."

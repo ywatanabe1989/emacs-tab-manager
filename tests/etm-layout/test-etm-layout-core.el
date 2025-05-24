@@ -15,12 +15,12 @@
 (ert-deftest test-etm-layout-cleanup-exists
     ()
   (should
-   (fboundp '--etm-layout-cleanup)))
+   (fboundp '--etm-layout-cleanup-default-buffers)))
 
 (ert-deftest test-etm-layout-create-exists
     ()
   (should
-   (fboundp '--etm-layout-create)))
+   (fboundp '--etm-layout-create-from-positions)))
 
 (provide 'test-etm-layout-create)
 
