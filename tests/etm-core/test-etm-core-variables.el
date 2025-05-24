@@ -13,6 +13,7 @@
 
 (ert-deftest test-etm-core-variables-constants-exist
     ()
+  (require 'etm-core-variables)
   (should (boundp 'etm-version))
   (should (boundp 'etm-default-buffer-types))
   (should (boundp 'etm-registered-buffer-types)))
