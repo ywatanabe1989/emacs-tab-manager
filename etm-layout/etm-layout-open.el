@@ -33,23 +33,28 @@
   (expand-file-name (format "etm-open-%s.el" layout-name)
                     etm-layout-save-dir))
 
-(defun etm-layout-open (layout-name)
+(defun etm-layout-open (layout-name &optional force-reload)
   "Open the layout with LAYOUT-NAME.
-Loads the layout file if necessary and executes the layout function."
+Loads the layout file if necessary and executes the layout function.
+If FORCE-RELOAD is non-nil, reload the layout file even if function exists."
   (interactive
    (list (completing-read "Select layout: "
                           (etm-layout-list-available)
-                          nil t)))
+                          nil t)
+         current-prefix-arg))
   (let ((function-name (etm-layout-function-name layout-name))
         (file-path (etm-layout-file-path layout-name)))
-    ;; Load the file if the function is not already defined
-    (unless (fboundp function-name)
+    ;; Load the file if function not defined or force-reload requested
+    (when (or force-reload (not (fboundp function-name)))
       (if (file-exists-p file-path)
           (--etm-load-file-silent file-path)
         (error "Layout file %s does not exist" file-path)))
     ;; Call the layout function
     (if (fboundp function-name)
-        (funcall function-name)
+        (progn
+          (when force-reload 
+            (message "Reloaded and opening %s layout" layout-name))
+          (funcall function-name))
       (error "Function %s not found after loading file" function-name))))
 
 (defun etm-layout-open-with-host (layout-name &optional host)
@@ -106,6 +111,20 @@ If HOST is provided, it will override the default host in the layout."
             (funcall function-name))
         ;; Restore the original function
         (fset function-name original-function)))))
+
+(defun etm-layout-reload (layout-name)
+  "Reload a specific layout function by LAYOUT-NAME."
+  (interactive
+   (list (completing-read "Reload layout: "
+                          (etm-layout-list-available)
+                          nil t)))
+  (let ((function-name (etm-layout-function-name layout-name))
+        (file-path (etm-layout-file-path layout-name)))
+    (if (file-exists-p file-path)
+        (progn
+          (--etm-load-file-silent file-path)
+          (message "Reloaded %s layout" layout-name))
+      (error "Layout file %s does not exist" file-path))))
 
 (defun etm-layout-reload-all ()
   "Reload all layout files from the layout directory."
