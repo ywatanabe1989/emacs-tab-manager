@@ -47,7 +47,7 @@ Returns the connection identifier that can be used by terminal sessions."
     (setq host "localhost"))
     
   (--etm-ssh-log "Attempting to get or create SSH connection to %s" host)
-  (let* ((connection-pattern (format "^\\.control.*:%s:" host))
+  (let* ((connection-pattern (format "control.*%s" (regexp-quote host)))
          (existing-connections (directory-files "~/.ssh" nil connection-pattern))
          (connection-id nil))
     

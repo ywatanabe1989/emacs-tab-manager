@@ -1,7 +1,7 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-15 03:58:20 (ywatanabe)"
-# File: ./.claude/tools/run_tests_elisp.sh
+# Timestamp: "2025-05-15 04:01:57 (ywatanabe)"
+# File: ./.claude/tools/run_tests_elisp_v02.sh
 
 THIS_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 LOG_PATH="$THIS_DIR/.$(basename $0).log"
@@ -20,10 +20,45 @@ echo_warning() { echo -e "${YELLOW}$1${NC}"; }
 echo_error() { echo -e "${RED}$1${NC}"; }
 # ---------------------------------------
 
-NC='\033[0m'
+# Colors for output
+
+# Echo functions
 
 # Utility functions
 strip_ansi() { sed 's/\x1b\[[0-9;]*m//g'; }
+
+# Run parentheses check function
+check_parens() {
+    local file="$1"
+
+    # Create a minimal elisp script
+    elisp_script=$(mktemp)
+    cat > "$elisp_script" << 'EOF'
+(require 'lisp-mode)
+
+(defun my/check-parens-file (file)
+  (with-temp-buffer
+    (insert-file-contents file)
+    (emacs-lisp-mode)
+    (condition-case err
+        (progn
+          (check-parens)
+          (message "Parentheses are balanced in %s" file))
+      (error
+       (let* ((pos (point))
+              (line (line-number-at-pos))
+              (col (current-column)))
+         (message "Unbalanced: %s at line %d, column %d"
+                 (error-message-string err) line col))))))
+
+(my/check-parens-file (car command-line-args-left))
+EOF
+
+    # Execute the elisp script
+    echo_info "Checking parentheses in $file..."
+    emacs --batch --load "$elisp_script" "$file" 2>&1 | tee -a $LOG_PATH
+    rm -f "$elisp_script"
+}
 
 # Get the project root directory
 PROJECT_NAME=$(basename "$THIS_DIR")
@@ -35,6 +70,7 @@ NO_REPORT=false
 VERBOSE=false
 SRC_DIR="src"
 TESTS_DIR="tests"
+CHECK_PARENS=true
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -52,6 +88,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --verbose)
       VERBOSE=true
+      shift
+      ;;
+    --no-check-parens)
+      CHECK_PARENS=false
       shift
       ;;
     --src-dir=*)
@@ -107,7 +147,6 @@ detect_project_structure() {
 run_tests() {
   # Get project structure
   eval "$(detect_project_structure)"
-
   if $VERBOSE; then
     echo_info "Detected source directories: $SOURCE_DIRS"
     echo_info "Detected test directories: $TEST_DIRS"
@@ -119,21 +158,13 @@ run_tests() {
   # Add project root to load path
   emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR\\\")\" "
 
-  # # Add all source directories to load path recursively
-  # emacs_cmd+=" --eval \"(let ((default-directory \\\"$THIS_DIR/$SRC_DIR\\\")) (normal-top-level-add-subdirs-to-load-path))\" "
-
-  # # Add all test directories to load path recursively
-  # emacs_cmd+=" --eval \"(let ((default-directory \\\"$THIS_DIR/$TESTS_DIR\\\")) (normal-top-level-add-subdirs-to-load-path))\" "
-
-
- # Handle paths by finding all source and test directories
- for src_subdir in $(find "$THIS_DIR/src" -type d 2>/dev/null); do
-   emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$src_subdir\\\")\" "
- done
-
- for test_subdir in $(find "$THIS_DIR/tests" -type d 2>/dev/null); do
-   emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$test_subdir\\\")\" "
- done
+  # Handle paths by finding all source and test directories
+  for src_subdir in $(find "$THIS_DIR/src" -type d 2>/dev/null); do
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$src_subdir\\\")\" "
+  done
+  for test_subdir in $(find "$THIS_DIR/tests" -type d 2>/dev/null); do
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$test_subdir\\\")\" "
+  done
 
   # Debug mode settings
   if $DEBUG; then
@@ -142,9 +173,6 @@ run_tests() {
 
   # Load all test files automatically
   echo_warning "Loading all test files..."
-
-  # Find all test files using the same approach as combined.sh
-  TEST_FILES=""
 
   # First load top-level test files
   for test_file in $(find "$THIS_DIR/tests" -maxdepth 1 -name "test-*.el" 2>/dev/null | sort); do
@@ -198,6 +226,23 @@ run_tests() {
     echo_success "Tests completed successfully!"
   else
     echo_error "Tests failed with exit code: $TEST_EXIT_CODE"
+
+    # Check for parentheses balance if tests failed and check-parens is enabled
+    if $CHECK_PARENS; then
+      echo_warning "Checking for unbalanced parentheses in test files..."
+
+      # Find all the elisp files in the project
+      for elisp_file in $(find "$THIS_DIR" -name "*.el" 2>/dev/null | sort); do
+        # Check parenthesis in each file
+        check_result=$(check_parens "$elisp_file")
+
+        # Check if the result indicates unbalanced parentheses
+        if echo "$check_result" | grep -q "Unbalanced"; then
+          echo_error "Found unbalanced parentheses:"
+          echo "$check_result"
+        fi
+      done
+    fi
   fi
 
   return $TEST_EXIT_CODE
@@ -208,21 +253,11 @@ generate_report() {
   echo_info "Generating test report..."
 
   # Extract test statistics
-  # TOTAL_TESTS=$(grep -o "Ran [0-9]\+ tests" "$TEST_OUTPUT_FILE" | awk '{print $2}')
-  # TOTAL_TESTS=$(grep -o "Running [0-9]\+ tests" "$TEST_OUTPUT_FILE" | awk '{print $2}')
-  # Ran 49 tests, 48 results as expected, 1 unexpected
-
-  # if [ -z "$TOTAL_TESTS" ]; then
-  #   TOTAL_TESTS=$(grep -c "passed" "$TEST_OUTPUT_FILE")
-  # fi
-  # TEST_OUTPUT_FILE="./.run_tests.sh.log"
   reporting_line=$(grep -o "Ran [0-9]\+ tests, [0-9]\+ results as expected, [0-9]\+ unexpected" "$TEST_OUTPUT_FILE")
   TOTAL_TESTS=$(echo $reporting_line | awk '{print $2}' )
   PASSED_TESTS=$(echo $reporting_line | awk '{print $4}' )
   FAILED_TESTS=$(echo $reporting_line | awk '{print $8}' )
   SKIPPED_TESTS=0
-  TIMEOUT_TESTS=0
-  DUPLICATE_TESTS=0
 
   # Generate timestamp and report names
   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
@@ -249,7 +284,6 @@ generate_report() {
   REPORT_PATH="$THIS_DIR/$REPORT_FILE"
   LATEST_REPORT="$THIS_DIR/LATEST-ELISP-REPORT.org"
 
-
   # Extract test duration
   TOTAL_TIME=$(grep -o "[0-9]\+\.[0-9]\+ sec)" "$TEST_OUTPUT_FILE" | tail -1 | cut -d'(' -f2 | cut -d' ' -f1)
   if [ -z "$TOTAL_TIME" ]; then
@@ -261,13 +295,10 @@ generate_report() {
 #+TITLE: $PROJECT_NAME Test Report
 #+AUTHOR: $(whoami)
 #+DATE: $(date '+%Y-%m-%d %H:%M:%S') Generated by $(basename $0)
-
 * Test Results Summary
 - Passed: $PASSED_TESTS
 - Failed: $FAILED_TESTS
 - Skipped: $SKIPPED_TESTS
-- Timeout (= 10 s): $TIMEOUT_TESTS
-- Duplicates: $DUPLICATE_TESTS
 - Total: $TOTAL_TESTS
 - Total Time: $TOTAL_TIME seconds
 - Success Rate: $SUCCESS_RATE%
@@ -314,13 +345,11 @@ process_test_results() {
     if [ -s "$THIS_DIR/.test_file_mapping.txt" ]; then
       # Get all unique test files
       test_files=$(cut -d'|' -f2 "$THIS_DIR/.test_file_mapping.txt" | sort | uniq)
-
       for test_file in $test_files; do
         # Get passed tests for this file
         file_tests=$(cat "$THIS_DIR/.passed_tests.txt" | while read -r test_name; do
           grep "^$test_name|$test_file$" "$THIS_DIR/.test_file_mapping.txt" | cut -d'|' -f1
         done)
-
         file_test_count=$(echo "$file_tests" | grep -v "^$" | wc -l)
         if [ "$file_test_count" -gt 0 ]; then
           # Display file with test count
@@ -338,16 +367,13 @@ process_test_results() {
                     grep -o "test-[a-zA-Z0-9-]*" |
                     sed 's/\(test-[a-zA-Z0-9-]*\)-[a-zA-Z0-9-]*/\1/' |
                     sort | uniq)
-
       for module in $test_modules; do
         # Find all tests for this module
         module_tests=$(grep "^$module-" "$THIS_DIR/.passed_tests.txt")
         module_count=$(echo "$module_tests" | grep -v "^$" | wc -l)
-
         if [ "$module_count" -gt 0 ]; then
           # Try to find the test file by name pattern
           module_name=${module#test-}
-
           # Check several possible locations
           potential_files=(
             "$THIS_DIR/$TESTS_DIR/$module.el"
@@ -355,7 +381,6 @@ process_test_results() {
             "$THIS_DIR/$TESTS_DIR/$module/$module.el"
             "$THIS_DIR/$TESTS_DIR/test-$module_name/test-$module_name.el"
           )
-
           test_file=""
           for potential in "${potential_files[@]}"; do
             if [ -f "$potential" ]; then
@@ -363,7 +388,6 @@ process_test_results() {
               break
             fi
           done
-
           # If no specific file found, search directories
           if [ -z "$test_file" ]; then
             test_dir=$(find "$THIS_DIR/$TESTS_DIR" -type d -name "$module" -o -name "test-$module_name" | head -1)
@@ -375,12 +399,10 @@ process_test_results() {
               fi
             fi
           fi
-
           # If still no file found, fall back to basic path
           if [ -z "$test_file" ]; then
             test_file="$TESTS_DIR/$module.el"
           fi
-
           # Display module with test count
           echo "** $test_file ($module_count tests)"
           # Display each test with link
@@ -424,7 +446,6 @@ process_test_results() {
               # Fall back to naming convention
               module=$(echo "$test_name" | sed 's/\(test-[a-zA-Z0-9-]*\)-[a-zA-Z0-9-]*/\1/')
               module_name=${module#test-}
-
               # Check possible file locations
               for potential_file in "$TESTS_DIR/$module.el" "$TESTS_DIR/test-$module_name.el" "$TESTS_DIR/$module/$module.el" "$TESTS_DIR/test-$module_name/test-$module_name.el"; do
                 if [ -f "$THIS_DIR/$potential_file" ]; then
@@ -432,7 +453,6 @@ process_test_results() {
                   break
                 fi
               done
-
               # If still not found, use a directory search
               if ! grep -q "^$test_name|" "$THIS_DIR/.failed_tests_files.txt"; then
                 test_dir=$(find "$THIS_DIR/$TESTS_DIR" -type d -name "$module" -o -name "test-$module_name" | head -1)
@@ -468,27 +488,21 @@ process_test_results() {
       # Get tests for this file
       file_tests=$(grep "|$file$" "$THIS_DIR/.failed_tests_files.txt" | cut -d'|' -f1)
       file_count=$(echo "$file_tests" | grep -v "^$" | wc -l)
-
       if [ "$file_count" -gt 0 ]; then
         # Display file with test count
         echo
         echo "** $file ($file_count tests)"
-
         # Display each failed test with link and detailed error info
         echo "$file_tests" | grep -v "^$" | sort | while read -r test_name; do
           echo "- [[file:$file::$test_name][$test_name]]"
-
           # Extract full backtrace for this test
           echo "  + Error details:"
-
           # First try to get the backtrace
           backtrace=$(sed -n "/Test $test_name backtrace:/,/Test $test_name condition:/p" "$THIS_DIR/.failed_traces.txt")
-
           # If no backtrace found, try extracting error from the general context
           if [ -z "$backtrace" ]; then
             backtrace=$(grep -A 15 "$test_name.*FAILED" "$THIS_DIR/.test_output_clean.txt")
           fi
-
           # Display error details with proper indentation
           if [ -n "$backtrace" ]; then
             echo "$backtrace" | sed 's/^/    /'
@@ -505,14 +519,13 @@ process_test_results() {
   # Clean up temporary files
   rm -f \
      "$THIS_DIR/.test_output_clean.txt" \
-	 "$THIS_DIR/.passed_tests.txt" \
-	 "$THIS_DIR/.test_file_mapping.txt" \
+     "$THIS_DIR/.passed_tests.txt" \
+     "$THIS_DIR/.test_file_mapping.txt" \
      "$THIS_DIR/.failed_traces.txt" \
-	 "$THIS_DIR/.failed_lines.txt" \
-	 "$THIS_DIR/.failed_tests_files.txt" \
+     "$THIS_DIR/.failed_lines.txt" \
+     "$THIS_DIR/.failed_tests_files.txt" \
      "$THIS_DIR/.failed_tests.txt"
 }
-
 
 # Main execution
 run_tests
@@ -528,5 +541,15 @@ rm -f "$THIS_DIR/.passed_tests_temp.txt" "$THIS_DIR/.failed_tests_temp.txt" "$TH
 
 echo_info "Logged to: $LOG_PATH"
 exit $TEST_EXIT_CODE
+
+
+# (.env-home) (wsl) emacs-claude-code $ ~/.claude/tools/run_tests_elisp_v02.sh /home/ywatanabe/.emacs.d/lisp/emacs-claude-code/tests/ecc-buffer/test-ecc-buffer-auto-switch.el
+# Loading all test files...
+# Running tools tests...
+# Tests completed successfully!
+# Generating test report...
+# Report generated: ELISP-TEST-REPORT-20250515-040142-0-PASSED-0-TOTAL-0-PERCENT.org
+# Logged to: /home/ywatanabe/.claude/tools/.run_tests_elisp_v02.sh.log
+# (.env-home) (wsl) emacs-claude-code $
 
 # EOF

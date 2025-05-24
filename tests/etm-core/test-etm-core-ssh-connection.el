@@ -11,6 +11,7 @@
                                (file-name-directory (or load-file-name buffer-file-name))))
 
 (require 'ert)
+(require 'cl-lib)
 (require 'vterm)  ; Use the mock vterm
 (require 'etm-core-ssh-connection)
 
@@ -116,5 +117,53 @@
       (etm-toggle-ssh-debug)
       (should etm-ssh-debug) ; Should be toggled on again
       )))
+
+;; Test for SSH pattern matching logic
+(ert-deftest test-etm-ssh-pattern-matching ()
+  "Test that SSH control socket pattern matching works correctly."
+  (let ((test-host "test-server")
+        (socket-filename ".control-master:test-server:22-ywatanabe"))
+    
+    ;; Test the pattern matching logic
+    (let ((pattern (format "control.*%s" (regexp-quote test-host))))
+      (should (string-match-p pattern socket-filename)))))
+
+;; Test for SSH controller reuse issue (simplified)
+(ert-deftest test-etm-ssh-controller-reuse-detection ()
+  "Test that existing SSH control sockets are properly detected and reused."
+  (let ((test-host "test-server")
+        (existing-socket ".control-master:test-server:22-ywatanabe"))
+    
+    ;; Test with simpler mock - just check the function doesn't return nil
+    (cl-letf (((symbol-function 'directory-files)
+               (lambda (dir pattern &optional full)
+                 ;; Always return the socket when called with ~/.ssh
+                 (if (string= dir "~/.ssh")
+                     (list existing-socket)
+                   nil)))
+              ((symbol-function 'start-process-shell-command)
+               (lambda (name buffer command)
+                 ;; Should NOT be called if connection is reused
+                 (error "Should not create new connection"))))
+      
+      ;; Test that existing connection is found
+      (let ((connection-id (--etm-get-or-create-ssh-connection test-host)))
+        (should connection-id)
+        (should (stringp connection-id))))))
+
+;; Test for proper ControlPath option usage
+(ert-deftest test-etm-ssh-control-path-construction ()
+  "Test that ControlPath option is properly constructed for reuse."
+  (let ((test-host "test-server")
+        (connection-id ".control-master:test-server:22-ywatanabe"))
+    
+    ;; Register a connection for testing
+    (let ((etm-ssh-connections (make-hash-table :test 'equal)))
+      (--etm-register-ssh-connection "test-tab" test-host connection-id)
+      
+      ;; Test that connection info is properly stored and retrieved
+      (let ((connection-info (--etm-get-tab-ssh-connection "test-tab")))
+        (should (equal (car connection-info) test-host))
+        (should (equal (cdr connection-info) connection-id))))))
 
 (provide 'test-etm-core-ssh-connection)

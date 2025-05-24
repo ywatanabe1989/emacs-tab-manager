@@ -40,8 +40,8 @@
   "Select an SSH host from cached config."
   (interactive)
   (--etm-ssh-parse-dot-ssh)
-  ;; In non-interactive mode (like tests), return localhost
-  (if (not (called-interactively-p 'any))
+  ;; Always prompt for host selection unless explicitly in batch mode
+  (if noninteractive
       "localhost"
     (let ((host (completing-read "Choose host: "
                                (mapcar #'car --etm-ssh-hostname-username))))
