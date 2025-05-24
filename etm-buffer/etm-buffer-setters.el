@@ -30,30 +30,34 @@
   (unless buffer-obj
     (setq buffer-obj (current-buffer)))
 
-  (let* ((buffer-name (buffer-name buffer-obj))
-         (buffer-id (with-current-buffer buffer-obj
-                      (unless etm-buffer-id
-                        (setq-local etm-buffer-id
-                                    (format "etm-%s-%s"
-                                            (format-time-string "%s")
-                                            (random 10000))))
-                      etm-buffer-id))
+  (let* ((buffer-name (if (stringp buffer-obj)
+                          buffer-obj
+                        (buffer-name buffer-obj)))
+         (buffer-id (if (stringp buffer-obj)
+                        buffer-obj
+                      (with-current-buffer buffer-obj
+                        (unless etm-buffer-id
+                          (setq-local etm-buffer-id
+                                      (format "etm-%s-%s"
+                                              (format-time-string "%s")
+                                              (random 10000))))
+                        etm-buffer-id)))
          (tab-entry (assoc tab-name etm-registered-buffers)))
 
     (if tab-entry
         (setcdr tab-entry
                 (cons
-                 (cons type buffer-id)
+                 (cons type buffer-name)
                  (assoc-delete-all type
                                    (cdr tab-entry))))
       (push
        (cons tab-name
              (list
-              (cons type buffer-id)))
+              (cons type buffer-name)))
        etm-registered-buffers))
 
-    (message "Set %s buffer for tab %s: %s (ID: %s)"
-             type tab-name buffer-name buffer-id)))
+    (message "Set %s buffer for tab %s: %s"
+             type tab-name buffer-name)))
 
 ;; Define functions
 

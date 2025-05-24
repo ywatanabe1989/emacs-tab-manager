@@ -34,8 +34,7 @@
   "Log SSH connection debugging info if enabled.
 FORMAT-STRING and ARGS are passed to `message'."
   (when etm-ssh-debug
-    (let ((log-msg (apply #'format (concat "[ETM SSH] " format-string) args)))
-      (message "%s" log-msg))))
+    (apply #'message (concat "[ETM SSH] " format-string) args)))
 
 ;; 2. SSH connection functions
 ;; ----------------------------------------
