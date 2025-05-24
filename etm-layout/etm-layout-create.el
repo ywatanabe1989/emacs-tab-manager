@@ -115,9 +115,17 @@ Returns the selected host for this tab."
       (--etm-register-ssh-connection tab-name host connection-id)))
   
   ;; Return the selected host
-  (or host
-      (gethash tab-name etm-layout-default-hosts)
-      (--etm-ssh-select-host)))
+  (let ((selected-host (or host
+                           (gethash tab-name etm-layout-default-hosts)
+                           (--etm-ssh-select-host))))
+    ;; Create and register SSH connection for interactively selected host
+    (when (and (not host) ; Only if host wasn't provided explicitly
+               selected-host
+               (not (member selected-host etm-localhost-names))
+               (not (string= selected-host etm-ignored-host)))
+      (let ((connection-id (--etm-get-or-create-ssh-connection selected-host)))
+        (--etm-register-ssh-connection tab-name selected-host connection-id)))
+    selected-host))
 
 (defun --etm-layout-create-window-structure (window-specs main-window)
   "Create window structure based on WINDOW-SPECS starting from MAIN-WINDOW."

@@ -109,7 +109,7 @@ CAPTURED-LAYOUT is the layout configuration string."
                 (nth 3 win-data)    ; y
                 (nth 4 win-data)    ; width
                 (nth 5 win-data)    ; height
-                (if (nth 6 win-data)
+                (if (and host (nth 6 win-data))
                     (format "\"%s\"" (nth 6 win-data))
                   "nil")))
       windows-data
