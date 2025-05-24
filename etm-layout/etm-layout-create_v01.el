@@ -92,19 +92,20 @@ NUM-RIGHT is the number of windows on the right side."
 ;; 4. Advanced layout creation
 ;; ----------------------------------------
 
-(defun --etm-layout-initialize-tab (tab-name host)
-  "Initialize tab with name TAB-NAME and optional HOST.
-Returns the selected host for this tab."
+(defun --etm-layout-create-from-positions
+    (tab-name window-specs &optional host)
+  "Create tab layout based on window positions with proper connection reuse.
+WINDOW-SPECS is a list of (type path x y width height [path-host]) for each window."
   (etm-new tab-name)
-  
+
   ;; Force fullscreen mode
   (toggle-frame-fullscreen)
   (sit-for 0.3)
-  
+
   ;; Save the host as default if provided explicitly
   (when host
     (puthash tab-name host etm-layout-default-hosts))
-  
+
   ;; Get or create SSH connection if host is specified
   (when (and host 
              (not (member host etm-localhost-names))
@@ -112,15 +113,14 @@ Returns the selected host for this tab."
     (let ((connection-id (--etm-get-or-create-ssh-connection host)))
       ;; Store this connection for this tab
       (--etm-register-ssh-connection tab-name host connection-id)))
-  
-  ;; Return the selected host
-  (or host
-      (gethash tab-name etm-layout-default-hosts)
-      (--etm-ssh-select-host)))
 
-(defun --etm-layout-create-window-structure (window-specs main-window)
-  "Create window structure based on WINDOW-SPECS starting from MAIN-WINDOW."
-  (let ((windows (list)))
+  ;; Select host
+  (let ((selected-host (or host
+                           (gethash tab-name etm-layout-default-hosts)
+                           (--etm-ssh-select-host)))
+        (main-window (selected-window))
+        (windows (list)))
+    ;; Create window structure first
     ;; Start with one window
     (push main-window windows)
     ;; First create all horizontal splits (columns)
@@ -143,105 +143,15 @@ Returns the selected host for this tab."
         (when (> (length row-positions) 1)
           (select-window window)
           (dolist (y-pos (cdr row-positions))
-            (split-window-vertically)))))))
-
-(defun --etm-layout-map-windows-to-positions ()
-  "Create a hash table mapping window positions to windows."
-  (let ((windows-by-position (make-hash-table :test 'equal)))
-    (dolist (window (window-list))
-      (let* ((edges (window-edges window))
-             (x (nth 0 edges))
-             (y (nth 1 edges)))
-        (puthash (cons x y) window windows-by-position)))
-    windows-by-position))
-
-(defun --etm-layout-setup-file-window (path x y selected-host path-host)
-  "Setup a file window at position X Y with PATH.
-SELECTED-HOST is the default host, PATH-HOST is the specific host for this window."
-  (let* ((effective-host (or path-host selected-host))
-         (is-remote (and effective-host
-                         (not (member effective-host etm-localhost-names))
-                         (not (string= effective-host etm-ignored-host))))
-         (effective-path
-          (if is-remote
-              (format "/ssh:%s:%s"
-                      effective-host
-                      (--etm-ssh-rename-username path effective-host))
-            path)))
-    (find-file effective-path)
-    ;; Mark home or semi-home
-    (if (and (= x 0) (= y 0))
-        (etm-buffer-set "home")
-      (etm-buffer-set "semi-home"))))
-
-(defun --etm-layout-setup-shell-window (tab-name path x y selected-host path-host window-index)
-  "Setup a shell window at position X Y with PATH.
-TAB-NAME is the current tab, SELECTED-HOST is the default host, 
-PATH-HOST is the specific host for this window, WINDOW-INDEX is for unique naming."
-  (let* ((buffer-name (format "%s-%s-%02d-%02d"
-                              tab-name
-                              (format-time-string "%d:%S")
-                              x y))
-         (effective-host (or path-host selected-host))
-         (is-remote (and effective-host
-                         (not (member effective-host etm-localhost-names))
-                         (not (string= effective-host etm-ignored-host))))
-         (effective-path (if is-remote
-                             (--etm-ssh-rename-username path effective-host)
-                           path)))
-    ;; Create vterm
-    (--etm-vterm-new (format "term-%d" window-index))
-    
-    ;; Connect to remote host if needed
-    (when is-remote
-      ;; Check if we have a connection registered for this tab
-      (let* ((connection-info (--etm-get-tab-ssh-connection tab-name))
-             (connection-host (car-safe connection-info))
-             (connection-id (cdr-safe connection-info)))
-        
-        ;; If we have a connection and it's for the same host, use ControlPath
-        (if (and connection-info (string= connection-host effective-host))
-            (vterm-send-string
-             (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
-                     connection-id effective-host))
-          ;; Otherwise create a regular connection
-          (vterm-send-string
-           (format "ssh -Y %s\n" effective-host))))
-      
-      (sit-for 0.3)
-      (vterm-send-string
-       (format "cd %s && clear \n" effective-path)))
-    
-    ;; For local paths:
-    (unless is-remote
-      (vterm-send-string
-       (format "cd %s && clear\n" effective-path)))
-    
-    ;; Apply semi-home mark if applicable
-    (when (and (= x 0) (= y 0))
-      (etm-buffer-set "semi-home"))
-    
-    ;; Rename buffer with host info if remote
-    (if is-remote
-        (rename-buffer (format "%s@%s:%s"
-                               buffer-name
-                               effective-host
-                               (file-name-nondirectory effective-path)))
-      (rename-buffer buffer-name))))
-
-(defun --etm-layout-create-from-positions
-    (tab-name window-specs &optional host)
-  "Create tab layout based on window positions with proper connection reuse.
-WINDOW-SPECS is a list of (type path x y width height [path-host]) for each window."
-  ;; Initialize tab and get selected host
-  (let ((selected-host (--etm-layout-initialize-tab tab-name host))
-        (main-window (selected-window))
-        (windows (list)))
-    ;; Create window structure
-    (--etm-layout-create-window-structure window-specs main-window)
+            (split-window-vertically)))))
     ;; Map windows to their positions
-    (let ((windows-by-position (--etm-layout-map-windows-to-positions))
+    (let ((windows-by-position (make-hash-table :test 'equal))
           (window-index 0))
+      (dolist (window (window-list))
+        (let* ((edges (window-edges window))
+               (x (nth 0 edges))
+               (y (nth 1 edges)))
+          (puthash (cons x y) window windows-by-position)))
       ;; Now set up each window
       (dolist (spec window-specs)
         (let* ((type (nth 0 spec))
@@ -254,10 +164,82 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
             (select-window window)
             ;; Handle different window types
             (cond
+             ;; File windows - set up immediately
              ((eq type 'file)
-              (--etm-layout-setup-file-window path x y selected-host path-host))
+              (let* ((effective-host (or path-host selected-host))
+                     (is-remote (and effective-host
+                                     (not
+                                      (member effective-host
+                                              etm-localhost-names))
+                                     (not
+                                      (string= effective-host
+                                               etm-ignored-host))))
+                     (effective-path
+                      (if is-remote
+                          (format "/ssh:%s:%s"
+                                  effective-host
+                                  (--etm-ssh-rename-username path
+                                                             effective-host))
+                        path)))
+                (find-file effective-path)
+                ;; Mark home or semi-home
+                (if (and (= x 0) (= y 0))
+                    (etm-buffer-set "home")
+                  (etm-buffer-set "semi-home"))))
+             ;; Shell windows - execute commands directly
              ((eq type 'shell)
-              (--etm-layout-setup-shell-window tab-name path x y selected-host path-host window-index)
+              (let* ((buffer-name (format "%s-%s-%02d-%02d"
+                                          tab-name
+                                          (format-time-string "%d:%S")
+                                          x y))
+                     (effective-host (or path-host selected-host))
+                     (is-remote (and effective-host
+                                     (not
+                                      (member effective-host
+                                              etm-localhost-names))
+                                     (not
+                                      (string= effective-host
+                                               etm-ignored-host))))
+                     (effective-path (if is-remote
+                                         (--etm-ssh-rename-username
+                                          path effective-host)
+                                       path)))
+                ;; Create vterm and save the buffer
+                (--etm-vterm-new (format "term-%d" window-index))
+                ;; Connect to remote host if needed
+                (when is-remote
+                  ;; Check if we have a connection registered for this tab
+                  (let* ((connection-info (--etm-get-tab-ssh-connection tab-name))
+                         (connection-host (car-safe connection-info))
+                         (connection-id (cdr-safe connection-info)))
+                    
+                    ;; If we have a connection and it's for the same host, use ControlPath
+                    (if (and connection-info (string= connection-host effective-host))
+                        (vterm-send-string
+                         (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
+                                 connection-id effective-host))
+                      ;; Otherwise create a regular connection
+                      (vterm-send-string
+                       (format "ssh -Y %s\n" effective-host))))
+                  
+                  (sit-for 0.3)
+                  (vterm-send-string
+                   (format "cd %s && clear \n" effective-path))
+                  ;; For local paths:
+                  (unless is-remote
+                    (vterm-send-string
+                     (format "cd %s && clear\n" effective-path)))
+                  ;; Apply semi-home mark if applicable
+                  (when (and (= x 0) (= y 0))
+                    (etm-buffer-set "semi-home"))
+                  ;; Rename buffer with host info if remote
+                  (if is-remote
+                      (rename-buffer (format "%s@%s:%s"
+                                             buffer-name
+                                             effective-host
+                                             (file-name-nondirectory
+                                              effective-path)))
+                    (rename-buffer buffer-name))))
               (cl-incf window-index)))))
         ;; Clean up
         (--etm-layout-cleanup-default-buffers)
