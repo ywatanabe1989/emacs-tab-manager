@@ -23,16 +23,11 @@
           (alist-get 'name tab))
          (tab-entry
           (assoc tab-name etm-registered-buffers))
-         (buffer-id
+         (buffer-name
           (cdr (assoc type (cdr tab-entry)))))
 
-    ;; Return the buffer with matching ID
-    (when buffer-id
-      (cl-find-if (lambda (buf)
-                    (with-current-buffer buf
-                      (and (local-variable-p 'etm-buffer-id)
-                           (string= etm-buffer-id buffer-id))))
-                  (buffer-list)))))
+    ;; Return the buffer name
+    buffer-name))
 
 
 (provide 'etm-buffer-getters)
