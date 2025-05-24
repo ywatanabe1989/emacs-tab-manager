@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-21 11:00:00>
+;;; Timestamp: <2025-05-24 14:35:53>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-open.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 ;;; Commentary:
 ;; This module provides functionality for opening saved ETM layouts.
@@ -15,7 +16,9 @@
 
 (defun etm-layout-list-available ()
   "Return a list of available layout names without the 'etm-open-' prefix."
-  (let ((layout-files (directory-files etm-layout-save-dir nil "^etm-open-.*\\.el$")))
+  (let
+      ((layout-files
+        (directory-files etm-layout-save-dir nil "^etm-open-.*\\.el$")))
     (mapcar (lambda (file)
               (replace-regexp-in-string
                "^etm-open-\\(.*\\)\\.el$" "\\1" file))
@@ -68,7 +71,7 @@ If HOST is provided, it will override the default host in the layout."
     (when (or (not host) (string-empty-p host))
       ;; No host provided, let the layout function handle host selection
       (funcall function-name))
-    
+
     ;; Host provided, need to override the layout function
     (let ((original-function (symbol-function function-name)))
       (unwind-protect
@@ -79,14 +82,17 @@ If HOST is provided, it will override the default host in the layout."
             (with-temp-buffer
               (insert-file-contents file-path)
               (goto-char (point-min))
-              (when (search-forward (format "(defun %s " function-name) nil t)
+              (when
+                  (search-forward (format "(defun %s " function-name)
+                                  nil t)
                 (let* ((start (match-beginning 0))
                        (func-form (read (current-buffer)))
                        (body (nthcdr 3 func-form))
                        (layout-call (car (last body))))
                   ;; Extract layout name and specs from the function call
                   (when (and (listp layout-call)
-                             (eq (car layout-call) '--etm-layout-create-from-positions))
+                             (eq (car layout-call)
+                                 '--etm-layout-create-from-positions))
                     (let ((layout-name-arg (nth 1 layout-call))
                           (specs-arg (nth 2 layout-call)))
                       ;; Define temporary function with new host
@@ -114,7 +120,9 @@ If HOST is provided, it will override the default host in the layout."
                           (etm-layout-list-available)
                           nil t)))
   (let ((file-path (etm-layout-file-path layout-name)))
-    (when (yes-or-no-p (format "Really delete layout '%s'? " layout-name))
+    (when
+        (yes-or-no-p
+         (format "Really delete layout '%s'? " layout-name))
       (if (file-exists-p file-path)
           (progn
             (delete-file file-path)
