@@ -35,8 +35,8 @@
 
 (defun etm-layout-open (layout-name &optional force-reload)
   "Open the layout with LAYOUT-NAME.
-Loads the layout file if necessary and executes the layout function.
-If FORCE-RELOAD is non-nil, reload the layout file even if function exists."
+Always reloads the layout file to ensure latest behavior unless cached with C-u prefix.
+If FORCE-RELOAD is non-nil (C-u prefix), skip reload and use cached version."
   (interactive
    (list (completing-read "Select layout: "
                           (etm-layout-list-available)
@@ -44,8 +44,8 @@ If FORCE-RELOAD is non-nil, reload the layout file even if function exists."
          current-prefix-arg))
   (let ((function-name (etm-layout-function-name layout-name))
         (file-path (etm-layout-file-path layout-name)))
-    ;; Load the file if function not defined or force-reload requested
-    (when (or force-reload (not (fboundp function-name)))
+    ;; Always reload unless explicitly using cached version with C-u
+    (unless force-reload
       (if (file-exists-p file-path)
           (--etm-load-file-silent file-path)
         (error "Layout file %s does not exist" file-path)))
@@ -53,7 +53,7 @@ If FORCE-RELOAD is non-nil, reload the layout file even if function exists."
     (if (fboundp function-name)
         (progn
           (when force-reload 
-            (message "Reloaded and opening %s layout" layout-name))
+            (message "Using cached %s layout" layout-name))
           (funcall function-name))
       (error "Function %s not found after loading file" function-name))))
 
