@@ -110,9 +110,17 @@ Returns the selected host for this tab."
   (when (and host 
              (not (member host etm-localhost-names))
              (not (string= host etm-ignored-host)))
+    (--etm-ssh-log "=== TAB INITIALIZATION SSH SETUP ===")
+    (--etm-ssh-log "Initializing SSH for tab '%s' to host '%s'" tab-name host)
     (let ((connection-id (--etm-get-or-create-ssh-connection host)))
+      (--etm-ssh-log "Got connection-id: %s" connection-id)
       ;; Store this connection for this tab
-      (--etm-register-ssh-connection tab-name host connection-id)))
+      (if connection-id
+          (progn
+            (--etm-ssh-log "Registering connection for tab '%s'" tab-name)
+            (--etm-register-ssh-connection tab-name host connection-id)
+            (message "Updating SSH controller for %s" host))
+        (--etm-ssh-log "*** ERROR: No connection-id returned for host %s ***" host))))
   
   ;; Return the selected host
   (or host
@@ -195,22 +203,40 @@ PATH-HOST is the specific host for this window, WINDOW-INDEX is for unique namin
     
     ;; Connect to remote host if needed
     (when is-remote
+      (--etm-ssh-log "=== SHELL WINDOW SSH CONNECTION SETUP ===")
+      (--etm-ssh-log "Setting up SSH for window at (%d,%d) to host '%s'" x y effective-host)
       ;; Check if we have a connection registered for this tab
       (let* ((connection-info (--etm-get-tab-ssh-connection tab-name))
              (connection-host (car-safe connection-info))
              (connection-id (cdr-safe connection-info)))
+        
+        (--etm-ssh-log "Connection lookup result:")
+        (--etm-ssh-log "  connection-info: %s" connection-info)
+        (--etm-ssh-log "  connection-host: %s" connection-host)
+        (--etm-ssh-log "  connection-id: %s" connection-id)
+        (--etm-ssh-log "  target effective-host: %s" effective-host)
         
         ;; If we have a connection and it's for the same host, use ControlPath
         (if (and connection-info 
                  (or (string= connection-host effective-host)
                      (string= (--etm-ssh-resolve-hostname connection-host) 
                               (--etm-ssh-resolve-hostname effective-host))))
-            (vterm-send-string
-             (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
-                     connection-id effective-host))
+            (progn
+              (--etm-ssh-log "*** USING EXISTING SSH CONTROLLER ***")
+              (--etm-ssh-log "ControlPath command: ssh -o ControlPath=~/.ssh/%s %s" 
+                            connection-id effective-host)
+              (message "Reusing SSH controller for %s (window %d,%d)" effective-host x y)
+              (vterm-send-string
+               (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
+                       connection-id effective-host)))
           ;; Otherwise create a regular connection
-          (vterm-send-string
-           (format "ssh -Y %s\n" effective-host))))
+          (progn
+            (--etm-ssh-log "*** WARNING: NO CONTROLLER REUSE - CREATING NEW SSH ***")
+            (--etm-ssh-log "This may create duplicate SSH connections!")
+            (--etm-ssh-log "Fallback SSH command: ssh -Y %s" effective-host)
+            (message "WARNING: Creating new SSH connection to %s (should reuse!)" effective-host)
+            (vterm-send-string
+             (format "ssh -Y %s\n" effective-host)))))
       
       (sit-for 0.3)
       (vterm-send-string
@@ -265,7 +291,14 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
               (cl-incf window-index)))))
         ;; Clean up
         (--etm-layout-cleanup-default-buffers)
-        (select-window (frame-first-window))))))
+        (select-window (frame-first-window))
+        ;; Final SSH connection status
+        (--etm-ssh-log "=== FINAL SSH CONNECTION STATUS FOR TAB '%s' ===" tab-name)
+        (let ((final-connection (--etm-get-tab-ssh-connection tab-name)))
+          (if final-connection
+              (--etm-ssh-log "Tab registered with: host=%s connection=%s" 
+                            (car final-connection) (cdr final-connection))
+            (--etm-ssh-log "No SSH connection registered for this tab")))))))
 
 
 (provide 'etm-layout-create)

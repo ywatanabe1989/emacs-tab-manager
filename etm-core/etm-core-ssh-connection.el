@@ -46,19 +46,44 @@ Returns the connection identifier that can be used by terminal sessions."
   (when (string= host "l")
     (setq host "localhost"))
     
+  (--etm-ssh-log "=== SSH CONNECTION DEBUG START ===")
   (--etm-ssh-log "Attempting to get or create SSH connection to %s" host)
-  (let* ((connection-pattern (format "control.*%s" (regexp-quote host)))
+  (--etm-ssh-log "Current SSH connections hash table contents:")
+  (maphash (lambda (tab connection)
+             (--etm-ssh-log "  Tab '%s': host=%s connection=%s" 
+                           tab (car connection) (cdr connection)))
+           etm-ssh-connections)
+  (let* ((connection-pattern (format "\\.control.*%s.*" (regexp-quote host)))
          (existing-connections (directory-files "~/.ssh" nil connection-pattern))
          (connection-id nil))
+    
+    (--etm-ssh-log "SSH config directory scan:")
+    (--etm-ssh-log "  Pattern: %s" connection-pattern)
+    (--etm-ssh-log "  Found %d existing connections: %s" 
+                  (length existing-connections)
+                  (if existing-connections 
+                      (mapconcat 'identity existing-connections ", ")
+                    "none"))
     
     ;; Check if we have a valid existing connection
     (if existing-connections
         (progn
           (setq connection-id (car existing-connections))
+          (--etm-ssh-log "*** CONNECTION REUSE DETECTED ***")
           (--etm-ssh-log "Found existing connection: %s" connection-id)
+          (--etm-ssh-log "Full connection file path: ~/.ssh/%s" connection-id)
+          ;; Test if connection is actually alive
+          (let ((test-result (call-process "ssh" nil nil nil "-O" "check" 
+                                          "-o" (format "ControlPath=~/.ssh/%s" connection-id)
+                                          host)))
+            (--etm-ssh-log "Connection aliveness test result: %s" 
+                          (if (= test-result 0) "ALIVE" "DEAD"))
+            (when (= test-result 0)
+              (--etm-ssh-log "*** SUCCESSFULLY REUSING CONNECTION ***")))
           (message "Reusing existing SSH connection to %s" host))
       
       ;; No valid connection exists, create a new one
+      (--etm-ssh-log "*** NO CONNECTION FOUND - CREATING NEW ***")
       (--etm-ssh-log "No existing connection found, creating new one")
       (message "Creating new SSH connection to %s" host)
       (let ((connection-process 
@@ -73,9 +98,14 @@ Returns the connection identifier that can be used by terminal sessions."
         (setq connection-id 
               (car (directory-files "~/.ssh" nil connection-pattern)))
         (if connection-id
-            (--etm-ssh-log "Created new connection: %s" connection-id)
-          (--etm-ssh-log "WARNING: Failed to create connection to %s" host))))
+            (progn
+              (--etm-ssh-log "*** NEW CONNECTION CREATED SUCCESSFULLY ***")
+              (--etm-ssh-log "Created new connection: %s" connection-id)
+              (--etm-ssh-log "New connection file: ~/.ssh/%s" connection-id))
+          (--etm-ssh-log "*** ERROR: Failed to create connection to %s ***" host))))
     
+    (--etm-ssh-log "Final connection-id result: %s" (or connection-id "NIL"))
+    (--etm-ssh-log "=== SSH CONNECTION DEBUG END ===")
     connection-id))
 
 (defun etm-cleanup-unused-connections ()
@@ -100,7 +130,7 @@ This actively terminates idle connections and respects the ControlPersist settin
     (--etm-ssh-log "Found %d active connections" (length active-connections))
     
     ;; Find all control socket files in ~/.ssh
-    (setq all-connections (directory-files "~/.ssh" t "^\\.control.*:[0-9]+-"))
+    (setq all-connections (directory-files "~/.ssh" t "^\\.control.*"))
     (--etm-ssh-log "Found %d total connection files" (length all-connections))
     
     ;; Close connections that aren't actively in use
@@ -126,15 +156,22 @@ This actively terminates idle connections and respects the ControlPersist settin
   "Register CONNECTION-ID for HOST with TAB-NAME."
   (if (not (and tab-name host connection-id))
       (progn
+        (--etm-ssh-log "*** ERROR: INCOMPLETE SSH CONNECTION INFO ***")
         (--etm-ssh-log "WARNING: Incomplete SSH connection info - tab:%s host:%s conn:%s"
                       (or tab-name "nil")
                       (or host "nil")
                       (or connection-id "nil"))
         nil)  ; Return nil on error
     
+    (--etm-ssh-log "=== REGISTERING SSH CONNECTION ===")
     (--etm-ssh-log "Registering SSH connection for tab '%s': %s@%s" 
                   tab-name connection-id host)
+    (--etm-ssh-log "Hash table before registration: %d entries" 
+                  (hash-table-count etm-ssh-connections))
     (puthash tab-name (cons host connection-id) etm-ssh-connections)
+    (--etm-ssh-log "Hash table after registration: %d entries" 
+                  (hash-table-count etm-ssh-connections))
+    (--etm-ssh-log "Registration complete for tab '%s'" tab-name)
     (message "Tab '%s' using SSH connection %s to %s" 
              tab-name connection-id host)))
 
@@ -151,12 +188,21 @@ This actively terminates idle connections and respects the ControlPersist settin
 (defun --etm-get-tab-ssh-connection (tab-name)
   "Get SSH connection for TAB-NAME.
 Returns (host . connection-id) or nil if no connection exists."
+  (--etm-ssh-log "=== RETRIEVING SSH CONNECTION FOR TAB ===")
+  (--etm-ssh-log "Looking up SSH connection for tab '%s'" tab-name)
+  (--etm-ssh-log "Hash table contains %d entries:" (hash-table-count etm-ssh-connections))
+  (maphash (lambda (tab connection)
+             (--etm-ssh-log "  Available: Tab '%s' -> host=%s connection=%s" 
+                           tab (car connection) (cdr connection)))
+           etm-ssh-connections)
   (let ((connection (gethash tab-name etm-ssh-connections nil)))
-    (when connection
-      (--etm-ssh-log "Retrieved SSH connection for tab '%s': %s@%s" 
-                    tab-name 
-                    (cdr connection)
-                    (car connection)))
+    (if connection
+        (progn
+          (--etm-ssh-log "*** CONNECTION FOUND FOR TAB '%s' ***" tab-name)
+          (--etm-ssh-log "Retrieved SSH connection: %s@%s" 
+                        (cdr connection)
+                        (car connection)))
+      (--etm-ssh-log "*** NO CONNECTION FOUND FOR TAB '%s' ***" tab-name))
     connection))
 
 (provide 'etm-core-ssh-connection)
