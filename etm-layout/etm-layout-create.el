@@ -223,20 +223,20 @@ PATH-HOST is the specific host for this window, WINDOW-INDEX is for unique namin
                               (--etm-ssh-resolve-hostname effective-host))))
             (progn
               (--etm-ssh-log "*** USING EXISTING SSH CONTROLLER ***")
-              (--etm-ssh-log "ControlPath command: ssh -o ControlPath=~/.ssh/%s %s" 
+              (--etm-ssh-log "ControlPath command: ssh -o ControlPath=~/.ssh/%s -o ControlMaster=no %s" 
                             connection-id effective-host)
               (message "Reusing SSH controller for %s (window %d,%d)" effective-host x y)
               (vterm-send-string
-               (format "ssh -o ControlPath=~/.ssh/%s %s\n" 
+               (format "ssh -o ControlPath=~/.ssh/%s -o ControlMaster=no %s\n" 
                        connection-id effective-host)))
           ;; Otherwise create a regular connection
           (progn
             (--etm-ssh-log "*** WARNING: NO CONTROLLER REUSE - CREATING NEW SSH ***")
             (--etm-ssh-log "This may create duplicate SSH connections!")
-            (--etm-ssh-log "Fallback SSH command: ssh -Y %s" effective-host)
+            (--etm-ssh-log "Fallback SSH command: ssh -o ControlMaster=auto -o ControlPersist=1h -Y %s" effective-host)
             (message "WARNING: Creating new SSH connection to %s (should reuse!)" effective-host)
             (vterm-send-string
-             (format "ssh -Y %s\n" effective-host)))))
+             (format "ssh -o ControlMaster=auto -o ControlPersist=1h -Y %s\n" effective-host)))))
       
       (sit-for 0.3)
       (vterm-send-string
