@@ -1,7 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-23 12:03:28>
+;;; Timestamp: <2025-05-19 12:01:15>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-layout/etm-layout-load.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (defun --etm-load-file-silent
     (file-path)
@@ -31,6 +34,7 @@ Arguments:
     (--etm-load-file-silent file)))
 
 (--etm-layout-load-all)
+
 
 (provide 'etm-layout-load)
 

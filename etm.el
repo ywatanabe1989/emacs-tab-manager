@@ -1,7 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-10 08:24:08>
-;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm.el
+;;; Timestamp: <2025-05-19 07:05:10>
+;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 ;;; Commentary:
 ;;
@@ -24,9 +27,6 @@
 ;; (etm-init)  ;; Initializes and enables enhanced tab-bar mode
 ;;
 
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
-
-
 ;;; Code:
 
 ;; 1. Load path setup
@@ -36,7 +36,7 @@
                  (or load-file-name buffer-file-name))))
   (add-to-list 'load-path this-dir)
   (dolist (dir '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
-                 "etm-layout" "etm-keys" 
+                 "etm-layout" "etm-keys"
                  "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
@@ -70,32 +70,34 @@
 
 ;; Navigation functionality (moved to etm-buffer-navigation)
 (require 'etm-buffer-navigation)
-(provide 'etm-navigation)
 
 ;; Tab creation functionality (moved to etm-tabs-new-and-rename)
 (require 'etm-tabs-new-and-rename)
-(provide 'etm-new-and-rename)
 
 ;; Variables (moved to etm-core-variables)
 (require 'etm-core-variables)
-(provide 'etm-variables)
 
 ;; Initialization (moved to etm-core-init)
 (require 'etm-core-init)
-(provide 'etm-init)
 
 ;; Tab ID management (moved to etm-core-tab-id)
 (require 'etm-core-tab-id)
-(provide 'etm-tab-id)
 
+(defalias 'save-layout 'etm-layout-save)
+
+(defalias 'save-layout-startup 'etm-startup-edit-layouts)
+
+(etm-init)
 ;; 6. Package finalization
 ;; ----------------------------------------
 
+;;; etm.el ends here
+
+
 (provide 'etm)
 
-(when (not load-file-name)
+(when
+    (not load-file-name)
   (message "etm.el loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))
-
-;;; etm.el ends here

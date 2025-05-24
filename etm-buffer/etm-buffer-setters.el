@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-10 09:05:01>
+;;; Timestamp: <2025-05-14 13:53:23>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-setters.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -9,8 +9,7 @@
 (require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
-(defun etm-buffer-set
-    (type &optional tab-name buffer-name)
+(defun etm-buffer-set (type &optional tab-name buffer-obj)
   "Set buffer as TYPE for tab."
   (interactive
    (list
@@ -22,29 +21,39 @@
               (append etm-registered-buffer-types
                       etm-custom-buffer-types))
     (error "Invalid buffer type"))
+
   (unless tab-name
     (setq tab-name
           (alist-get 'name
                      (tab-bar--current-tab))))
-  (unless buffer-name
-    (setq buffer-name
-          (buffer-name)))
-  (get-buffer-create buffer-name)
-  (let
-      ((tab-entry
-        (assoc tab-name etm-registered-buffers)))
+
+  (unless buffer-obj
+    (setq buffer-obj (current-buffer)))
+
+  (let* ((buffer-name (buffer-name buffer-obj))
+         (buffer-id (with-current-buffer buffer-obj
+                      (unless etm-buffer-id
+                        (setq-local etm-buffer-id
+                                    (format "etm-%s-%s"
+                                            (format-time-string "%s")
+                                            (random 10000))))
+                      etm-buffer-id))
+         (tab-entry (assoc tab-name etm-registered-buffers)))
+
     (if tab-entry
         (setcdr tab-entry
                 (cons
-                 (cons type buffer-name)
+                 (cons type buffer-id)
                  (assoc-delete-all type
                                    (cdr tab-entry))))
       (push
        (cons tab-name
              (list
-              (cons type buffer-name)))
-       etm-registered-buffers)))
-  (message "Set %s buffer for tab %s: %s" type tab-name buffer-name))
+              (cons type buffer-id)))
+       etm-registered-buffers))
+
+    (message "Set %s buffer for tab %s: %s (ID: %s)"
+             type tab-name buffer-name buffer-id)))
 
 ;; Define functions
 

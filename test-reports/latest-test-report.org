@@ -1,0 +1,559 @@
+#+TITLE: Elisp Test Report
+#+AUTHOR: ywatanabe
+#+DATE: 2025-05-22 23:52:03 Created by https://github.com/ywatanabe1989/emacs-test
+
+* Test Results Summary
+
+- Passed: 57
+- Failed: 11
+- Skipped: 0
+- Timeout (= 10 s): 0
+- Duplicates: 0
+- Total: 68
+- Total Time: 0.64 seconds
+- Success Rate: 83.8%
+
+* Passed Tests (68)
+** test-etm-buffer-checkers.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-name-only][test-etm-buffer-registered-p-with-name-only]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-name-only
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-name-only
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1")) :form
+          (--etm-buffer-registered-p "buffer1") :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-type][test-etm-buffer-registered-p-with-type]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-type
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-type
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1" "home")) :form
+          (--etm-buffer-registered-p "buffer1" "home") :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-tab][test-etm-buffer-registered-p-with-tab]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-tab
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-tab
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1" nil '((name . "tab1"))))
+          :form (--etm-buffer-registered-p "buffer1" nil ((name . "tab1")))
+          :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-protected-p][test-etm-buffer-protected-p]]
+** test-etm-buffer-getters.el (3 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-basic][test---etm-buffer-get-basic]]
+  + Error details:
+    Selector: test---etm-buffer-get-basic
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test---etm-buffer-get-basic
+        (ert-test-failed
+         ((should (string= (--etm-buffer-get "home" '(...)) "buffer1")) :form
+          (string= nil "buffer1") :value nil :explanation
+          (arrays-of-different-length 3 7 "nil" "buffer1" first-mismatch-at 0)))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-nonexistent][test---etm-buffer-get-nonexistent]]
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-wrong-tab][test---etm-buffer-get-wrong-tab]]
+** test-etm-buffer-jumpers.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-existing][test-etm-navigation-jump-by-buffer-type-existing]]
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-navigation-jump-by-buffer-type-nonexistent][test-etm-navigation-jump-by-buffer-type-nonexistent]]
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-function][test-etm-buffer-define-buffer-type-jumper-function]]
+- [[file:tests/etm-buffer/test-etm-buffer-jumpers.el::test-etm-buffer-define-buffer-type-jumper-functions][test-etm-buffer-define-buffer-type-jumper-functions]]
+** test-etm-buffer-kill-or-bury.el (3 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-registered][test-etm-buffer-kill-or-bury-registered]]
+  + Error details:
+    Selector: test-etm-buffer-kill-or-bury-registered
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-kill-or-bury-registered
+        (ert-test-failed
+         ((should (buffer-live-p (get-buffer buffer-name))) :form
+          (buffer-live-p nil) :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-protected][test-etm-buffer-kill-or-bury-protected]]
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-unregistered][test-etm-buffer-kill-or-bury-unregistered]]
+** test-etm-buffer-navigation.el (2 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-loadable][test-etm-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-functions-exist][test-etm-navigation-functions-exist]]
+** test-etm-buffer-setters.el (4 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-set-basic][test-etm-buffer-set-basic]]
+  + Error details:
+    Selector: test-etm-buffer-set-basic
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-set-basic
+        (wrong-type-argument bufferp " *temp*-10833")
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-set-invalid-type][test-etm-buffer-set-invalid-type]]
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-function][test-etm-buffer-define-buffer-type-setter-function]]
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-define-buffer-type-setter-functions][test-etm-buffer-define-buffer-type-setter-functions]]
+** test-etm-close-core.el (3 tests)
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-by-name][test-etm-close-by-name]]
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-by-name-last-tab][test-etm-close-by-name-last-tab]]
+- [[file:tests/etm-close/test-etm-close-core.el::test-etm-close-all][test-etm-close-all]]
+** test-etm-close-utils.el (4 tests)
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-by-id][test-etm-close-by-id]]
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-and-next][test-etm-close-and-next]]
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-by-name-and-prev][test-etm-close-by-name-and-prev]]
+- [[file:tests/etm-close/test-etm-close-utils.el::test-etm-close-others][test-etm-close-others]]
+** test-etm-core-helpers.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-loadable][test-etm-core-helpers-loadable]]
+- [[file:tests/etm-core/test-etm-core-helpers.el::test-etm-core-helpers-functions-exist][test-etm-core-helpers-functions-exist]]
+** test-etm-core-init.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-loads][test-etm-init-loads]]
+- [[file:tests/etm-core/test-etm-core-init.el::test-etm-init-function][test-etm-init-function]]
+** test-etm-core-ssh-connection.el (4 tests)
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-connection-registry][test-etm-ssh-connection-registry]]
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-connection-creation][test-etm-ssh-connection-creation]]
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-localhost-shortcut][test-etm-ssh-localhost-shortcut]]
+  + Error details:
+    Selector: test-etm-ssh-localhost-shortcut
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-ssh-localhost-shortcut
+        Test handling of ’l’ as shortcut for ’localhost’.
+        (end-of-file "Error reading from stdin")
+    
+    
+    
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-debugging][test-etm-ssh-debugging]]
+  + Error details:
+    Selector: test-etm-ssh-debugging
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-ssh-debugging
+        Test SSH connection debugging functionality.
+        (wrong-type-argument stringp nil)
+    
+    
+    
+** test-etm-core-variables-custom.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-variables-custom.el::test-etm-variables-loadable][test-etm-variables-loadable]]
+- [[file:tests/etm-core/test-etm-core-variables-custom.el::test-etm-variables-constants-exist][test-etm-variables-constants-exist]]
+** test-etm-core-variables.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-loadable][test-etm-core-variables-loadable]]
+- [[file:tests/etm-core/test-etm-core-variables.el::test-etm-core-variables-constants-exist][test-etm-core-variables-constants-exist]]
+** test-etm-keys-command-map.el (2 tests)
+- [[file:tests/etm-keys/test-etm-keys-command-map.el::test-etm-keys-command-map-loads][test-etm-keys-command-map-loads]]
+- [[file:tests/etm-keys/test-etm-keys-command-map.el::test-etm-command-map-binding][test-etm-command-map-binding]]
+** test-etm-keys-layout.el (2 tests)
+- [[file:tests/etm-keys/test-etm-keys-layout.el::test-etm-keys-layout-loadable][test-etm-keys-layout-loadable]]
+- [[file:tests/etm-keys/test-etm-keys-layout.el::test-etm-keys-layout-bindings][test-etm-keys-layout-bindings]]
+** test-etm-keys-navigation.el (10 tests)
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-loadable][test-etm-keys-navigation-loadable]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m1-bound][test-etm-keys-navigation-m1-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m2-bound][test-etm-keys-navigation-m2-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m3-bound][test-etm-keys-navigation-m3-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m4-bound][test-etm-keys-navigation-m4-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m5-bound][test-etm-keys-navigation-m5-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m6-bound][test-etm-keys-navigation-m6-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m7-bound][test-etm-keys-navigation-m7-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m8-bound][test-etm-keys-navigation-m8-bound]]
+- [[file:tests/etm-keys/test-etm-keys-navigation.el::test-etm-keys-navigation-m9-bound][test-etm-keys-navigation-m9-bound]]
+** test-etm-layout-core.el (3 tests)
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-loadable][test-etm-layout-create-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-cleanup-exists][test-etm-layout-cleanup-exists]]
+  + Error details:
+    Selector: test-etm-layout-cleanup-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-layout-cleanup-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-cleanup)) :form
+          (fboundp --etm-layout-cleanup) :value nil))
+    
+    
+    
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-exists][test-etm-layout-create-exists]]
+  + Error details:
+    Selector: test-etm-layout-create-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-layout-create-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-create)) :form
+          (fboundp --etm-layout-create) :value nil))
+    
+    
+    
+** test-etm-layout-load.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-load.el::test-etm-layout-load-loadable][test-etm-layout-load-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-load.el::test-etm-layout-load-function-exists][test-etm-layout-load-function-exists]]
+** test-etm-layout-open.el (4 tests)
+- [[file:tests/etm-layout/test-etm-layout-open.el::test-etm-layout-list-available][test-etm-layout-list-available]]
+- [[file:tests/etm-layout/test-etm-layout-open.el::test-etm-layout-function-name][test-etm-layout-function-name]]
+- [[file:tests/etm-layout/test-etm-layout-open.el::test-etm-layout-file-path][test-etm-layout-file-path]]
+- [[file:tests/etm-layout/test-etm-layout-open.el::test-etm-layout-open-file-exists][test-etm-layout-open-file-exists]]
+** test-etm-layout-save.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-save.el::test-etm-layout-save-loadable][test-etm-layout-save-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-save.el::test-etm-layout-save-functions-exist][test-etm-layout-save-functions-exist]]
+** test-etm-layout-window.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-window.el::test-etm-layout-window-loadable][test-etm-layout-window-loadable]]
+- [[file:tests/etm-layout/test-etm-layout-window.el::test-etm-layout-window-functions-exist][test-etm-layout-window-functions-exist]]
+** test-etm-new-and-rename.el (2 tests)
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-loadable][test-etm-new-and-rename-loadable]]
+- [[file:tests/etm-tabs/test-etm-new-and-rename.el::test-etm-new-and-rename-functions-exist][test-etm-new-and-rename-functions-exist]]
+* Failed Tests (11)
+** test-etm-buffer-checkers.el (3 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-name-only][test-etm-buffer-registered-p-with-name-only]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-name-only
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-name-only
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1")) :form
+          (--etm-buffer-registered-p "buffer1") :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-type][test-etm-buffer-registered-p-with-type]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-type
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-type
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1" "home")) :form
+          (--etm-buffer-registered-p "buffer1" "home") :value nil))
+    
+    
+    
+- [[file:tests/etm-buffer/test-etm-buffer-checkers.el::test-etm-buffer-registered-p-with-tab][test-etm-buffer-registered-p-with-tab]]
+  + Error details:
+    Selector: test-etm-buffer-registered-p-with-tab
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-registered-p-with-tab
+        (ert-test-failed
+         ((should (--etm-buffer-registered-p "buffer1" nil '((name . "tab1"))))
+          :form (--etm-buffer-registered-p "buffer1" nil ((name . "tab1")))
+          :value nil))
+    
+    
+    
+** test-etm-buffer-getters.el (1 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-getters.el::test---etm-buffer-get-basic][test---etm-buffer-get-basic]]
+  + Error details:
+    Selector: test---etm-buffer-get-basic
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test---etm-buffer-get-basic
+        (ert-test-failed
+         ((should (string= (--etm-buffer-get "home" '(...)) "buffer1")) :form
+          (string= nil "buffer1") :value nil :explanation
+          (arrays-of-different-length 3 7 "nil" "buffer1" first-mismatch-at 0)))
+    
+    
+    
+** test-etm-buffer-kill-or-bury.el (1 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-kill-or-bury.el::test-etm-buffer-kill-or-bury-registered][test-etm-buffer-kill-or-bury-registered]]
+  + Error details:
+    Selector: test-etm-buffer-kill-or-bury-registered
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-kill-or-bury-registered
+        (ert-test-failed
+         ((should (buffer-live-p (get-buffer buffer-name))) :form
+          (buffer-live-p nil) :value nil))
+    
+    
+    
+** test-etm-buffer-navigation.el (1 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-navigation.el::test-etm-navigation-loadable][test-etm-navigation-loadable]]
+  + Error details:
+    Selector: test-etm-navigation-loadable
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-navigation-loadable
+        (file-missing "Cannot open load file" "No such file or directory"
+    		  "etm-navigation")
+    
+    
+    
+** test-etm-buffer-setters.el (1 tests)
+- [[file:tests/etm-buffer/test-etm-buffer-setters.el::test-etm-buffer-set-basic][test-etm-buffer-set-basic]]
+  + Error details:
+    Selector: test-etm-buffer-set-basic
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-buffer-set-basic
+        (wrong-type-argument bufferp " *temp*-10833")
+    
+    
+    
+** test-etm-core-ssh-connection.el (2 tests)
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-localhost-shortcut][test-etm-ssh-localhost-shortcut]]
+  + Error details:
+    Selector: test-etm-ssh-localhost-shortcut
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-ssh-localhost-shortcut
+        Test handling of ’l’ as shortcut for ’localhost’.
+        (end-of-file "Error reading from stdin")
+    
+    
+    
+- [[file:tests/etm-core/test-etm-core-ssh-connection.el::test-etm-ssh-debugging][test-etm-ssh-debugging]]
+  + Error details:
+    Selector: test-etm-ssh-debugging
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-ssh-debugging
+        Test SSH connection debugging functionality.
+        (wrong-type-argument stringp nil)
+    
+    
+    
+** test-etm-layout-core.el (2 tests)
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-cleanup-exists][test-etm-layout-cleanup-exists]]
+  + Error details:
+    Selector: test-etm-layout-cleanup-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-layout-cleanup-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-cleanup)) :form
+          (fboundp --etm-layout-cleanup) :value nil))
+    
+    
+    
+- [[file:tests/etm-layout/test-etm-layout-core.el::test-etm-layout-create-exists][test-etm-layout-create-exists]]
+  + Error details:
+    Selector: test-etm-layout-create-exists
+    Passed:  0
+    Failed:  1 (1 unexpected)
+    Skipped: 0
+    Total:   1/1
+    
+    Started at:   2025-05-22 23:52:03+1000
+    Finished.
+    Finished at:  2025-05-22 23:52:03+1000
+    
+    F
+    
+    F test-etm-layout-create-exists
+        (ert-test-failed
+         ((should (fboundp '--etm-layout-create)) :form
+          (fboundp --etm-layout-create) :value nil))
+    
+    
+    

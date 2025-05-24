@@ -115,6 +115,7 @@ run_tests_elisp() {
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout/saved-layouts\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-tabs\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-core\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/mocks\\\")\" "
     
     # Load elisp-test and etm
     emacs_cmd+=" --eval \"(require 'elisp-test)\" "

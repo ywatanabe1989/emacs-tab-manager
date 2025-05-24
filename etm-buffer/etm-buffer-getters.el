@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-10 08:18:22>
+;;; Timestamp: <2025-05-14 12:42:55>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-getters.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -9,8 +9,7 @@
 (require 'etm-core-variables)
 (require 'etm-buffer-checkers)
 
-(defun --etm-buffer-get
-    (type &optional tab)
+(defun --etm-buffer-get (type &optional tab)
   "Get buffer of TYPE from TAB."
   (interactive
    (list
@@ -20,15 +19,20 @@
   (unless tab
     (setq tab
           (tab-bar--current-tab)))
-  (let*
-      ((tab-name
-        (alist-get 'name tab))
-       (tab-entry
-        (assoc tab-name etm-registered-buffers))
-       (buffer-entry
-        (assoc type
-               (cdr tab-entry))))
-    (cdr buffer-entry)))
+  (let* ((tab-name
+          (alist-get 'name tab))
+         (tab-entry
+          (assoc tab-name etm-registered-buffers))
+         (buffer-id
+          (cdr (assoc type (cdr tab-entry)))))
+
+    ;; Return the buffer with matching ID
+    (when buffer-id
+      (cl-find-if (lambda (buf)
+                    (with-current-buffer buf
+                      (and (local-variable-p 'etm-buffer-id)
+                           (string= etm-buffer-id buffer-id))))
+                  (buffer-list)))))
 
 
 (provide 'etm-buffer-getters)

@@ -1,7 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-02-13 15:29:49>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/tests/test-etm-buffer-checkers.el
+;;; Timestamp: <2025-05-10 16:56:44>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/tests/etm-buffer/test-etm-buffer-checkers.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 (require 'ert)
 (require 'etm-buffer-checkers)
@@ -50,6 +53,7 @@
      (--etm-buffer-protected-p "*scratch*"))
     (should-not
      (--etm-buffer-protected-p "regular-buffer"))))
+
 
 (provide 'test-etm-buffer-checkers)
 

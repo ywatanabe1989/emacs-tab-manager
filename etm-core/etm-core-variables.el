@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-09 19:42:30>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-core/etm-core-variables.el
+;;; Timestamp: <2025-05-14 12:36:10>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-core/etm-core-variables.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+
 
 ;;; Commentary:
 ;; Core variables for ETM (Emacs Tab Manager)
@@ -109,6 +110,12 @@ and LAYOUT is a layout configuration sexp."
   :type
   '(alist :key-type string :value-type sexp)
   :group 'etm)
+
+;; Add this near the other buffer-related variables
+
+(defvar-local etm-buffer-id nil
+  "Buffer-local variable to store a persistent ID for ETM buffer tracking.")
+
 
 (provide 'etm-core-variables)
 
