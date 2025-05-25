@@ -8,6 +8,7 @@
 (require 'etm-core-variables)
 (require 'etm-layout)
 (require 'etm-layout-load)
+(require 'etm-groups)
 
 ;;;###autoload
 (defun etm-init
@@ -31,7 +32,9 @@
        (:inherit tab-bar :background "dark green" :foreground "gray60"))))
    '(tab-bar-tab-inactive
      ((t
-       (:inherit tab-bar :background "gray20" :foreground "gray80"))))))
+       (:inherit tab-bar :background "gray20" :foreground "gray80")))))
+  ;; Initialize groups system
+  (etm-groups-init))
 
 (provide 'etm-core-init)
 
