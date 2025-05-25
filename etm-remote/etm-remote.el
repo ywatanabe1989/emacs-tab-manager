@@ -15,9 +15,9 @@
 (require 'etm-remote-connection)
 (require 'etm-remote-indicators)
 (require 'etm-remote-navigation)
+(require 'etm-remote-errors)
 
 ;; Future modules will be added here:
-;; (require 'etm-remote-errors)
 ;; (require 'etm-remote-layout)
 
 (defgroup etm-remote nil
@@ -25,7 +25,7 @@
   :group 'etm
   :prefix "etm-remote-")
 
-(defvar etm-remote-version "0.1.0"
+(defvar etm-remote-version "0.4.0"
   "Version of ETM remote support module.")
 
 ;;;###autoload
@@ -36,6 +36,8 @@
   (etm-remote-start-health-monitoring)
   ;; Initialize visual indicators
   (etm-remote-indicators-init)
+  ;; Initialize error handling
+  (etm-remote-errors-init)
   ;; Load keybindings
   (require 'etm-remote-keys)
   (message "ETM remote support initialized (v%s)" etm-remote-version))
@@ -47,6 +49,8 @@
   (etm-remote-stop-health-monitoring)
   ;; Cleanup visual indicators
   (etm-remote-indicators-cleanup)
+  ;; Cleanup error handling
+  (etm-remote-errors-cleanup)
   ;; Cleanup all connections
   (etm-remote-cleanup-all)
   (message "ETM remote support cleaned up"))
