@@ -36,6 +36,8 @@
 (require 'etm-buffer-jumpers)     ;; Buffer jumping functions
 (require 'etm-buffer-checkers)    ;; Registration status checkers
 (require 'etm-buffer-navigation)  ;; Navigation between typed buffers
+(require 'etm-buffer-numeric)     ;; Numeric buffer system
+(require 'etm-buffer-numeric-indicators) ;; Visual indicators for numeric buffers
 
 (provide 'etm-buffer)
 

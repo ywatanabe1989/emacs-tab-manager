@@ -17,6 +17,11 @@ A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emac
   - Navigate efficiently between typed buffers
   - Smart buffer killing (kill/hide based on registration status)
 
+- **Numeric Buffer System** (NEW in v2.1.0)
+  - Register buffers with numeric keys (0-9) for quick access
+  - Per-tab numeric buffer assignments
+  - Jump to numeric buffers with C-0 through C-9
+
 - **Layout Management**
   - Save and load window configurations
   - Remote host support with path mirroring
@@ -38,6 +43,13 @@ A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emac
 ```elisp
 M-h/s/r  ; Jump to home/semi-home/results buffer
 M-H/S/R  ; Set current buffer as home/semi-home/results
+```
+
+### Numeric Buffer System
+
+```elisp
+C-0..C-9 ; Jump to numeric buffer 0-9
+M-t 0..9 ; Register current buffer as numeric buffer 0-9
 ```
 
 ### Tab Navigation and Management
