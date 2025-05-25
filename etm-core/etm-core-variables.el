@@ -123,6 +123,24 @@ and LAYOUT is a layout configuration sexp."
   "Alist mapping tab names to numeric buffer configurations.
 Each entry is (TAB-NAME . ((ID . BUFFER-NAME) ...)).")
 
+;; Numeric buffer visual indicators
+;; ----------------------------------------
+
+(defcustom etm-numeric-indicators-enabled t
+  "Whether to show numeric buffer indicators in tab-bar and mode-line."
+  :type 'boolean
+  :group 'etm)
+
+(defcustom etm-numeric-indicator-format "[%s]"
+  "Format string for numeric indicators. %s is replaced with slot info."
+  :type 'string
+  :group 'etm)
+
+(defcustom etm-numeric-indicator-separator " "
+  "Separator between slot numbers in indicators."
+  :type 'string
+  :group 'etm)
+
 ;; Add this near the other buffer-related variables
 
 (defvar-local etm-buffer-id nil
