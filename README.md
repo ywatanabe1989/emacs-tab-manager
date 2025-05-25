@@ -10,6 +10,8 @@
 
 A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emacs/blob/master/lisp/tab-bar.el) that enhances tab and buffer management with type-based organization.
 
+📚 **[Quick Start Guide](docs/QUICK-START.md)** | 🏗️ **[Architecture](ARCHITECTURE.md)** | 🤝 **[Contributing](CONTRIBUTING.md)**
+
 ## Features
 
 - **Buffer Type System** (home, semi-home, results by default)
