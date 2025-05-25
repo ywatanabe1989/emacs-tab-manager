@@ -12,6 +12,7 @@
 
 (require 'etm-keys-command-map)
 (require 'etm-remote-navigation)
+(require 'etm-remote-errors)
 
 (defvar etm-remote-command-map (make-sparse-keymap)
   "Keymap for ETM remote commands.")
@@ -27,6 +28,9 @@
 (define-key etm-remote-command-map "t" 'etm-remote-toggle-local-remote)
 (define-key etm-remote-command-map "h" 'etm-remote-jump-home)
 
+;; Error monitoring
+(define-key etm-remote-command-map "e" 'etm-remote-monitor-errors)
+
 ;; Help command
 (defun etm-remote-help ()
   "Show help for ETM remote commands."
@@ -37,7 +41,8 @@
                    "C-x t r p - Previous remote buffer\n"
                    "C-x t r l - Switch to local buffer\n"
                    "C-x t r t - Toggle local/remote\n"
-                   "C-x t r h - Jump to remote home")))
+                   "C-x t r h - Jump to remote home\n"
+                   "C-x t r e - Monitor errors")))
 
 (define-key etm-remote-command-map "?" 'etm-remote-help)
 
