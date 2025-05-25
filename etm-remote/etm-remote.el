@@ -14,9 +14,9 @@
 
 (require 'etm-remote-connection)
 (require 'etm-remote-indicators)
+(require 'etm-remote-navigation)
 
 ;; Future modules will be added here:
-;; (require 'etm-remote-navigation)
 ;; (require 'etm-remote-errors)
 ;; (require 'etm-remote-layout)
 
@@ -36,6 +36,8 @@
   (etm-remote-start-health-monitoring)
   ;; Initialize visual indicators
   (etm-remote-indicators-init)
+  ;; Load keybindings
+  (require 'etm-remote-keys)
   (message "ETM remote support initialized (v%s)" etm-remote-version))
 
 (defun etm-remote-cleanup ()
