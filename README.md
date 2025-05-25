@@ -88,9 +88,21 @@ M-x etm-layout-save RET my-layout RET
 ;; Creates etm-open-my-layout.el in etm-layout-save-dir
 ;; Default location: emacs-tab-manager/etm-layout/saved-layouts/
 
+;; Preview layouts (NEW in v2.2.0)
+M-t P            ; List all layouts with preview capability
+M-t p            ; Preview specific layout
+M-t l            ; Alternative key for layout list
+
 ;; Loading layouts
 M-x etm-open-my-layout   ; Load saved layout
 M-x my-layout RET        ; Load saved layout (alias)
 ```
+
+### Layout Preview System
+The layout preview feature allows you to see layout contents before loading:
+- ASCII diagram showing window arrangement
+- Window types (file/shell) and paths
+- Remote host information
+- Navigate with RET to load, SPC/p to preview
 
 <!-- EOF -->
