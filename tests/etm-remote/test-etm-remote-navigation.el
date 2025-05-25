@@ -50,14 +50,42 @@
   
   (fset 'switch-to-buffer
         (lambda (buffer)
-          (setq test-etm-remote-nav-current-buffer buffer))))
+          (setq test-etm-remote-nav-current-buffer buffer)))
+  
+  ;; Mock file-remote-p to work with our test buffers
+  (fset 'file-remote-p
+        (lambda (file &optional identification)
+          (when file
+            (cond
+             ((string-match "^/ssh:user@\\([^:]+\\):" file)
+              (if (eq identification 'host)
+                  (match-string 1 file)
+                (match-string 0 file)))
+             (t nil)))))
+  
+  ;; Mock completing-read to return first choice
+  (fset 'completing-read
+        (lambda (prompt choices &rest _)
+          (if (consp (car choices))
+              (caar choices)
+            (car choices))))
+  
+  ;; Initialize buffer-files association list
+  (setq test-etm-remote-nav-buffer-files nil))
+
+(defvar test-etm-remote-nav-buffer-files nil
+  "Alist mapping buffers to their file names.")
 
 (defun test-etm-remote-navigation-teardown ()
-  "Tear down test environment.")
+  "Tear down test environment."
+  (setq test-etm-remote-nav-buffer-files nil))
 
 (defun test-etm-remote-nav-create-mock-buffer (name file-name)
   "Create a mock buffer with NAME and FILE-NAME."
   (let ((buffer (get-buffer-create name)))
+    ;; Store the buffer-file association
+    (push (cons buffer file-name) test-etm-remote-nav-buffer-files)
+    ;; Also set buffer-file-name in the actual buffer
     (with-current-buffer buffer
       (setq buffer-file-name file-name))
     buffer))
@@ -184,8 +212,8 @@
     (test-etm-remote-navigation-teardown)))
 
 ;; Run tests if executed directly
-(when (and (boundp 'load-file-name) load-file-name)
-  (ert-run-tests-batch-and-exit))
+;; (when (and (boundp 'load-file-name) load-file-name)
+;;   (ert-run-tests-batch-and-exit))
 
 (provide 'test-etm-remote-navigation)
 ;;; test-etm-remote-navigation.el ends here

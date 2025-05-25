@@ -202,8 +202,8 @@
     (test-etm-remote-errors-teardown)))
 
 ;; Run tests if executed directly
-(when (and (boundp 'load-file-name) load-file-name)
-  (ert-run-tests-batch-and-exit))
+;; (when (and (boundp 'load-file-name) load-file-name)
+;;   (ert-run-tests-batch-and-exit))
 
 (provide 'test-etm-remote-errors)
 ;;; test-etm-remote-errors.el ends here

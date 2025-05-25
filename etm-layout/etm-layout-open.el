@@ -14,6 +14,9 @@
 (require 'etm-core-ssh-helpers)  ; For host selection
 (require 'cl-lib)
 
+(defvar etm-layout-load-hook nil
+  "Hook run after a layout is loaded.")
+
 (defun etm-layout-list-available ()
   "Return a list of available layout names without the 'etm-open-' prefix."
   (let
@@ -54,7 +57,9 @@ If FORCE-RELOAD is non-nil (C-u prefix), skip reload and use cached version."
         (progn
           (when force-reload 
             (message "Using cached %s layout" layout-name))
-          (funcall function-name))
+          (funcall function-name)
+          ;; Run load hook
+          (run-hooks 'etm-layout-load-hook))
       (error "Function %s not found after loading file" function-name))))
 
 (defun etm-layout-open-with-host (layout-name &optional host)
