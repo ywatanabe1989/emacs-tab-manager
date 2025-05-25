@@ -21,6 +21,10 @@
 ;; - Layout management
 ;;   - Save/load window configurations
 ;;   - Remote host support with path mirroring
+;; - Smart Suggestions
+;;   - Machine learning-inspired pattern tracking
+;;   - Context-aware buffer recommendations
+;;   - Adaptive scoring based on usage patterns
 ;;
 ;; Usage:
 ;; (require 'etm)
@@ -37,7 +41,7 @@
   (add-to-list 'load-path this-dir)
   (dolist (dir '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
                  "etm-layout" "etm-keys" "etm-groups" "etm-remote"
-                 "etm-layout/saved-layouts"))
+                 "etm-smart" "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
 
@@ -56,6 +60,7 @@
 (require 'etm-keys)    ;; Keybindings for ETM functions
 (require 'etm-groups)  ;; Buffer grouping system
 (require 'etm-remote nil t)  ;; Enhanced remote support (optional)
+(require 'etm-smart nil t)   ;; Smart Suggestions (optional)
 
 ;; 4. Initialization and startup
 ;; ----------------------------------------

@@ -48,7 +48,16 @@ Quick access to frequently used buffers:
 
 Visual indicators show occupied slots in tab names.
 
-### 4. Layout Management
+### 4. Smart Suggestions (NEW!)
+Let ETM learn your workflow and suggest buffers:
+
+- `M-x etm-smart-mode`: Enable Smart Suggestions
+- `C-x t S s`: Switch to suggested buffer
+- `C-x t S S`: Show all suggestions
+
+ETM learns from your buffer switching patterns and provides context-aware recommendations.
+
+### 5. Layout Management
 
 #### Save Current Layout
 ```
