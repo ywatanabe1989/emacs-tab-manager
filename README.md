@@ -30,10 +30,18 @@ A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emac
   - Quick navigation within and between groups
   - Visual indicators in tab-bar and mode-line
 
+- **Enhanced Remote Support** (NEW in v2.4.0)
+  - Multi-method TRAMP connection management (SSH, FTP, sudo, docker, kubernetes)
+  - Visual indicators for remote connections in tab names, buffer names, and mode-line
+  - Remote-aware navigation commands
+  - Automatic connection health monitoring
+  - Persistent remote connections with layouts
+
 - **Layout Management**
   - Save and load window configurations
   - Remote host support with path mirroring
   - Persistent layouts across sessions
+  - Automatic remote connection restoration
 
 ## Installation
 
@@ -85,6 +93,32 @@ M-t g i  ; Toggle group indicators
 ```
 
 Groups are tab-specific and buffers can belong to multiple groups. Visual indicators show group membership in the tab-bar and mode-line.
+
+### Enhanced Remote Support (NEW in v2.4.0)
+
+ETM now provides comprehensive support for working with remote files via TRAMP:
+
+```elisp
+;; Remote navigation
+C-x t r j    ; Jump to remote host
+C-x t r n    ; Next remote buffer
+C-x t r p    ; Previous remote buffer
+C-x t r l    ; List all remote buffers
+C-x t r L    ; Switch to local buffer
+
+;; Remote features
+- Tab names show connected hosts (e.g., "main [@server.com]")
+- Buffer names prefixed with host (e.g., "[server.com] file.txt")
+- Mode line indicators show connection status
+- Automatic connection health monitoring
+- Connection state saved with layouts
+```
+
+Remote connections are managed per-tab and support multiple simultaneous connections. Visual indicators help you track which host you're working on:
+- 🟢 Connected
+- 🟡 Connecting
+- 🔴 Error
+- ⚪ Disconnected
 
 ### Tab Navigation and Management
 
