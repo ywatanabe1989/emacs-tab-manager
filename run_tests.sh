@@ -16,7 +16,7 @@ NC='\033[0m' # No Color
 # Script to run elisp tests
 TEST_TIMEOUT=10
 ELISP_TEST_PATH="$HOME/.emacs.d/lisp/elisp-test"
-TESTS_DIR="${2:-$THIS_DIR/tests}"
+TESTS_DIR="$THIS_DIR/tests"
 DEBUG_MODE=false
 SINGLE_TEST_FILE=""
 
@@ -102,7 +102,6 @@ run_tests_elisp() {
     # Add load paths - only use absolute paths to avoid working directory issues
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$TESTS_DIR\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$target\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$ELISP_TEST_PATH\\\")\" "
     
     # Add module subdirectories to load path - make sure we use full absolute paths
@@ -114,7 +113,10 @@ run_tests_elisp() {
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout/saved-layouts\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-tabs\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-groups\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-remote\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-core\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-remote\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/mocks\\\")\" "
     
     # Load elisp-test and etm

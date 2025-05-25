@@ -103,8 +103,16 @@
         ;; Test remote buffer
         (with-temp-buffer
           (setq default-directory "/ssh:user@example.com:/home/user/")
-          (should (string-match "^\\[example\\.com\\]" 
-                                (etm-remote-prefix-buffer-name "remote-file.txt")))))
+          ;; Mock file-remote-p to return expected values
+          (cl-letf (((symbol-function 'file-remote-p)
+                     (lambda (file &optional identification)
+                       (if identification
+                           (if (eq identification 'host)
+                               "example.com"
+                             nil)
+                         "/ssh:user@example.com:"))))
+            (should (string-match "^\\[example\\.com\\]" 
+                                  (etm-remote-prefix-buffer-name "remote-file.txt"))))))
     (test-etm-remote-indicators-teardown)))
 
 (ert-deftest test-etm-remote-indicators-mode-line ()
@@ -168,8 +176,8 @@
     (test-etm-remote-indicators-teardown)))
 
 ;; Run tests if executed directly
-(when (and (boundp 'load-file-name) load-file-name)
-  (ert-run-tests-batch-and-exit))
+;; (when (and (boundp 'load-file-name) load-file-name)
+;;   (ert-run-tests-batch-and-exit))
 
 (provide 'test-etm-remote-indicators)
 ;;; test-etm-remote-indicators.el ends here
