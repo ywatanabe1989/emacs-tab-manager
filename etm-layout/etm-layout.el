@@ -11,6 +11,7 @@
 (require 'etm-layout-window)
 (require 'etm-layout-load)
 (require 'etm-layout-open)
+(require 'etm-layout-preview)
 
 
 (provide 'etm-layout)

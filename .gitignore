@@ -644,3 +644,4 @@ flycheck_*.el
 .claude/
 docs/to_claude
 *_v[0-9]*.el_
+*-fixed.el
