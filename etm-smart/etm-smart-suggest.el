@@ -155,6 +155,33 @@ PROMPT is the prompt string for completion."
         (switch-to-buffer buffer-name)
         (message "Switched to %s (suggestion #%d)" buffer-name number)))))
 
+;;; Buffer Display
+
+(defun etm-smart-suggest-show-buffer ()
+  "Show suggestions in a dedicated buffer."
+  (interactive)
+  (let ((suggestions (etm-smart-suggest-buffers))
+        (buf (get-buffer-create "*ETM Smart Suggestions*")))
+    (with-current-buffer buf
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert "ETM Smart Suggestions\n")
+        (insert "=====================\n\n")
+        
+        (if suggestions
+            (cl-loop for (buffer . score) in suggestions
+                     for i from 1
+                     do (insert (format "%d. %s (score: %.1f)\n"
+                                        i buffer score)))
+          (insert "No suggestions available\n"))
+        
+        (insert "\nPress 1-9 to switch to a suggestion\n")
+        (insert "Press q to quit\n"))
+      (goto-char (point-min))
+      (setq buffer-read-only t)
+      (use-local-map etm-smart-ui-suggestion-keymap))
+    (switch-to-buffer buf)))
+
 ;;; Learning and Feedback
 
 (defun etm-smart-learn-from-feedback (suggestion accepted-p)

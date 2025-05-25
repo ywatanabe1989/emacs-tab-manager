@@ -186,20 +186,21 @@
         (cl-letf (((symbol-function 'tab-bar--current-tab-name)
                    (lambda () "test-tab"))
                   ((symbol-function 'project-current)
-                   (lambda (&optional _) '(vc . "~/project")))
-                  ((symbol-function 'major-mode)
-                   'emacs-lisp-mode))
+                   (lambda (&optional _) '(vc . "~/project"))))
           
-          ;; Track switch with context
-          (etm-smart-track-switch "main.el" "test.el")
+          ;; Set major-mode as a variable
+          (let ((major-mode 'emacs-lisp-mode))
           
-          ;; Verify context was recorded
-          (let* ((patterns (gethash "test-tab" etm-smart-patterns))
-                 (pattern (car patterns))
-                 (context (etm-smart-pattern-context pattern)))
-            (should context)
-            (should (equal (etm-smart-context-project-root context) "~/project"))
-            (should (eq (etm-smart-context-major-mode context) 'emacs-lisp-mode)))))
+            ;; Track switch with context
+            (etm-smart-track-switch "main.el" "test.el")
+            
+            ;; Verify context was recorded
+            (let* ((patterns (gethash "test-tab" etm-smart-patterns))
+                   (pattern (car patterns))
+                   (context (etm-smart-pattern-context pattern)))
+              (should context)
+              (should (equal (etm-smart-context-project-root context) "~/project"))
+              (should (eq (etm-smart-context-major-mode context) 'emacs-lisp-mode))))))
     (test-etm-smart-patterns-teardown)))
 
 (ert-deftest test-etm-smart-pattern-limits ()
@@ -238,8 +239,8 @@
         (cl-letf (((symbol-function 'tab-bar--current-tab-name)
                    (lambda () "test-tab")))
           
-          ;; Set blacklist patterns
-          (let ((etm-smart-blacklist-patterns '("\\*password\\*" "\\*private\\*")))
+          ;; Set blacklist patterns (matching implementation format)
+          (let ((etm-smart-blacklist-patterns '("\\*password" "\\*private")))
             
             ;; Try to track blacklisted buffer
             (etm-smart-track-switch "main.el" "*password-store*")
