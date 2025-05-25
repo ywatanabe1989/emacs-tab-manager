@@ -24,6 +24,12 @@ A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emac
   - Per-tab numeric buffer assignments
   - Jump to numeric buffers with C-0 through C-9
 
+- **Buffer Groups** (NEW in v2.3.0)
+  - Organize related buffers into named groups
+  - Tab-specific groups with multi-group support
+  - Quick navigation within and between groups
+  - Visual indicators in tab-bar and mode-line
+
 - **Layout Management**
   - Save and load window configurations
   - Remote host support with path mirroring
@@ -53,6 +59,32 @@ M-H/S/R  ; Set current buffer as home/semi-home/results
 C-0..C-9 ; Jump to numeric buffer 0-9
 M-t 0..9 ; Register current buffer as numeric buffer 0-9
 ```
+
+### Buffer Groups (NEW in v2.3.0)
+
+Organize related buffers into named groups for efficient navigation:
+
+```elisp
+;; Group management
+M-t g c  ; Create new group
+M-t g d  ; Delete group
+M-t g a  ; Add current buffer to group
+M-t g r  ; Remove current buffer from group
+
+;; Navigation
+M-t g n  ; Next buffer in group
+M-t g p  ; Previous buffer in group
+M-t g g  ; Switch to group (first buffer)
+M-t g N  ; Cycle to next group
+M-t g P  ; Cycle to previous group
+
+;; Information
+M-t g l  ; List all groups and buffers
+M-t g ?  ; Show groups for current buffer
+M-t g i  ; Toggle group indicators
+```
+
+Groups are tab-specific and buffers can belong to multiple groups. Visual indicators show group membership in the tab-bar and mode-line.
 
 ### Tab Navigation and Management
 

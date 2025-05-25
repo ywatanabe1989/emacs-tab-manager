@@ -36,7 +36,7 @@
                  (or load-file-name buffer-file-name))))
   (add-to-list 'load-path this-dir)
   (dolist (dir '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
-                 "etm-layout" "etm-keys"
+                 "etm-layout" "etm-keys" "etm-groups"
                  "etm-layout/saved-layouts"))
     (add-to-list 'load-path
                  (expand-file-name dir this-dir))))
@@ -54,6 +54,7 @@
 (require 'etm-close)   ;; Tab closing utilities
 (require 'etm-layout)  ;; Window layout management
 (require 'etm-keys)    ;; Keybindings for ETM functions
+(require 'etm-groups)  ;; Buffer grouping system
 
 ;; 4. Initialization and startup
 ;; ----------------------------------------

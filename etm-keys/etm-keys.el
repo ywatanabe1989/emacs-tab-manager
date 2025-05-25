@@ -8,6 +8,7 @@
 (require 'etm-keys-layout)
 (require 'etm-keys-navigation)
 (require 'etm-keys-numeric-buffers)
+(require 'etm-keys-groups)
 
 (provide 'etm-keys)
 
