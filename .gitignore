@@ -645,3 +645,9 @@ flycheck_*.el
 docs/to_claude
 *_v[0-9]*.el_
 *-fixed.el
+test-debug.el
+test-ert-debug.el
+test-nav-debug.el
+test-*-debug.el
+test-*-demo.el
+test-*-simple.el
