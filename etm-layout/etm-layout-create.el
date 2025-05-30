@@ -10,6 +10,8 @@
 (require 'etm-core-helpers)
 (require 'etm-core-ssh-helpers)
 (require 'etm-core-ssh-connection)
+(require 'etm-buffer-numeric)
+(require 'etm-core-variables-custom)
 
 ;; Helper function for window counting
 
@@ -266,7 +268,8 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
   ;; Initialize tab and get selected host
   (let ((selected-host (--etm-layout-initialize-tab tab-name host))
         (main-window (selected-window))
-        (windows (list)))
+        (windows (list))
+        (numeric-register-count 0))
     ;; Create window structure
     (--etm-layout-create-window-structure window-specs main-window)
     ;; Map windows to their positions
@@ -285,13 +288,22 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
             ;; Handle different window types
             (cond
              ((eq type 'file)
-              (--etm-layout-setup-file-window path x y selected-host path-host))
+              (--etm-layout-setup-file-window path x y selected-host path-host)
+              ;; Auto-register file buffers with numeric IDs if enabled
+              (when (and etm-layout-auto-register-numeric
+                         (< numeric-register-count etm-layout-auto-register-max))
+                (--etm-numeric-register-buffer (buffer-name) tab-name)
+                (cl-incf numeric-register-count)))
              ((eq type 'shell)
               (--etm-layout-setup-shell-window tab-name path x y selected-host path-host window-index)
               (cl-incf window-index)))))
         ;; Clean up
         (--etm-layout-cleanup-default-buffers)
         (select-window (frame-first-window))
+        ;; Report auto-registered buffers
+        (when (and etm-layout-auto-register-numeric (> numeric-register-count 0))
+          (message "Auto-registered %d buffer(s) with numeric IDs. Use M-t 1-%d to jump." 
+                   numeric-register-count numeric-register-count))
         ;; Final SSH connection status
         (--etm-ssh-log "=== FINAL SSH CONNECTION STATUS FOR TAB '%s' ===" tab-name)
         (let ((final-connection (--etm-get-tab-ssh-connection tab-name)))

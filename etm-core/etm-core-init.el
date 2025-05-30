@@ -9,6 +9,7 @@
 (require 'etm-layout)
 (require 'etm-layout-load)
 (require 'etm-groups)
+(require 'etm-buffer-numeric)
 
 ;;;###autoload
 (defun etm-init
@@ -34,7 +35,9 @@
      ((t
        (:inherit tab-bar :background "gray20" :foreground "gray80")))))
   ;; Initialize groups system
-  (etm-groups-init))
+  (etm-groups-init)
+  ;; Initialize numeric buffer system
+  (etm-numeric-setup-hooks))
 
 (provide 'etm-core-init)
 

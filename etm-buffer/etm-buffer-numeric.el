@@ -109,7 +109,7 @@ Returns the assigned ID or nil if no slots available."
             (switch-to-buffer buffer-name)
           (message "Buffer '%s' (ID %d) no longer exists" buffer-name id)
           (--etm-numeric-unregister-buffer id))
-      (message "No buffer registered with ID %d" id))))
+      (message "No buffer registered with ID %d. Use M-t b r to register current buffer" id))))
 
 (defun etm-numeric-list-buffers ()
   "List all numeric buffers for current tab."
@@ -124,15 +124,46 @@ Returns the assigned ID or nil if no slots available."
                   (buffer-name (cdr entry)))
               (message "  %d: %s%s" id buffer-name
                       (if (get-buffer buffer-name) "" " (not found)")))))
-      (message "No numeric buffers in tab '%s'" tab-name))))
+      (message "No numeric buffers in tab '%s'. Use M-t b r to register current buffer" tab-name))))
 
 (defun etm-numeric-auto-register-buffer ()
   "Auto-register current buffer if it's not already registered."
-  (let* ((buffer-name (buffer-name))
-         (tab-name (alist-get 'name (tab-bar--current-tab)))
-         (existing-id (--etm-numeric-get-id-by-buffer buffer-name tab-name)))
-    (unless existing-id
-      (--etm-numeric-register-buffer buffer-name tab-name))))
+  (when (and (buffer-name)
+             (not (string-prefix-p " " (buffer-name)))  ; Skip hidden buffers
+             (not (minibufferp)))                       ; Skip minibuffer
+    (let* ((buffer-name (buffer-name))
+           (tab-name (alist-get 'name (tab-bar--current-tab)))
+           (existing-id (--etm-numeric-get-id-by-buffer buffer-name tab-name)))
+      (unless existing-id
+        (--etm-numeric-register-buffer buffer-name tab-name)))))
+
+(defun etm-numeric-quick-start ()
+  "Quick start guide for numeric buffer system."
+  (interactive)
+  (with-help-window "*ETM Numeric Buffers Help*"
+    (princ "ETM Numeric Buffer System - Quick Start Guide\n")
+    (princ "============================================\n\n")
+    (princ "The numeric buffer system allows you to quickly jump to buffers using number keys.\n\n")
+    (princ "GETTING STARTED:\n")
+    (princ "1. First, register buffers you want quick access to:\n")
+    (princ "   - Switch to a buffer you use frequently\n")
+    (princ "   - Press M-t b r to register it\n")
+    (princ "   - The buffer gets assigned the next available number (1-9)\n\n")
+    (princ "2. Jump to registered buffers:\n")
+    (princ "   - M-t 1 to jump to buffer #1\n")
+    (princ "   - M-t 2 to jump to buffer #2\n")
+    (princ "   - ... and so on\n\n")
+    (princ "KEY BINDINGS:\n")
+    (princ "  M-t b r - Register current buffer\n")
+    (princ "  M-t b l - List all registered buffers\n")
+    (princ "  M-t b 1-9 - Jump to buffer by number\n")
+    (princ "  M-t 1-9 - Quick jump to buffer by number\n")
+    (princ "  M-t b c - Clean up dead buffer entries\n")
+    (princ "  M-t b ? - Show help\n\n")
+    (princ "NOTES:\n")
+    (princ "- Each tab has its own set of numeric buffers\n")
+    (princ "- Buffers are NOT automatically registered - you must use M-t b r\n")
+    (princ "- Maximum 9 buffers per tab by default\n")))
 
 ;; Keybinding Generation
 ;; ----------------------------------------
@@ -173,11 +204,60 @@ PREFIX-KEY should be like 'M-t b' - this will create M-t b 1, M-t b 2, etc."
 
 (defun etm-numeric-setup-hooks ()
   "Setup hooks for automatic buffer management."
-  ;; Auto-register buffers when switching to them
-  (add-hook 'buffer-list-update-hook #'etm-numeric-auto-register-buffer)
+  ;; Don't use buffer-list-update-hook as it's too aggressive
+  ;; Instead, users should manually register buffers with M-t b r
+  ;; or use etm-numeric-register-current-buffer
   
   ;; Clean up dead buffers periodically
   (run-with-timer 60 60 #'etm-numeric-cleanup-dead-buffers))
+
+;; Home Buffer Jump Functions
+;; ----------------------------------------
+
+(defun etm-jump-to-home-1 ()
+  "Jump to home buffer 1 (numeric buffer 1)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 1))
+
+(defun etm-jump-to-home-2 ()
+  "Jump to home buffer 2 (numeric buffer 2)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 2))
+
+(defun etm-jump-to-home-3 ()
+  "Jump to home buffer 3 (numeric buffer 3)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 3))
+
+(defun etm-jump-to-home-4 ()
+  "Jump to home buffer 4 (numeric buffer 4)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 4))
+
+(defun etm-jump-to-home-5 ()
+  "Jump to home buffer 5 (numeric buffer 5)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 5))
+
+(defun etm-jump-to-home-6 ()
+  "Jump to home buffer 6 (numeric buffer 6)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 6))
+
+(defun etm-jump-to-home-7 ()
+  "Jump to home buffer 7 (numeric buffer 7)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 7))
+
+(defun etm-jump-to-home-8 ()
+  "Jump to home buffer 8 (numeric buffer 8)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 8))
+
+(defun etm-jump-to-home-9 ()
+  "Jump to home buffer 9 (numeric buffer 9)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 9))
 
 (provide 'etm-buffer-numeric)
 

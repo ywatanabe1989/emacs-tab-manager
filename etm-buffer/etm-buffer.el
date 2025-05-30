@@ -38,6 +38,7 @@
 (require 'etm-buffer-navigation)  ;; Navigation between typed buffers
 (require 'etm-buffer-numeric)     ;; Numeric buffer system
 (require 'etm-buffer-numeric-indicators) ;; Visual indicators for numeric buffers
+(require 'etm-buffer-list)        ;; List registered buffers
 
 (provide 'etm-buffer)
 

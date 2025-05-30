@@ -12,6 +12,7 @@ Emacs Tab Manager (ETM) is an extension for Emacs' built-in tab-bar.el that enha
 - **Smart Buffer Management**: Different handling for buffers based on registration status
 - **Layout Management**: Save and load window configurations with remote host support
 - **Smart Suggestions**: Machine learning-inspired buffer recommendations based on usage patterns
+- **Numeric Buffer System**: Quick access to buffers via numeric keys (M-t 1-9) with automatic registration
 
 ## Architecture
 
@@ -28,6 +29,7 @@ ETM is organized into modular components:
    - `etm-buffer-getters.el`: Functions to retrieve registered buffers
    - `etm-buffer-jumpers.el`: Navigation between buffers of specific types
    - `etm-buffer-checkers.el`: Functions to check buffer registration status
+   - `etm-buffer-numeric.el`: Numeric buffer system for quick access (1-9)
 
 3. **Layout Management (etm-layout/)**: Manages window layouts and configurations
    - `etm-layout-create.el`: Creates layouts from specifications
@@ -99,6 +101,9 @@ The most important customizable variables are:
 - `etm-custom-buffer-types`: List of additional buffer types beyond the defaults
 - `etm-protected-buffers`: List of buffer names that should be hidden rather than killed
 - `etm-layout-save-dir`: Directory path for saving ETM layouts
+- `etm-layout-auto-register-numeric`: Enable/disable automatic numeric buffer registration (default: t)
+- `etm-layout-auto-register-max`: Maximum buffers to auto-register (default: 9)
+- `etm-max-numeric-buffers`: Maximum numeric buffers per tab (default: 9)
 
 ## Initialization Process
 

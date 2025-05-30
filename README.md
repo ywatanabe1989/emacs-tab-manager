@@ -206,4 +206,23 @@ The layout preview feature allows you to see layout contents before loading:
 - Remote host information
 - Navigate with RET to load, SPC/p to preview
 
+### Numeric Buffer System
+Quick access to frequently used buffers via numeric keys:
+- `M-t b r` - Register current buffer with next available ID (1-9)
+- `M-t 1` to `M-t 9` - Jump directly to buffer by ID
+- `M-t b 1` to `M-t b 9` - Alternative jump method
+- `M-t b l` - List numeric buffers only
+- `M-t b c` - Clean up dead buffer entries
+
+### Buffer Listing
+View all registered buffers (both type-based and numeric):
+- `M-t L` - List all registered buffers in current tab
+- `M-t A` - List all registered buffers across all tabs
+
+#### Automatic Registration with Layouts
+When opening layouts with `etm-open-*` functions:
+- First 9 file buffers are automatically registered (configurable)
+- Customize with `etm-layout-auto-register-numeric` (enable/disable)
+- Customize with `etm-layout-auto-register-max` (max buffers to register, default: 9)
+
 <!-- EOF -->

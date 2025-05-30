@@ -77,6 +77,19 @@ and CONFIG is a buffer configuration sexp."
   '(repeat string)
   :group 'etm)
 
+;; Numeric Buffer System
+;; ----------------------------------------
+
+(defcustom etm-layout-auto-register-numeric t
+  "If non-nil, automatically register buffers with numeric IDs when creating layouts."
+  :type 'boolean
+  :group 'etm)
+
+(defcustom etm-layout-auto-register-max 9
+  "Maximum number of buffers to auto-register with numeric IDs when creating layouts."
+  :type 'integer
+  :group 'etm)
+
 ;; Registered Layouts
 ;; ----------------------------------------
 

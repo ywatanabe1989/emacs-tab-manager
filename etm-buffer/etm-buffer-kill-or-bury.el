@@ -1,6 +1,6 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-10 09:04:52>
+;;; Timestamp: <2025-05-30 05:57:58>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-kill-or-bury.el
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
@@ -38,11 +38,11 @@ If COUNT is nil or not specified, flash once."
     (dotimes (ii flash-count)
       (set-face-background 'mode-line color)
       (force-mode-line-update)
-      (sit-for 0.033)
+      (sit-for 0.01)
       (set-face-background 'mode-line original-color)
       (force-mode-line-update)
       (when (< ii (1- flash-count))
-        (sit-for 0.033)))))
+        (sit-for 0.01)))))
 
 
 (provide 'etm-buffer-kill-or-bury)

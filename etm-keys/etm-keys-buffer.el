@@ -44,6 +44,17 @@
             (kbd "k")
             'etm-buffer-kill-or-bury)
 
+;; List buffers
+;; ----------------------------------------
+
+(define-key etm-command-map
+            (kbd "L")
+            'etm-list-registered-buffers)
+
+(define-key etm-command-map
+            (kbd "A")
+            'etm-list-all-tabs-buffers)
+
 (provide 'etm-keys-buffer)
 
 (when
