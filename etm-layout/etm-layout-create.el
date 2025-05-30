@@ -296,7 +296,12 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
                 (cl-incf numeric-register-count)))
              ((eq type 'shell)
               (--etm-layout-setup-shell-window tab-name path x y selected-host path-host window-index)
-              (cl-incf window-index)))))
+              (cl-incf window-index)
+              ;; Auto-register shell buffers with numeric IDs if enabled
+              (when (and etm-layout-auto-register-numeric
+                         (< numeric-register-count etm-layout-auto-register-max))
+                (--etm-numeric-register-buffer (buffer-name) tab-name)
+                (cl-incf numeric-register-count))))))
         ;; Clean up
         (--etm-layout-cleanup-default-buffers)
         (select-window (frame-first-window))
