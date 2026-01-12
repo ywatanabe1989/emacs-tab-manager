@@ -75,7 +75,7 @@ compile:
 	@emacs -Q --batch \
 		--eval "(add-to-list 'load-path \".\")" \
 		--eval "(add-to-list 'load-path \"$(SRC_DIR)\")" \
-		--eval "(dolist (dir '(\"etm-core\" \"etm-buffer\" \"etm-layout\" \"etm-tabs\" \"etm-close\" \"etm-keys\" \"etm-smart\" \"etm-remote\" \"etm-groups\")) (add-to-list 'load-path (concat \"$(SRC_DIR)/\" dir)))" \
+		--eval "(dolist (dir '(\"etm-core\" \"etm-buffer\" \"etm-layout\" \"etm-tabs\" \"etm-close\" \"etm-keys\" \"etm-remote\" \"etm-groups\" \"etm-email\")) (add-to-list 'load-path (concat \"$(SRC_DIR)/\" dir)))" \
 		--eval "(batch-byte-compile)" \
 		etm.el $(shell find $(SRC_DIR) -name "*.el" -not -name ".*")
 

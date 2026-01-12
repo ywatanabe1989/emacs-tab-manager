@@ -95,7 +95,7 @@ CMD="emacs -Q --batch"
 # Add project root (for etm.el) and src subdirectories to load path
 CMD="$CMD --eval \"(add-to-list 'load-path \\\"$PROJECT_ROOT\\\")\""
 CMD="$CMD --eval \"(add-to-list 'load-path \\\"$SRC_DIR\\\")\""
-for dir in etm-core etm-buffer etm-layout etm-tabs etm-close etm-keys etm-smart etm-remote etm-groups; do
+for dir in etm-core etm-buffer etm-layout etm-tabs etm-close etm-keys etm-remote etm-groups etm-email; do
     if [ -d "$SRC_DIR/$dir" ]; then
         CMD="$CMD --eval \"(add-to-list 'load-path \\\"$SRC_DIR/$dir\\\")\""
     fi

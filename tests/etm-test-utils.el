@@ -13,11 +13,6 @@
   `(let ((etm-registered-buffers nil)
          (etm-numeric-buffers nil)
          (etm-groups nil)
-         (etm-smart-pattern-db nil)
-         (etm-smart-patterns (make-hash-table :test 'equal))
-         (etm-smart--patterns (make-hash-table :test 'equal))
-         (etm-smart-enabled nil)
-         (etm-smart-initialized nil)
          ;; Preserve original tab state
          (original-tabs (when (fboundp 'tab-bar-tabs) (tab-bar-tabs))))
      (unwind-protect
@@ -25,8 +20,7 @@
        ;; Cleanup
        (setq etm-registered-buffers nil
              etm-numeric-buffers nil
-             etm-groups nil
-             etm-smart-pattern-db nil))))
+             etm-groups nil))))
 
 (defmacro with-etm-test-tab (tab-name &rest body)
   "Execute BODY with a test tab TAB-NAME."
@@ -58,8 +52,7 @@
   "Clean up test environment."
   (setq etm-registered-buffers nil
         etm-numeric-buffers nil
-        etm-groups nil
-        etm-smart-pattern-db nil)
+        etm-groups nil)
   ;; Kill any test buffers
   (dolist (buffer (buffer-list))
     (when (string-match-p "^\\*?test-" (buffer-name buffer))
