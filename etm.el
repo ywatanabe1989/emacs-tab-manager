@@ -1,9 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-31 07:07:23>
+;;; Timestamp: <2026-01-08 07:19:54>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm.el
 
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
+;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
 
 ;;; Commentary:
@@ -36,14 +36,23 @@
 ;; 1. Load path setup
 ;; ----------------------------------------
 
-(let ((this-dir (file-name-directory
-                 (or load-file-name buffer-file-name))))
+(let* ((this-dir (file-name-directory
+                  (or load-file-name buffer-file-name)))
+       (src-dir (expand-file-name "src" this-dir)))
   (add-to-list 'load-path this-dir)
-  (dolist (dir '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
-                 "etm-layout" "etm-keys" "etm-groups" "etm-remote"
-                 "etm-smart" "etm-layout/saved-layouts"))
+  (dolist (dir '("etm-core"
+                 "etm-tabs"
+                 "etm-buffer"
+                 "etm-close"
+                 "etm-layout"
+                 "etm-keys"
+                 "etm-groups"
+                 "etm-remote"
+                 "etm-smart"
+                 "etm-email"
+                 "etm-layout/saved-layouts"))
     (add-to-list 'load-path
-                 (expand-file-name dir this-dir))))
+                 (expand-file-name dir src-dir))))
 
 ;; 2. Core functionality
 ;; ----------------------------------------
@@ -61,6 +70,7 @@
 (require 'etm-groups)  ;; Buffer grouping system
 (require 'etm-remote nil t)  ;; Enhanced remote support (optional)
 (require 'etm-smart nil t)   ;; Smart Suggestions (optional)
+(require 'etm-email nil t)   ;; Smart Suggestions (optional)
 
 ;; 4. Initialization and startup
 ;; ----------------------------------------
