@@ -5,7 +5,6 @@
 
 ;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 ;;; Commentary:
 ;;
 ;; Emacs Tab Manager (ETM) - Enhanced Tab Bar Mode
@@ -21,10 +20,7 @@
 ;; - Layout management
 ;;   - Save/load window configurations
 ;;   - Remote host support with path mirroring
-;; - Smart Suggestions
-;;   - Machine learning-inspired pattern tracking
-;;   - Context-aware buffer recommendations
-;;   - Adaptive scoring based on usage patterns
+;; - Email integration (optional)
 ;;
 ;; Usage:
 ;; (require 'etm)
@@ -48,7 +44,6 @@
                  "etm-keys"
                  "etm-groups"
                  "etm-remote"
-                 "etm-smart"
                  "etm-email"
                  "etm-layout/saved-layouts"))
     (add-to-list 'load-path
@@ -69,8 +64,7 @@
 (require 'etm-keys)    ;; Keybindings for ETM functions
 (require 'etm-groups)  ;; Buffer grouping system
 (require 'etm-remote nil t)  ;; Enhanced remote support (optional)
-(require 'etm-smart nil t)   ;; Smart Suggestions (optional)
-(require 'etm-email nil t)   ;; Smart Suggestions (optional)
+(require 'etm-email nil t)   ;; Email integration (optional)
 
 ;; 4. Initialization and startup
 ;; ----------------------------------------
@@ -109,7 +103,6 @@
 ;; ----------------------------------------
 
 ;;; etm.el ends here
-
 
 (provide 'etm)
 

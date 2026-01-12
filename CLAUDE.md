@@ -11,7 +11,7 @@ Emacs Tab Manager (ETM) is an extension for Emacs' built-in tab-bar.el that enha
 - **Buffer Type System**: Register buffers with specific types per tab (home, semi-home, results by default)
 - **Smart Buffer Management**: Different handling for buffers based on registration status
 - **Layout Management**: Save and load window configurations with remote host support
-- **Smart Suggestions**: Machine learning-inspired buffer recommendations based on usage patterns
+- **Email Integration**: Optional email workflow support
 - **Numeric Buffer System**: Quick access to buffers via numeric keys (M-t 1-9) with automatic registration
 
 ## Architecture
@@ -47,11 +47,9 @@ ETM is organized into modular components:
    - `etm-keys-command-map.el`: Defines command prefix map
    - `etm-keys-navigation.el`: Keybindings for navigation
 
-7. **Smart Suggestions (etm-smart/)**: Intelligent buffer recommendations
-   - `etm-smart-patterns.el`: Pattern tracking engine
-   - `etm-smart-suggest.el`: Suggestion generation
-   - `etm-smart-ui.el`: UI integration
-   - `etm-smart.el`: Main integration module
+7. **Email Integration (etm-email/)**: Optional email workflow support
+   - `etm-email-core.el`: Core email functions
+   - `etm-email-keys.el`: Email-related keybindings
 
 8. **Main Entry (etm.el)**: Main entry point that loads all required modules
 
