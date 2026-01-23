@@ -86,8 +86,10 @@ NUM-RIGHT is the number of windows on the right side."
            (format "ssh -Y %s\n" host)))
         ;; Change directory immediately for local or after a delay for remote
         (unless is-remote
-          (vterm-send-string
-           (format "cd %s && clear\n" effective-path)))
+          (let ((init-cmd (etm-vterm-get-init-command n)))
+            (vterm-send-string
+             (format "cd %s && clear%s\n" effective-path
+                     (if init-cmd (concat "\n" init-cmd) "")))))
         shell-buffer effective-path)))))
 
 ;; 4. Advanced layout creation
@@ -288,13 +290,17 @@ PATH-HOST is the specific host for this window, WINDOW-INDEX is for unique namin
 	      effective-host)))))
 
       (sit-for 0.3)
-      (vterm-send-string
-       (format "cd %s && clear \n" effective-path)))
+      (let ((init-cmd (etm-vterm-get-init-command (1+ window-index))))
+        (vterm-send-string
+         (format "cd %s && clear%s\n" effective-path
+                 (if init-cmd (concat "\n" init-cmd) "")))))
 
     ;; For local paths:
     (unless is-remote
-      (vterm-send-string
-       (format "cd %s && clear\n" effective-path)))
+      (let ((init-cmd (etm-vterm-get-init-command (1+ window-index))))
+        (vterm-send-string
+         (format "cd %s && clear%s\n" effective-path
+                 (if init-cmd (concat "\n" init-cmd) "")))))
 
     ;; Apply semi-home mark if applicable
     (when (and (= x 0) (= y 0))

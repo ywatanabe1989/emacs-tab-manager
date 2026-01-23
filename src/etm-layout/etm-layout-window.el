@@ -60,8 +60,10 @@ Split horizontally first, then vertically within each side."
          (format
           "if [[ \"$(hostname)\" != *\"%s\"* ]]; then ssh -Y %s; fi\n"
           selected-host selected-host)))
-      (vterm-send-string
-       (format "cd %s && clear\n" effective-path))))))
+      (let ((init-cmd (etm-vterm-get-init-command n)))
+        (vterm-send-string
+         (format "cd %s && clear%s\n" effective-path
+                 (if init-cmd (concat "\n" init-cmd) ""))))))))
 
 (defun --etm-layout-setup-window-with-host
     (n window-type path host)
@@ -100,8 +102,10 @@ Split horizontally first, then vertically within each side."
           host host)))
       (message "Sending cd command to %s" effective-path)
       (sit-for 0.3)
-      (vterm-send-string
-       (format "cd %s && clear\n" effective-path))))))
+      (let ((init-cmd (etm-vterm-get-init-command n)))
+        (vterm-send-string
+         (format "cd %s && clear%s\n" effective-path
+                 (if init-cmd (concat "\n" init-cmd) ""))))))))
 
 (defun --etm-layout-determine-effective-host (path-host selected-host)
   "Determine effective host: PATH-HOST overrides SELECTED-HOST, allowing nil."

@@ -21,7 +21,7 @@
   :type 'string
   :group 'etm)
 
-(defconst etm-version "0.1.0")
+(defconst etm-version "0.2.0")
 
 (defgroup etm nil
   "Emacs Tab Manager"
@@ -76,6 +76,31 @@ and CONFIG is a buffer configuration sexp."
   :type
   '(repeat string)
   :group 'etm)
+
+;; Vterm Init Commands
+;; ----------------------------------------
+
+(defcustom etm-vterm-init-commands '((1 . "cld"))
+  "Alist of (INDEX . COMMAND) for vterm initialization.
+INDEX is 1-based vterm position. COMMAND is sent after cd && clear.
+Example: \\='((1 . \"cld\") (2 . \"htop\") (3 . nil))"
+  :type
+  '(alist :key-type integer :value-type (choice string (const nil)))
+  :group 'etm)
+
+(defcustom etm-vterm-init-command-default nil
+  "Default command for vterms not listed in `etm-vterm-init-commands'.
+Set to \"cld\" to run cld on all vterms by default."
+  :type '(choice (string :tag "Command") (const :tag "None" nil))
+  :group 'etm)
+
+(defun etm-vterm-get-init-command (vterm-index)
+  "Get init command for VTERM-INDEX (1-indexed).
+Returns command from `etm-vterm-init-commands' or `etm-vterm-init-command-default'."
+  (let ((entry (assoc vterm-index etm-vterm-init-commands)))
+    (if entry
+        (cdr entry)
+      etm-vterm-init-command-default)))
 
 ;; Numeric Buffer System
 ;; ----------------------------------------
