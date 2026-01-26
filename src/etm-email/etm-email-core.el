@@ -41,6 +41,11 @@
   :type 'string
   :group 'etm-email)
 
+(defcustom etm-email-project-dir "~/proj/email"
+  "Directory for email-related project files."
+  :type 'directory
+  :group 'etm-email)
+
 ;; Helper functions
 ;; ----------------------------------------
 
@@ -110,6 +115,11 @@ Otherwise, create new tab and open mu4e."
 
 ;;;###autoload
 
+(defalias 'email 'etm-email-open-tab
+  "Alias for `etm-email-open-tab' for quick access.")
+
+;;;###autoload
+
 (defun etm-email-close-tab ()
   "Close the email tab if it exists."
   (interactive)
@@ -127,7 +137,15 @@ Otherwise, create new tab and open mu4e."
   "Start mu4e if available, handling database lock gracefully."
   (if (fboundp 'mu4e)
       (condition-case err
-          (mu4e)
+          (progn
+            ;; Quit existing broken session if any
+            (when (and (boundp 'mu4e--server-process)
+                       mu4e--server-process)
+              (ignore-errors (mu4e-quit)))
+            ;; Start fresh
+            (mu4e)
+            ;; Set up 3-pane layout after mu4e initializes
+            (run-with-timer 0.5 nil #'etm-email--setup-layout))
         (error
          (let ((err-msg (error-message-string err)))
            (if (string-match-p "locked\\|another process" err-msg)
@@ -143,10 +161,53 @@ Otherwise, create new tab and open mu4e."
     (when main-buf
       (switch-to-buffer main-buf))))
 
+(defun etm-email--setup-layout ()
+  "Set up 3-pane email layout: dired | mu4e | vterm+cld."
+  (delete-other-windows)
+  (let ((email-dir (expand-file-name etm-email-project-dir))
+        (mu4e-buf (get-buffer etm-email-preferred-main-buffer))
+        (vterm-buf-name "*email-cld*"))
+    ;; Start in left window: dired ~/proj/email
+    (dired email-dir)
+    ;; Split for center
+    (split-window-right)
+    (other-window 1)
+    ;; Center: mu4e
+    (if mu4e-buf
+        (switch-to-buffer mu4e-buf)
+      (switch-to-buffer "*scratch*"))
+    ;; Split for right
+    (split-window-right)
+    (other-window 1)
+    ;; Right: vterm with cld command
+    (let ((default-directory email-dir)
+          (right-window (selected-window)))
+      (if (require 'vterm nil t)
+          (progn
+            ;; Kill old buffer if exists
+            (when (get-buffer vterm-buf-name)
+              (kill-buffer vterm-buf-name))
+            ;; Create new vterm
+            (vterm vterm-buf-name)
+            ;; Send cld command after vterm is ready
+            (let ((buf (current-buffer)))
+              (run-with-timer
+               0.5 nil
+               (lambda ()
+                 (when (buffer-live-p buf)
+                   (with-current-buffer buf
+                     (vterm-send-string "cld")
+                     (vterm-send-return)))))))
+        ;; Fallback to eshell
+        (eshell)))
+    ;; Balance windows
+    (balance-windows)
+    ;; Return focus to center (mu4e)
+    (other-window -1)))
+
 (provide 'etm-email-core)
 
-(when
-    (not load-file-name)
-  (message "etm-email-core.el loaded."
+(when (not load-file-name)
+  (message "%s loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))

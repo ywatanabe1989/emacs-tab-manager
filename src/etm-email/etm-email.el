@@ -5,16 +5,13 @@
 
 ;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 ;; Load email components
 (require 'etm-email-core)       ;; Basic variables
 (require 'etm-email-keys) ;; User-customizable options
 
-
 (provide 'etm-email)
 
-(when
-    (not load-file-name)
-  (message "etm-email.el loaded."
+(when (not load-file-name)
+  (message "%s loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))

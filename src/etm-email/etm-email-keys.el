@@ -5,7 +5,6 @@
 
 ;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 ;;; Commentary:
 ;; Keybindings for ETM email integration
 
@@ -25,11 +24,9 @@
 
 (define-key etm-command-map (kbd "M") #'etm-email-open-tab)
 
-
 (provide 'etm-email-keys)
 
-(when
-    (not load-file-name)
-  (message "etm-email-keys.el loaded."
+(when (not load-file-name)
+  (message "%s loaded."
            (file-name-nondirectory
             (or load-file-name buffer-file-name))))
