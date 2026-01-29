@@ -11,6 +11,8 @@ Emacs Tab Manager (ETM) is an extension for Emacs' built-in tab-bar.el that enha
 - **Buffer Type System**: Register buffers with specific types per tab (home, semi-home, results by default)
 - **Smart Buffer Management**: Different handling for buffers based on registration status
 - **Layout Management**: Save and load window configurations with remote host support
+- **Email Integration**: Optional email workflow support
+- **Numeric Buffer System**: Quick access to buffers via numeric keys (M-t 1-9) with automatic registration
 
 ## Architecture
 
@@ -27,6 +29,7 @@ ETM is organized into modular components:
    - `etm-buffer-getters.el`: Functions to retrieve registered buffers
    - `etm-buffer-jumpers.el`: Navigation between buffers of specific types
    - `etm-buffer-checkers.el`: Functions to check buffer registration status
+   - `etm-buffer-numeric.el`: Numeric buffer system for quick access (1-9)
 
 3. **Layout Management (etm-layout/)**: Manages window layouts and configurations
    - `etm-layout-create.el`: Creates layouts from specifications
@@ -44,7 +47,11 @@ ETM is organized into modular components:
    - `etm-keys-command-map.el`: Defines command prefix map
    - `etm-keys-navigation.el`: Keybindings for navigation
 
-7. **Main Entry (etm.el)**: Main entry point that loads all required modules
+7. **Email Integration (etm-email/)**: Optional email workflow support
+   - `etm-email-core.el`: Core email functions
+   - `etm-email-keys.el`: Email-related keybindings
+
+8. **Main Entry (etm.el)**: Main entry point that loads all required modules
 
 ## Development Workflow
 
@@ -92,6 +99,9 @@ The most important customizable variables are:
 - `etm-custom-buffer-types`: List of additional buffer types beyond the defaults
 - `etm-protected-buffers`: List of buffer names that should be hidden rather than killed
 - `etm-layout-save-dir`: Directory path for saving ETM layouts
+- `etm-layout-auto-register-numeric`: Enable/disable automatic numeric buffer registration (default: t)
+- `etm-layout-auto-register-max`: Maximum buffers to auto-register (default: 9)
+- `etm-max-numeric-buffers`: Maximum numeric buffers per tab (default: 9)
 
 ## Initialization Process
 

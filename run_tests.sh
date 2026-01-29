@@ -1,22 +1,30 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-# Timestamp: "2025-05-09 19:32:15 (ywatanabe)"
+# Timestamp: "2025-09-30 18:25:33 (ywatanabe)"
 # File: ./run_tests.sh
 
+ORIG_DIR="$(pwd)"
 THIS_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 LOG_PATH="$THIS_DIR/.$(basename $0).log"
-echo > "$LOG_PATH"
+echo >"$LOG_PATH"
 
+BLACK='\033[0;30m'
+LIGHT_GRAY='\033[0;37m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+
+echo_info() { echo -e "${LIGHT_GRAY}$1${NC}"; }
+echo_success() { echo -e "${GREEN}$1${NC}"; }
+echo_warning() { echo -e "${YELLOW}$1${NC}"; }
+echo_error() { echo -e "${RED}$1${NC}"; }
 # ---------------------------------------
 
 # Script to run elisp tests
 TEST_TIMEOUT=10
 ELISP_TEST_PATH="$HOME/.emacs.d/lisp/elisp-test"
-TESTS_DIR="$THIS_DIR/tests"
+TESTS_DIR="${2:-$THIS_DIR/tests}"
 DEBUG_MODE=false
 SINGLE_TEST_FILE=""
 
@@ -43,34 +51,34 @@ usage() {
 TESTS_DIR_ARG=""
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --timeout)
-            TEST_TIMEOUT="$2"
-            shift 2
-            ;;
-        --elisp-test)
-            ELISP_TEST_PATH="$2"
-            shift 2
-            ;;
-        -d|--debug)
-            DEBUG_MODE=true
-            shift
-            ;;
-        -s|--single)
-            SINGLE_TEST_FILE="$2"
-            shift 2
-            ;;
-        -t|--tests-dir)
-            TESTS_DIR_ARG="$2"
-            shift 2
-            ;;
-        -h|--help)
-            usage
-            exit 0
-            ;;
-        *)
-            TESTS_DIR_ARG="$1"
-            shift
-            ;;
+    --timeout)
+        TEST_TIMEOUT="$2"
+        shift 2
+        ;;
+    --elisp-test)
+        ELISP_TEST_PATH="$2"
+        shift 2
+        ;;
+    -d | --debug)
+        DEBUG_MODE=true
+        shift
+        ;;
+    -s | --single)
+        SINGLE_TEST_FILE="$2"
+        shift 2
+        ;;
+    -t | --tests-dir)
+        TESTS_DIR_ARG="$2"
+        shift 2
+        ;;
+    -h | --help)
+        usage
+        exit 0
+        ;;
+    *)
+        TESTS_DIR_ARG="$1"
+        shift
+        ;;
     esac
 done
 
@@ -78,7 +86,7 @@ done
 run_tests_elisp() {
     local target="$1"
     local is_single_file=false
-    
+
     if [ -z "$target" ]; then
         echo -e "${RED}Error: Test target not specified${NC}" | tee -a "$LOG_PATH"
         usage
@@ -98,40 +106,40 @@ run_tests_elisp() {
 
     # Prepare command
     local emacs_cmd="emacs -Q --batch"
-    
-    # Add load paths - only use absolute paths to avoid working directory issues
+
+    # Add load paths
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$(pwd)\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$TESTS_DIR\\\")\" "
+    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$target\\\")\" "
+
+    # Add src subdirectories
+    local src_dir="$THIS_DIR/src"
+    for dir in etm-core etm-buffer etm-layout etm-tabs etm-close etm-keys etm-remote etm-groups etm-email; do
+        if [ -d "$src_dir/$dir" ]; then
+            emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$src_dir/$dir\\\")\" "
+        fi
+    done
+
+    # Add mocks to front of load-path (overrides real packages)
+    local mocks_dir="$TESTS_DIR/mocks"
+    if [ -d "$mocks_dir" ]; then
+        emacs_cmd+=" --eval \"(push \\\"$mocks_dir\\\" load-path)\" "
+    fi
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$ELISP_TEST_PATH\\\")\" "
-    
-    # Add module subdirectories to load path - make sure we use full absolute paths
-    DOTFILES_PATH="$(readlink -f $THIS_DIR)"
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-core\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-buffer\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-close\\\")\" " 
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-keys\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-layout/saved-layouts\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-tabs\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-groups\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/etm-remote\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-core\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/etm-remote\\\")\" "
-    emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$DOTFILES_PATH/tests/mocks\\\")\" "
-    
-    # Load elisp-test and etm
+
+    # Load elisp-test
     emacs_cmd+=" --eval \"(require 'elisp-test)\" "
-    emacs_cmd+=" --eval \"(require 'etm)\" "
-    
+
     # Set debug level if needed
     if $DEBUG_MODE; then
         emacs_cmd+=" --eval \"(setq debug-on-error t)\" "
         emacs_cmd+=" --eval \"(setq debug-on-signal t)\" "
     fi
-    
+
     # Run tests
     emacs_cmd+=" --eval \"(elisp-test-run \\\"$target\\\" $TEST_TIMEOUT t)\" "
-    
+
     # Execute the command
     if $DEBUG_MODE; then
         # Show command if in debug mode
@@ -140,8 +148,9 @@ run_tests_elisp() {
         eval $emacs_cmd | tee -a "$LOG_PATH"
     else
         # Execute quietly in normal mode
-        eval $emacs_cmd >> "$LOG_PATH" 2>&1
+        eval $emacs_cmd >>"$LOG_PATH" 2>&1
     fi
+
     local exit_status=$?
 
     if [ $exit_status -eq 124 ] || [ $exit_status -eq 137 ]; then
@@ -154,14 +163,14 @@ run_tests_elisp() {
 
     if [ -f "$report_file" ]; then
         echo -e "${GREEN}Report created: $report_file${NC}" | tee -a "$LOG_PATH"
-        
+
         # Only display report content in debug mode
         if $DEBUG_MODE; then
             cat "$report_file" | tee -a "$LOG_PATH"
         else
-            cat "$report_file" >> "$LOG_PATH"
+            cat "$report_file" >>"$LOG_PATH"
         fi
-        
+
         return 0
     else
         echo -e "${RED}No test report was generated. Check for errors.${NC}" | tee -a "$LOG_PATH"

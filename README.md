@@ -10,7 +10,7 @@
 
 A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emacs/blob/master/lisp/tab-bar.el) that enhances tab and buffer management with type-based organization.
 
-📚 **[Quick Start Guide](docs/QUICK-START.md)** | 🏗️ **[Architecture](ARCHITECTURE.md)** | 🤝 **[Contributing](CONTRIBUTING.md)**
+📚 **[Quick Start Guide](docs/QUICK-START.md)** | 🧠 **[Smart Suggestions](docs/SMART-SUGGESTIONS.md)** | 🏗️ **[Architecture](ARCHITECTURE.md)** | 🤝 **[Contributing](CONTRIBUTING.md)**
 
 ## Features
 
@@ -36,6 +36,14 @@ A powerful extension for Emacs [tab-bar.el](https://github.com/emacs-mirror/emac
   - Remote-aware navigation commands
   - Automatic connection health monitoring
   - Persistent remote connections with layouts
+
+- **Smart Suggestions** (NEW in v2.5.0)
+  - Machine learning-inspired buffer recommendations
+  - Context-aware suggestions based on project, mode, time, and remote host
+  - Privacy-focused local-only pattern tracking
+  - Adaptive scoring algorithm
+  - Integration with completion frameworks (ivy, helm, vertico)
+  - Visual overlay hints for quick switching
 
 - **Layout Management**
   - Save and load window configurations
@@ -172,5 +180,24 @@ The layout preview feature allows you to see layout contents before loading:
 - Window types (file/shell) and paths
 - Remote host information
 - Navigate with RET to load, SPC/p to preview
+
+### Numeric Buffer System
+Quick access to frequently used buffers via numeric keys:
+- `M-t b r` - Register current buffer with next available ID (1-9)
+- `M-t 1` to `M-t 9` - Jump directly to buffer by ID
+- `M-t b 1` to `M-t b 9` - Alternative jump method
+- `M-t b l` - List numeric buffers only
+- `M-t b c` - Clean up dead buffer entries
+
+### Buffer Listing
+View all registered buffers (both type-based and numeric):
+- `M-t L` - List all registered buffers in current tab
+- `M-t A` - List all registered buffers across all tabs
+
+#### Automatic Registration with Layouts
+When opening layouts with `etm-open-*` functions:
+- First 9 file buffers are automatically registered (configurable)
+- Customize with `etm-layout-auto-register-numeric` (enable/disable)
+- Customize with `etm-layout-auto-register-max` (max buffers to register, default: 9)
 
 <!-- EOF -->

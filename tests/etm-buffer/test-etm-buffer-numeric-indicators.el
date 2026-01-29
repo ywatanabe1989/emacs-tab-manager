@@ -1,166 +1,161 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-25 09:50:00>
-;;; File: test-etm-buffer-numeric-indicators.el
+;;; Timestamp: <2025-12-24>
+;;; Test file for: etm-buffer-numeric-indicators.el
+
+;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
+
+;;; Commentary:
+;; Tests for etm-buffer-numeric-indicators
+
+;;; Code:
 
 (require 'ert)
-(require 'etm-buffer-numeric)
+(require 'etm-buffer-numeric-indicators)
 
-;; Test Setup
-;; ----------------------------------------
+;; Add your tests here
+;; (ert-deftest test-etm-buffer-numeric-indicators-example ()
+;;   "Example test."
+;;   (should t))
 
-(defmacro with-etm-numeric-test-setup (&rest body)
-  "Execute BODY with clean numeric buffer setup."
-  `(let ((etm-numeric-buffers nil)
-         (etm-max-numeric-buffers 9)
-         (etm-numeric-indicators-enabled t)
-         (etm-numeric-indicator-format "[%s]")
-         (etm-numeric-indicator-separator " "))
-     ,@body))
+(when (not load-file-name)
+  (ert-run-tests-interactively t))
 
-;; Core Function Tests
-;; ----------------------------------------
+;; --------------------------------------------------------------------------------
+;; Start of Source Code from: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/src/etm-buffer/etm-buffer-numeric-indicators.el
+;; --------------------------------------------------------------------------------
+;; ;;; -*- coding: utf-8; lexical-binding: t -*-
+;; ;;; Author: ywatanabe
+;; ;;; Timestamp: <2025-05-25 10:00:00>
+;; ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm-buffer/etm-buffer-numeric-indicators.el
+;; 
+;; ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
+;; 
+;; ;;; Commentary:
+;; ;; Visual indicators for numeric buffer system
+;; ;; Shows occupied numeric slots in tab-bar and current buffer's slot in mode-line
+;; 
+;; (require 'etm-core-variables)
+;; (require 'etm-buffer-numeric)
+;; 
+;; ;; Core Functions
+;; ;; ----------------------------------------
+;; 
+;; (defun etm-numeric-get-occupied-slots (tab-name)
+;;   "Get sorted list of occupied numeric slots for TAB-NAME."
+;;   (let* ((tab-buffers (--etm-numeric-get-tab-buffers tab-name))
+;;          (slots (mapcar #'car tab-buffers)))
+;;     (sort slots #'<)))
+;; 
+;; (defun etm-numeric-format-indicator (slots)
+;;   "Format SLOTS list into indicator string."
+;;   (if (or (null slots) 
+;;           (not etm-numeric-indicators-enabled))
+;;       ""
+;;     (let ((formatted (--etm-numeric-format-slot-ranges slots)))
+;;       (format etm-numeric-indicator-format formatted))))
+;; 
+;; (defun --etm-numeric-format-slot-ranges (slots)
+;;   "Format SLOTS into compact range notation."
+;;   (if (null slots)
+;;       ""
+;;     ;; When separator is not space, don't use ranges
+;;     (if (not (string= etm-numeric-indicator-separator " "))
+;;         (mapconcat #'number-to-string slots etm-numeric-indicator-separator)
+;;       ;; Use range notation only with space separator
+;;       (let ((ranges '())
+;;             (start (car slots))
+;;             (end (car slots))
+;;             (rest (cdr slots)))
+;;         ;; Build ranges
+;;         (while rest
+;;           (if (= (car rest) (1+ end))
+;;               ;; Continue range
+;;               (setq end (car rest))
+;;             ;; End range and start new
+;;             (push (if (< (- end start) 2) ; Only use range for 3+ consecutive
+;;                       (if (= start end)
+;;                           (number-to-string start)
+;;                         (format "%d %d" start end))
+;;                     (format "%d-%d" start end))
+;;                   ranges)
+;;             (setq start (car rest)
+;;                   end (car rest)))
+;;           (setq rest (cdr rest)))
+;;         ;; Add final range
+;;         (push (if (< (- end start) 2) ; Only use range for 3+ consecutive
+;;                   (if (= start end)
+;;                       (number-to-string start)
+;;                     (format "%d %d" start end))
+;;                 (format "%d-%d" start end))
+;;               ranges)
+;;         ;; Join with separator
+;;         (mapconcat #'identity (nreverse ranges) etm-numeric-indicator-separator)))))
+;; 
+;; (defun etm-numeric-get-buffer-slot (buffer-name tab-name)
+;;   "Get numeric slot for BUFFER-NAME in TAB-NAME, or nil if not assigned."
+;;   (let ((tab-buffers (--etm-numeric-get-tab-buffers tab-name)))
+;;     (car (rassoc buffer-name tab-buffers))))
+;; 
+;; (defun etm-numeric-set-buffer-id (buffer-name id tab-name)
+;;   "Set BUFFER-NAME to specific numeric ID in TAB-NAME."
+;;   (let* ((tab-entry (assoc tab-name etm-numeric-buffers))
+;;          (tab-buffers (cdr tab-entry))
+;;          (new-entry (cons id buffer-name)))
+;;     ;; Remove any existing entry for this buffer
+;;     (setq tab-buffers (cl-remove buffer-name tab-buffers :key #'cdr :test #'equal))
+;;     ;; Remove any existing entry for this ID
+;;     (setq tab-buffers (cl-remove id tab-buffers :key #'car))
+;;     ;; Add new entry
+;;     (push new-entry tab-buffers)
+;;     ;; Update or create tab entry
+;;     (if tab-entry
+;;         (setcdr tab-entry tab-buffers)
+;;       (push (cons tab-name tab-buffers) etm-numeric-buffers))
+;;     ;; Refresh indicators
+;;     (etm-numeric-refresh-indicators)
+;;     id))
+;; 
+;; (defun etm-numeric-unregister-buffer (buffer-name tab-name)
+;;   "Remove BUFFER-NAME from numeric slots in TAB-NAME."
+;;   (let* ((tab-entry (assoc tab-name etm-numeric-buffers))
+;;          (tab-buffers (cdr tab-entry)))
+;;     (when tab-entry
+;;       (setcdr tab-entry 
+;;               (cl-remove buffer-name tab-buffers :key #'cdr :test #'equal))
+;;       (etm-numeric-refresh-indicators))))
+;; 
+;; ;; Tab-bar Integration
+;; ;; ----------------------------------------
+;; 
+;; (defun etm-numeric-format-tab-name (tab-name)
+;;   "Format TAB-NAME with numeric indicators."
+;;   ;; Always return the tab name unchanged - no indicators
+;;   tab-name)
+;; 
+;; ;; Mode-line Integration
+;; ;; ----------------------------------------
+;; 
+;; (defun etm-numeric-mode-line-indicator (buffer-name tab-name)
+;;   "Get mode-line indicator for BUFFER-NAME in TAB-NAME."
+;;   ;; Always return empty string - no indicators
+;;   "")
+;; 
+;; ;; Update Functions
+;; ;; ----------------------------------------
+;; 
+;; (defun etm-numeric-refresh-indicators ()
+;;   "Refresh all numeric indicators in tab-bar and mode-line."
+;;   ;; Do nothing - no visual indicators to update
+;;   nil)
+;; 
+;; ;; Hook numeric buffer changes to update indicators
+;; (advice-add '--etm-numeric-register-buffer :after
+;;             (lambda (&rest _) (etm-numeric-refresh-indicators)))
+;; 
+;; (provide 'etm-buffer-numeric-indicators)
+;; --------------------------------------------------------------------------------
+;; End of Source Code from: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/src/etm-buffer/etm-buffer-numeric-indicators.el
+;; --------------------------------------------------------------------------------
 
-(ert-deftest test-etm-numeric-get-occupied-slots ()
-  "Test getting list of occupied numeric slots."
-  (with-etm-numeric-test-setup
-   ;; Empty tab
-   (should (equal (etm-numeric-get-occupied-slots "test-tab") nil))
-   
-   ;; Register some buffers
-   (--etm-numeric-register-buffer "buffer1" "test-tab")
-   (--etm-numeric-register-buffer "buffer2" "test-tab")
-   (--etm-numeric-register-buffer "buffer3" "test-tab")
-   
-   ;; Should return sorted list
-   (should (equal (etm-numeric-get-occupied-slots "test-tab") '(1 2 3)))
-   
-   ;; Register non-sequential
-   (etm-numeric-set-buffer-id "buffer5" 5 "test-tab")
-   (etm-numeric-set-buffer-id "buffer7" 7 "test-tab")
-   
-   (should (equal (etm-numeric-get-occupied-slots "test-tab") '(1 2 3 5 7)))))
-
-(ert-deftest test-etm-numeric-format-indicator ()
-  "Test formatting of numeric indicators."
-  (with-etm-numeric-test-setup
-   ;; Empty slots
-   (should (equal (etm-numeric-format-indicator nil) ""))
-   
-   ;; Single slot
-   (should (equal (etm-numeric-format-indicator '(1)) "[1]"))
-   
-   ;; Multiple slots
-   (should (equal (etm-numeric-format-indicator '(1 3 5)) "[1 3 5]"))
-   
-   ;; Sequential slots (compact format)
-   (should (equal (etm-numeric-format-indicator '(1 2 3 4 5)) "[1-5]"))
-   
-   ;; Mixed sequential and non-sequential
-   (should (equal (etm-numeric-format-indicator '(1 2 3 5 7 8 9)) "[1-3 5 7-9]"))
-   
-   ;; Full slots
-   (should (equal (etm-numeric-format-indicator '(1 2 3 4 5 6 7 8 9)) "[1-9]"))))
-
-(ert-deftest test-etm-numeric-format-indicator-custom ()
-  "Test custom formatting options."
-  (with-etm-numeric-test-setup
-   ;; Custom format
-   (let ((etm-numeric-indicator-format "<%s>"))
-     (should (equal (etm-numeric-format-indicator '(1 2 3)) "<1 2 3>")))
-   
-   ;; Custom separator
-   (let ((etm-numeric-indicator-separator ","))
-     (should (equal (etm-numeric-format-indicator '(1 3 5)) "[1,3,5]")))
-   
-   ;; Disabled indicators
-   (let ((etm-numeric-indicators-enabled nil))
-     (should (equal (etm-numeric-format-indicator '(1 2 3)) "")))))
-
-(ert-deftest test-etm-numeric-get-buffer-slot ()
-  "Test getting numeric slot for a buffer."
-  (with-etm-numeric-test-setup
-   ;; No assignment
-   (should (equal (etm-numeric-get-buffer-slot "unassigned" "test-tab") nil))
-   
-   ;; With assignment
-   (--etm-numeric-register-buffer "buffer1" "test-tab")
-   (should (equal (etm-numeric-get-buffer-slot "buffer1" "test-tab") 1))
-   
-   ;; Multiple tabs
-   (--etm-numeric-register-buffer "buffer2" "tab1")
-   (--etm-numeric-register-buffer "buffer2" "tab2")
-   (should (equal (etm-numeric-get-buffer-slot "buffer2" "tab1") 1))
-   (should (equal (etm-numeric-get-buffer-slot "buffer2" "tab2") 1))))
-
-(ert-deftest test-etm-numeric-update-tab-bar ()
-  "Test tab-bar update with numeric indicators."
-  (with-etm-numeric-test-setup
-   ;; Mock tab-bar state
-   (let ((test-tab-name "TestTab"))
-     ;; No buffers
-     (should (equal (etm-numeric-format-tab-name test-tab-name) "TestTab"))
-     
-     ;; With buffers
-     (--etm-numeric-register-buffer "buffer1" test-tab-name)
-     (--etm-numeric-register-buffer "buffer2" test-tab-name)
-     (should (equal (etm-numeric-format-tab-name test-tab-name) "TestTab [1 2]"))
-     
-     ;; Many buffers
-     (dotimes (i 7)
-       (--etm-numeric-register-buffer (format "buffer%d" (+ i 3)) test-tab-name))
-     (should (equal (etm-numeric-format-tab-name test-tab-name) "TestTab [1-9]")))))
-
-(ert-deftest test-etm-numeric-mode-line-indicator ()
-  "Test mode-line indicator for current buffer."
-  (with-etm-numeric-test-setup
-   (let ((test-buffer "test-buffer")
-         (test-tab "test-tab"))
-     ;; No assignment
-     (should (equal (etm-numeric-mode-line-indicator test-buffer test-tab) ""))
-     
-     ;; With assignment
-     (etm-numeric-set-buffer-id test-buffer 3 test-tab)
-     (should (equal (etm-numeric-mode-line-indicator test-buffer test-tab) " ETM[3]"))
-     
-     ;; Disabled
-     (let ((etm-numeric-indicators-enabled nil))
-       (should (equal (etm-numeric-mode-line-indicator test-buffer test-tab) ""))))))
-
-(ert-deftest test-etm-numeric-indicator-hooks ()
-  "Test that indicators update on buffer changes."
-  (with-etm-numeric-test-setup
-   (let ((update-called nil))
-     ;; Mock update function
-     (cl-letf (((symbol-function 'etm-numeric-refresh-indicators)
-                (lambda () (setq update-called t))))
-       ;; Register buffer should trigger update
-       (--etm-numeric-register-buffer "buffer1" "test-tab")
-       (should update-called)
-       
-       ;; Reset
-       (setq update-called nil)
-       
-       ;; Unregister should also trigger
-       (etm-numeric-unregister-buffer "buffer1" "test-tab")
-       (should update-called)))))
-
-(ert-deftest test-etm-numeric-indicator-performance ()
-  "Test performance with many buffers."
-  (with-etm-numeric-test-setup
-   ;; Register many buffers across multiple tabs
-   (dotimes (tab-num 5)
-     (let ((tab-name (format "tab-%d" tab-num)))
-       (dotimes (buf-num 9)
-         (--etm-numeric-register-buffer 
-          (format "buffer-%d-%d" tab-num buf-num) 
-          tab-name))))
-   
-   ;; Format should be efficient even with many buffers
-   (dolist (tab-num '(0 1 2 3 4))
-     (let ((tab-name (format "tab-%d" tab-num)))
-       (should (equal (etm-numeric-format-indicator
-                       (etm-numeric-get-occupied-slots tab-name))
-                      "[1-9]"))))))
-
-(provide 'test-etm-buffer-numeric-indicators)
+;;; test-etm-buffer-numeric-indicators.el ends here

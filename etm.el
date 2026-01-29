@@ -1,10 +1,9 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-05-19 07:05:10>
-;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/etm.el
+;;; Timestamp: <2026-01-08 07:19:54>
+;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/etm.el
 
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@alumni.u-tokyo.ac.jp)
-
+;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
 ;;; Commentary:
 ;;
@@ -21,6 +20,7 @@
 ;; - Layout management
 ;;   - Save/load window configurations
 ;;   - Remote host support with path mirroring
+;; - Email integration (optional)
 ;;
 ;; Usage:
 ;; (require 'etm)
@@ -32,14 +32,22 @@
 ;; 1. Load path setup
 ;; ----------------------------------------
 
-(let ((this-dir (file-name-directory
-                 (or load-file-name buffer-file-name))))
+(let* ((this-dir (file-name-directory
+                  (or load-file-name buffer-file-name)))
+       (src-dir (expand-file-name "src" this-dir)))
   (add-to-list 'load-path this-dir)
-  (dolist (dir '("etm-core" "etm-tabs" "etm-buffer" "etm-close"
-                 "etm-layout" "etm-keys" "etm-groups" "etm-remote"
+  (dolist (dir '("etm-core"
+                 "etm-tabs"
+                 "etm-buffer"
+                 "etm-close"
+                 "etm-layout"
+                 "etm-keys"
+                 "etm-groups"
+                 "etm-remote"
+                 "etm-email"
                  "etm-layout/saved-layouts"))
     (add-to-list 'load-path
-                 (expand-file-name dir this-dir))))
+                 (expand-file-name dir src-dir))))
 
 ;; 2. Core functionality
 ;; ----------------------------------------
@@ -56,6 +64,7 @@
 (require 'etm-keys)    ;; Keybindings for ETM functions
 (require 'etm-groups)  ;; Buffer grouping system
 (require 'etm-remote nil t)  ;; Enhanced remote support (optional)
+(require 'etm-email nil t)   ;; Email integration (optional)
 
 ;; 4. Initialization and startup
 ;; ----------------------------------------
@@ -94,7 +103,6 @@
 ;; ----------------------------------------
 
 ;;; etm.el ends here
-
 
 (provide 'etm)
 
