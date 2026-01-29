@@ -9,6 +9,12 @@
 ;; Core variables for ETM (Emacs Tab Manager)
 ;; This file defines all global variables and customization options
 
+;; Version
+;; ----------------------------------------
+
+(defconst etm-version "2.5.0"
+  "Version string for Emacs Tab Manager.")
+
 ;; Debug and messaging
 ;; ----------------------------------------
 

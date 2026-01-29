@@ -15,6 +15,15 @@
 ;; This file provides core utility functions used throughout the ETM package.
 ;; SSH-related helpers and terminal helpers are now in etm-core-ssh-helpers.el
 
+(defvar etm-debug nil
+  "When non-nil, enable debug messages for ETM.")
+
+(defun etm-message (format-string &rest args)
+  "Log a debug message if `etm-debug' is non-nil.
+FORMAT-STRING and ARGS are passed to `message'."
+  (when etm-debug
+    (apply #'message (concat "[ETM] " format-string) args)))
+
 (provide 'etm-core-helpers)
 
 (when (not load-file-name)

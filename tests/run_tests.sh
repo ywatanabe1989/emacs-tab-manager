@@ -101,6 +101,12 @@ for dir in etm-core etm-buffer etm-layout etm-tabs etm-close etm-keys etm-remote
     fi
 done
 
+# Add mocks directory to FRONT of load path (overrides real packages)
+MOCKS_DIR="${TESTS_DIR}/mocks"
+if [ -d "$MOCKS_DIR" ]; then
+    CMD="$CMD --eval \"(push \\\"$MOCKS_DIR\\\" load-path)\""
+fi
+
 # Determine test files to run
 if [ -n "$SINGLE_FILE" ]; then
     # Single file mode

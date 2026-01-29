@@ -6,7 +6,7 @@
 ORIG_DIR="$(pwd)"
 THIS_DIR="$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)"
 LOG_PATH="$THIS_DIR/.$(basename $0).log"
-echo > "$LOG_PATH"
+echo >"$LOG_PATH"
 
 BLACK='\033[0;30m'
 LIGHT_GRAY='\033[0;37m'
@@ -51,34 +51,34 @@ usage() {
 TESTS_DIR_ARG=""
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --timeout)
-            TEST_TIMEOUT="$2"
-            shift 2
-            ;;
-        --elisp-test)
-            ELISP_TEST_PATH="$2"
-            shift 2
-            ;;
-        -d|--debug)
-            DEBUG_MODE=true
-            shift
-            ;;
-        -s|--single)
-            SINGLE_TEST_FILE="$2"
-            shift 2
-            ;;
-        -t|--tests-dir)
-            TESTS_DIR_ARG="$2"
-            shift 2
-            ;;
-        -h|--help)
-            usage
-            exit 0
-            ;;
-        *)
-            TESTS_DIR_ARG="$1"
-            shift
-            ;;
+    --timeout)
+        TEST_TIMEOUT="$2"
+        shift 2
+        ;;
+    --elisp-test)
+        ELISP_TEST_PATH="$2"
+        shift 2
+        ;;
+    -d | --debug)
+        DEBUG_MODE=true
+        shift
+        ;;
+    -s | --single)
+        SINGLE_TEST_FILE="$2"
+        shift 2
+        ;;
+    -t | --tests-dir)
+        TESTS_DIR_ARG="$2"
+        shift 2
+        ;;
+    -h | --help)
+        usage
+        exit 0
+        ;;
+    *)
+        TESTS_DIR_ARG="$1"
+        shift
+        ;;
     esac
 done
 
@@ -112,6 +112,20 @@ run_tests_elisp() {
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$THIS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$TESTS_DIR\\\")\" "
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$target\\\")\" "
+
+    # Add src subdirectories
+    local src_dir="$THIS_DIR/src"
+    for dir in etm-core etm-buffer etm-layout etm-tabs etm-close etm-keys etm-remote etm-groups etm-email; do
+        if [ -d "$src_dir/$dir" ]; then
+            emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$src_dir/$dir\\\")\" "
+        fi
+    done
+
+    # Add mocks to front of load-path (overrides real packages)
+    local mocks_dir="$TESTS_DIR/mocks"
+    if [ -d "$mocks_dir" ]; then
+        emacs_cmd+=" --eval \"(push \\\"$mocks_dir\\\" load-path)\" "
+    fi
     emacs_cmd+=" --eval \"(add-to-list 'load-path \\\"$ELISP_TEST_PATH\\\")\" "
 
     # Load elisp-test
@@ -134,7 +148,7 @@ run_tests_elisp() {
         eval $emacs_cmd | tee -a "$LOG_PATH"
     else
         # Execute quietly in normal mode
-        eval $emacs_cmd >> "$LOG_PATH" 2>&1
+        eval $emacs_cmd >>"$LOG_PATH" 2>&1
     fi
 
     local exit_status=$?
@@ -154,7 +168,7 @@ run_tests_elisp() {
         if $DEBUG_MODE; then
             cat "$report_file" | tee -a "$LOG_PATH"
         else
-            cat "$report_file" >> "$LOG_PATH"
+            cat "$report_file" >>"$LOG_PATH"
         fi
 
         return 0

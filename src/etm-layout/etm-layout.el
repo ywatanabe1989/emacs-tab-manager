@@ -5,7 +5,6 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 (require 'etm-layout-create)
 (require 'etm-layout-save)
 (require 'etm-layout-window)
@@ -13,7 +12,7 @@
 (require 'etm-layout-open)
 (require 'etm-layout-preview)
 (require 'etm-layout-commands)
-
+(require 'etm-layout-dynamic)
 
 (provide 'etm-layout)
 
