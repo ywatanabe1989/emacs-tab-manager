@@ -18,53 +18,68 @@
 (defvar etm-numeric-buffer-map (make-sparse-keymap)
   "Keymap for numeric buffer operations.")
 
-;; Bind individual number keys to buffer jumping
-(dotimes (i etm-max-numeric-buffers)
-  (let ((num (1+ i)))
+;; Bind individual number keys to buffer jumping (0-based IDs)
+;; Keys 1-9 map to IDs 0-8, key 0 maps to ID 9
+(dotimes (i 9)
+  (let ((key-num (1+ i))
+        (id i))
     (define-key etm-numeric-buffer-map
-                (kbd (number-to-string num))
+                (kbd (number-to-string key-num))
                 `(lambda ()
                    (interactive)
-                   (etm-numeric-jump-to-buffer ,num)))))
+                   (etm-numeric-jump-to-buffer ,id)))))
+
+(define-key etm-numeric-buffer-map
+            (kbd "0")
+            (lambda ()
+              (interactive)
+              (etm-numeric-jump-to-buffer 9)))
 
 ;; Additional commands for buffer management
-(define-key etm-numeric-buffer-map (kbd "l") #'etm-numeric-list-buffers)
-(define-key etm-numeric-buffer-map (kbd "r") #'etm-numeric-register-current-buffer)
-(define-key etm-numeric-buffer-map (kbd "c") #'etm-numeric-cleanup-dead-buffers)
+
+(define-key etm-numeric-buffer-map (kbd "l")
+	    #'etm-numeric-list-buffers)
+
+(define-key etm-numeric-buffer-map (kbd "r")
+	    #'etm-numeric-register-current-buffer)
+
+(define-key etm-numeric-buffer-map (kbd "c")
+	    #'etm-numeric-cleanup-dead-buffers)
 
 ;; Bind the buffer map to M-t b
+
 (define-key etm-command-map (kbd "b") etm-numeric-buffer-map)
 
-;; Direct numeric keybindings (M-t 1, M-t 2, etc.)
-(dotimes (i etm-max-numeric-buffers)
-  (let ((num (1+ i)))
+;; Direct numeric keybindings (M-t 1-9 → IDs 0-8, M-t 0 → ID 9)
+(dotimes (i 9)
+  (let ((key-num (1+ i))
+        (id i))
     (define-key etm-command-map
-                (kbd (number-to-string num))
+                (kbd (number-to-string key-num))
                 `(lambda ()
                    (interactive)
-                   (etm-numeric-jump-to-buffer ,num)))))
+                   (etm-numeric-jump-to-buffer ,id)))))
 
-;; Alternative: Define direct keybindings (uncomment if preferred)
-;; (dotimes (i 9)
-;;   (let ((num (1+ i)))
-;;     (define-key etm-command-map
-;;                 (kbd (format "b %d" num))
-;;                 `(lambda ()
-;;                    (interactive)
-;;                    (etm-numeric-jump-to-buffer ,num)))))
+(define-key etm-command-map
+            (kbd "0")
+            (lambda ()
+              (interactive)
+              (etm-numeric-jump-to-buffer 9)))
 
 ;; Show help for numeric buffer keys
+
 (defun etm-numeric-buffer-help ()
   "Show help for numeric buffer keybindings."
   (interactive)
   (message (concat "ETM Numeric Buffer Keys: "
                    "M-t b r (register current buffer), "
-                   "M-t b 1-9 (jump to buffer), "
+                   "M-t b 1-9,0 (jump to buffer 0-9), "
                    "M-t b l (list all), "
                    "M-t b c (cleanup). "
                    "First register buffers with M-t b r!")))
 
 (define-key etm-numeric-buffer-map (kbd "?") #'etm-numeric-buffer-help)
+
 (define-key etm-numeric-buffer-map (kbd "h") #'etm-numeric-buffer-help)
 
 (provide 'etm-keys-numeric-buffers)

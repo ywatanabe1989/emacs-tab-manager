@@ -94,7 +94,7 @@ CATEGORY can be: master, core, buffer, numeric, close, ssh, layout, tracking."
 ;; ----------------------------------------
 
 (defcustom etm-localhost-names
-  '("" "ywata-note-win" "localhost")
+  '("" "localhost")
   "List of names considered as localhost in ETM."
   :type
   '(repeat string)
@@ -105,8 +105,6 @@ CATEGORY can be: master, core, buffer, numeric, close, ssh, layout, tracking."
   "Host name to be ignored in ETM."
   :type 'string
   :group 'etm)
-
-(defconst etm-version "0.1.0")
 
 (defgroup etm nil
   "Emacs Tab Manager"
@@ -194,8 +192,8 @@ and LAYOUT is a layout configuration sexp."
 ;; Numeric buffer system
 ;; ----------------------------------------
 
-(defcustom etm-max-numeric-buffers 9
-  "Maximum number of numeric buffer slots per tab."
+(defcustom etm-max-numeric-buffers 10
+  "Maximum number of numeric buffer slots per tab (0-9)."
   :type 'integer
   :group 'etm)
 

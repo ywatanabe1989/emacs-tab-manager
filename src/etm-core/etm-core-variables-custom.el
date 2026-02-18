@@ -9,7 +9,7 @@
 ;; ----------------------------------------
 
 (defcustom etm-localhost-names
-  '("" "ywata-note-win" "localhost")
+  '("" "localhost")
   "List of names considered as localhost in ETM."
   :type
   '(repeat string)
@@ -20,8 +20,6 @@
   "Host name to be ignored in ETM."
   :type 'string
   :group 'etm)
-
-(defconst etm-version "0.2.0")
 
 (defgroup etm nil
   "Emacs Tab Manager"
@@ -80,7 +78,7 @@ and CONFIG is a buffer configuration sexp."
 ;; Vterm Init Commands
 ;; ----------------------------------------
 
-(defcustom etm-vterm-init-commands '((1 . "cld"))
+(defcustom etm-vterm-init-commands '((1 . "cc"))
   "Alist of (INDEX . COMMAND) for vterm initialization.
 INDEX is 1-based vterm position. COMMAND is sent after cd && clear.
 Example: \\='((1 . \"cld\") (2 . \"htop\") (3 . nil))"
