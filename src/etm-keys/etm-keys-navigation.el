@@ -5,25 +5,16 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 (require 'etm-buffer-navigation)
 (require 'etm-keys-command-map)
 (require 'tab-bar)
 
-;; Tab bar mouse scroll navigation
-;; Scroll on tab bar to switch tabs
-
-(global-set-key [wheel-up] #'tab-previous)
-
-(global-set-key [wheel-down] #'tab-next)
+;; Tab switching via horizontal scroll (left/right)
+;; Vertical scroll (up/down) left unbound to preserve pdf-view, vterm, etc.
 
 (global-set-key [wheel-left] #'tab-previous)
 
 (global-set-key [wheel-right] #'tab-next)
-
-(global-set-key [mouse-4] #'tab-previous)
-
-(global-set-key [mouse-5] #'tab-next)
 
 ;; Buffer navigation keys
 
@@ -107,7 +98,6 @@
 ;;    ()
 ;;    (interactive)
 ;;    (etm-navigation-jump-by-index 9)))
-
 
 (provide 'etm-keys-navigation)
 

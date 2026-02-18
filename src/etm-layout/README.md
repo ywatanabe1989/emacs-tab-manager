@@ -12,7 +12,7 @@ Configure commands to run in each vterm after `cd && clear`:
 
 ```elisp
 ;; Alist: (INDEX . COMMAND) where INDEX is 1-based vterm position
-(setq etm-vterm-init-commands '((1 . "cld")))  ; default
+(setq etm-vterm-init-commands '((1 . "cc")))  ; default
 
 ;; Default command for vterms not in the list
 (setq etm-vterm-init-command-default nil)
@@ -21,14 +21,14 @@ Configure commands to run in each vterm after `cd && clear`:
 ### Examples
 
 ```elisp
-;; Only 1st vterm runs cld
-(setq etm-vterm-init-commands '((1 . "cld")))
+;; Only 1st vterm runs cc
+(setq etm-vterm-init-commands '((1 . "cc")))
 
-;; 1st: cld, 2nd: htop, 3rd: nothing
-(setq etm-vterm-init-commands '((1 . "cld") (2 . "htop") (3 . nil)))
+;; 1st: cc, 2nd: htop, 3rd: nothing
+(setq etm-vterm-init-commands '((1 . "cc") (2 . "htop") (3 . nil)))
 
-;; All run cld except 2nd
-(setq etm-vterm-init-command-default "cld")
+;; All run cc except 2nd
+(setq etm-vterm-init-command-default "cc")
 (setq etm-vterm-init-commands '((2 . nil)))
 
 ;; Disable all init commands
