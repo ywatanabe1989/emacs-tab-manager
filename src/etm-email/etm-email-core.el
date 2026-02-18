@@ -196,7 +196,7 @@ Otherwise, create new tab and open mu4e."
                (lambda ()
                  (when (buffer-live-p buf)
                    (with-current-buffer buf
-                     (vterm-send-string "cld")
+                     (vterm-send-string "cc")
                      (vterm-send-return)))))))
         ;; Fallback to eshell
         (eshell)))

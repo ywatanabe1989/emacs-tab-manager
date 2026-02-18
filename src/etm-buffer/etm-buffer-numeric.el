@@ -31,14 +31,15 @@
   (cdr (assoc tab-key etm-numeric-buffers)))
 
 (defun --etm-numeric-get-next-id (tab-name)
-  "Get next available numeric ID for TAB-NAME."
+  "Get next available numeric ID for TAB-NAME.
+IDs are 0-based: 0, 1, 2, ..., (etm-max-numeric-buffers - 1)."
   (let* ((tab-buffers (--etm-numeric-get-tab-buffers tab-name))
          (used-ids (mapcar #'car tab-buffers))
-         (next-id 1))
-    (while (and (<= next-id etm-max-numeric-buffers)
+         (next-id 0))
+    (while (and (< next-id etm-max-numeric-buffers)
                 (member next-id used-ids))
       (setq next-id (1+ next-id)))
-    (if (<= next-id etm-max-numeric-buffers)
+    (if (< next-id etm-max-numeric-buffers)
         next-id
       nil)))
 
@@ -166,8 +167,8 @@ Uses buffer object identity (eq) for reliable comparison."
       (message "No available numeric slots"))))
 
 (defun etm-numeric-jump-to-buffer (id)
-  "Jump to buffer with numeric ID."
-  (interactive "nBuffer ID (1-9): ")
+  "Jump to buffer with numeric ID (0-based)."
+  (interactive "nBuffer ID (0-8): ")
   (let ((buffer-name (--etm-numeric-get-buffer-by-id id)))
     (if buffer-name
         (if (get-buffer buffer-name)
@@ -246,13 +247,14 @@ Uses buffer object identity (eq) for reliable comparison."
 
 (defun etm-numeric-define-keybindings (prefix-key)
   "Define keybindings for numeric buffer jumping.
-PREFIX-KEY should be like 'M-t b' - this will create M-t b 1, M-t b 2, etc."
+PREFIX-KEY should be like 'M-t b' - this will create M-t b 1, M-t b 2, etc.
+Key N maps to buffer ID N-1 (0-based)."
   (dotimes (i etm-numeric-max-buffers)
-    (let ((id (1+ i))
+    (let ((id i)
           (key-sequence
 	   (concat prefix-key " " (number-to-string (1+ i)))))
       (global-set-key (kbd key-sequence)
-                      `(lambda () 
+                      `(lambda ()
                          (interactive)
                          (etm-numeric-jump-to-buffer ,id))))))
 
@@ -299,50 +301,55 @@ TAB-KEY is the unique tab identifier. This should be called when a tab is closed
 ;; Home Buffer Jump Functions
 ;; ----------------------------------------
 
+(defun etm-jump-to-home-0 ()
+  "Jump to home buffer 0 (numeric buffer 9, key M-t 0)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 9))
+
 (defun etm-jump-to-home-1 ()
-  "Jump to home buffer 1 (numeric buffer 1)."
+  "Jump to home buffer 1 (numeric buffer 0)."
+  (interactive)
+  (etm-numeric-jump-to-buffer 0))
+
+(defun etm-jump-to-home-2 ()
+  "Jump to home buffer 2 (numeric buffer 1)."
   (interactive)
   (etm-numeric-jump-to-buffer 1))
 
-(defun etm-jump-to-home-2 ()
-  "Jump to home buffer 2 (numeric buffer 2)."
+(defun etm-jump-to-home-3 ()
+  "Jump to home buffer 3 (numeric buffer 2)."
   (interactive)
   (etm-numeric-jump-to-buffer 2))
 
-(defun etm-jump-to-home-3 ()
-  "Jump to home buffer 3 (numeric buffer 3)."
+(defun etm-jump-to-home-4 ()
+  "Jump to home buffer 4 (numeric buffer 3)."
   (interactive)
   (etm-numeric-jump-to-buffer 3))
 
-(defun etm-jump-to-home-4 ()
-  "Jump to home buffer 4 (numeric buffer 4)."
+(defun etm-jump-to-home-5 ()
+  "Jump to home buffer 5 (numeric buffer 4)."
   (interactive)
   (etm-numeric-jump-to-buffer 4))
 
-(defun etm-jump-to-home-5 ()
-  "Jump to home buffer 5 (numeric buffer 5)."
+(defun etm-jump-to-home-6 ()
+  "Jump to home buffer 6 (numeric buffer 5)."
   (interactive)
   (etm-numeric-jump-to-buffer 5))
 
-(defun etm-jump-to-home-6 ()
-  "Jump to home buffer 6 (numeric buffer 6)."
+(defun etm-jump-to-home-7 ()
+  "Jump to home buffer 7 (numeric buffer 6)."
   (interactive)
   (etm-numeric-jump-to-buffer 6))
 
-(defun etm-jump-to-home-7 ()
-  "Jump to home buffer 7 (numeric buffer 7)."
+(defun etm-jump-to-home-8 ()
+  "Jump to home buffer 8 (numeric buffer 7)."
   (interactive)
   (etm-numeric-jump-to-buffer 7))
 
-(defun etm-jump-to-home-8 ()
-  "Jump to home buffer 8 (numeric buffer 8)."
+(defun etm-jump-to-home-9 ()
+  "Jump to home buffer 9 (numeric buffer 8)."
   (interactive)
   (etm-numeric-jump-to-buffer 8))
-
-(defun etm-jump-to-home-9 ()
-  "Jump to home buffer 9 (numeric buffer 9)."
-  (interactive)
-  (etm-numeric-jump-to-buffer 9))
 
 (provide 'etm-buffer-numeric)
 

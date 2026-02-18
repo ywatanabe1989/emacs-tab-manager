@@ -1,19 +1,19 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-12-05 22:35:06>
+;;; Timestamp: <2026-01-14 04:08:28>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/src/etm-layout/saved-layouts/etm-open-crossref.el
 
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
+;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
 
 
 (defun etm-open-crossref ()
   "Create tab layout for specific configuration."
   (interactive)
   (--etm-layout-create-from-positions "crossref"
-                                      '((file "~/proj/crossref_local/" 0 1 80 62 "ywatanabe@nas")
-                                        (shell "~/proj/crossref_local/" 80 1 80 62 "ywatanabe@nas")
-                                        (shell "~/proj/crossref_local/" 160 1 80 62 "ywatanabe@nas"))
-                                      "nas"))
+                                      '((file "~/proj/crossref-local/" 0 1 91 70 nil)
+                                        (shell "~/proj/crossref-local/" 91 1 91 70 nil)
+                                        (shell "~/proj/crossref-local/" 182 1 92 70 nil))
+                                      nil))
 
 (defalias 'crossref 'etm-open-crossref)
 
