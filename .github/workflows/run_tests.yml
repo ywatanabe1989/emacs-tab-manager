@@ -33,18 +33,23 @@ jobs:
       - name: run-tests
         run: |
           # Use native ERT testing instead of elisp-test framework to avoid compatibility issues
-          # Run all tests and capture results
+          # Run all tests and capture results.
+          # NOTE: process substitution (not pipe) so test_results survives the loop.
           test_results=0
-          find tests -name "test-*.el" -type f | while read test_file; do
+          while read -r test_file; do
             echo "Testing: $test_file"
             if ! emacs -Q --batch \
               --eval "(add-to-list 'load-path \".\")" \
-              --eval "(add-to-list 'load-path \"./etm-core\")" \
-              --eval "(add-to-list 'load-path \"./etm-buffer\")" \
-              --eval "(add-to-list 'load-path \"./etm-close\")" \
-              --eval "(add-to-list 'load-path \"./etm-keys\")" \
-              --eval "(add-to-list 'load-path \"./etm-layout\")" \
-              --eval "(add-to-list 'load-path \"./etm-tabs\")" \
+              --eval "(add-to-list 'load-path \"./src\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-core\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-buffer\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-close\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-email\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-groups\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-keys\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-layout\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-remote\")" \
+              --eval "(add-to-list 'load-path \"./src/etm-tabs\")" \
               --eval "(add-to-list 'load-path \"$(dirname "$test_file")\")" \
               --eval "(add-to-list 'load-path \"./tests/mocks\")" \
               --eval "(require 'ert)" \
@@ -53,7 +58,7 @@ jobs:
               echo "FAILED: $test_file"
               test_results=1
             fi
-          done
+          done < <(find tests -name "test-*.el" -type f)
           exit $test_results
 
 # EOF
