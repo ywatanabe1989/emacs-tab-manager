@@ -94,7 +94,7 @@ CATEGORY can be: master, core, buffer, numeric, close, ssh, layout, tracking."
 ;; ----------------------------------------
 
 (defcustom etm-localhost-names
-  '("" "localhost")
+  '("" "localhost" "lh")
   "List of names considered as localhost in ETM."
   :type
   '(repeat string)

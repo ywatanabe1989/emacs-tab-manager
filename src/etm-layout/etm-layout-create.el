@@ -337,7 +337,12 @@ WINDOW-SPECS is a list of (type path x y width height [path-host]) for each wind
                (path (nth 1 spec))
                (x (nth 2 spec))
                (y (nth 3 spec))
-               (path-host (and (> (length spec) 6) (nth 6 spec)))
+               ;; Per-window path-host applies only when caller passed an
+               ;; explicit global host. When host=nil (i.e. user was prompted
+               ;; via --etm-ssh-select-host), the prompted value wins for
+               ;; every window — otherwise saved per-window hosts silently
+               ;; shadow the user's choice.
+               (path-host (and host (> (length spec) 6) (nth 6 spec)))
                (window (nth spec-index sorted-windows)))
           (when window
             (select-window window)

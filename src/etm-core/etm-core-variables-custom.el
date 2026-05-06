@@ -9,7 +9,7 @@
 ;; ----------------------------------------
 
 (defcustom etm-localhost-names
-  '("" "localhost")
+  '("" "localhost" "lh")
   "List of names considered as localhost in ETM."
   :type
   '(repeat string)
