@@ -172,6 +172,10 @@
   "Test that localhost is in the localhost names list."
   (should (member "localhost" etm-localhost-names)))
 
+(ert-deftest test-etm-localhost-names-contains-lh-alias ()
+  "Test that 'lh' is registered as a localhost alias."
+  (should (member "lh" etm-localhost-names)))
+
 ;; Tests for function existence
 ;; ----------------------------------------
 

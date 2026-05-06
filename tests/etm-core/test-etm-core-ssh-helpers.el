@@ -11,12 +11,37 @@
 ;;; Code:
 
 (require 'ert)
+;; vterm is not available in CI; stub the feature so etm-core-ssh-helpers loads.
+(unless (require 'vterm nil t)
+  (provide 'vterm))
 (require 'etm-core-ssh-helpers)
 
-;; Add your tests here
-;; (ert-deftest test-etm-core-ssh-helpers-example ()
-;;   "Example test."
-;;   (should t))
+(defun test-etm--awk-parse-hosts (config-path)
+  "Run the etm SSH-config awk parser against CONFIG-PATH and return host list."
+  (let ((cmd (format
+              "awk '/^Host / {delete hosts; for (i=2;i<=NF;i++) hosts[i-1]=$i; n=NF-1} /^[[:space:]]*User / {for (i=1;i<=n;i++) if (hosts[i] !~ /[*?]/) printf \"%%s %%s\\n\", hosts[i], $2}' %s"
+              (shell-quote-argument config-path))))
+    (split-string (shell-command-to-string cmd) "\n" t)))
+
+(ert-deftest test-etm-ssh-parser-multi-alias-host-line ()
+  "Parser must emit every non-glob alias on a multi-alias Host line."
+  (let ((fixture (make-temp-file "etm-ssh-fixture" nil ".conf")))
+    (unwind-protect
+        (progn
+          (with-temp-file fixture
+            (insert "Host spartan sp\n"
+                    "    User ywatanabe\n"
+                    "Host spartan-bm* spartan-gpgpu* spartan-bm198 spartan-gpgpu004\n"
+                    "    User ywatanabe\n"))
+          (let ((rows (test-etm--awk-parse-hosts fixture)))
+            (should (member "spartan ywatanabe" rows))
+            (should (member "sp ywatanabe" rows))
+            (should (member "spartan-bm198 ywatanabe" rows))
+            (should (member "spartan-gpgpu004 ywatanabe" rows))
+            ;; glob aliases must be skipped
+            (should-not (member "spartan-bm* ywatanabe" rows))
+            (should-not (member "spartan-gpgpu* ywatanabe" rows))))
+      (delete-file fixture))))
 
 (when (not load-file-name)
   (ert-run-tests-interactively t))
