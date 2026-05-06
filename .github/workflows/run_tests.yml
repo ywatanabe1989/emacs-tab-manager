@@ -58,7 +58,7 @@ jobs:
               echo "FAILED: $test_file"
               test_results=1
             fi
-          done < <(find tests -name "test-*.el" -type f)
+          done < <(find tests -name "test-*.el" -type f -not -path '*/saved-layouts/*')
           exit $test_results
 
 # EOF

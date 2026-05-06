@@ -4,10 +4,10 @@
 ;;; File: /home/ywatanabe/.dotfiles/.emacs.d/lisp/emacs-tab-manager/tests/test-etm-layout-load.el
 
 (require 'ert)
+(require 'etm-layout-load)
 
 (ert-deftest test-etm-layout-load-loadable
     ()
-  (require 'etm-layout-load)
   (should
    (featurep 'etm-layout-load)))
 
