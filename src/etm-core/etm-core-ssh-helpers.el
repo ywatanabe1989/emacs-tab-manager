@@ -5,7 +5,6 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 ;;; Commentary:
 ;; SSH helper functions for ETM
 
@@ -13,6 +12,7 @@
 (require 'vterm)
 
 ;; Use the customizable variable instead of duplicating the list
+
 (defvar --etm-local-host-names etm-localhost-names
   "List of host names considered as local machines.")
 
@@ -23,7 +23,7 @@
   "Update the SSH configuration cache from config files."
   (interactive)
   (let* ((command
-          "awk '/^Host / {host=$2} /^[[:space:]]*User / {printf \"%s %s\\n\", host, $2}' ~/.ssh/config ~/.ssh/conf.d/*.conf 2>/dev/null")
+          "awk '/^Host / {delete hosts; for (i=2;i<=NF;i++) hosts[i-1]=$i; n=NF-1} /^[[:space:]]*User / {for (i=1;i<=n;i++) if (hosts[i] !~ /[*?]/) printf \"%s %s\\n\", hosts[i], $2}' ~/.ssh/config ~/.ssh/conf.d/*.conf 2>/dev/null")
          (output
           (shell-command-to-string command))
          (pairs
@@ -44,7 +44,8 @@
   (if noninteractive
       "localhost"
     (let ((host (completing-read "Choose host: "
-                               (mapcar #'car --etm-ssh-hostname-username))))
+				 (mapcar #'car
+					 --etm-ssh-hostname-username))))
       ;; If user enters 'l', convert it to 'localhost'
       (if (string= host "l") "localhost" host))))
 
@@ -88,7 +89,6 @@ This helps identify when different aliases refer to the same host."
     (let ((vterm-buffer (vterm buffer-name)))
       (with-current-buffer vterm-buffer
         vterm-buffer))))
-
 
 (provide 'etm-core-ssh-helpers)
 

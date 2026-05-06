@@ -1,9 +1,10 @@
 ;;; -*- coding: utf-8; lexical-binding: t -*-
 ;;; Author: ywatanabe
-;;; Timestamp: <2025-12-25 07:21:32>
+;;; Timestamp: <2026-05-06 10:08:55>
 ;;; File: /home/ywatanabe/.emacs.d/lisp/emacs-tab-manager/src/etm-keys/etm-keys-navigation.el
 
-;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
+;;; Copyright (C) 2026 Yusuke Watanabe (ywatanabe@scitex.ai)
+
 
 (require 'etm-buffer-navigation)
 (require 'etm-keys-command-map)
@@ -35,6 +36,8 @@
 (global-set-key (kbd "M-8") #'etm-navigation-jump-to-8)
 
 (global-set-key (kbd "M-9") #'etm-navigation-jump-to-9)
+
+(global-set-key (kbd "M-0") #'etm-navigation-jump-by-name)
 
 ;; (global-set-key
 ;;  (kbd "M-1")
@@ -98,6 +101,7 @@
 ;;    ()
 ;;    (interactive)
 ;;    (etm-navigation-jump-by-index 9)))
+
 
 (provide 'etm-keys-navigation)
 
