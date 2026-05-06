@@ -10,10 +10,10 @@
 ;; These are general-purpose helper functions used throughout the package
 
 (require 'etm-core-variables)
-(require 'etm-core-ssh-helpers)
 
 ;; This file provides core utility functions used throughout the ETM package.
-;; SSH-related helpers and terminal helpers are now in etm-core-ssh-helpers.el
+;; SSH-related helpers and terminal helpers live in etm-core-ssh-helpers.el —
+;; consumers that need them require that file directly.
 
 (defvar etm-debug nil
   "When non-nil, enable debug messages for ETM.")

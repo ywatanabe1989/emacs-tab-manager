@@ -5,7 +5,6 @@
 
 ;;; Copyright (C) 2025 Yusuke Watanabe (ywatanabe@scitex.ai)
 
-
 ;;; Commentary:
 ;; Automatic buffer tracking for ETM tabs.
 ;; Tracks buffers created while a tab is active and allows killing
@@ -13,6 +12,7 @@
 ;; Supports vterm, dired, shell, eshell, term, and compilation buffers.
 
 (require 'etm-core-variables)
+(require 'etm-core-helpers)   ; for `etm-message'
 
 ;; Buffer-tab association storage
 ;; ----------------------------------------
@@ -42,22 +42,23 @@ If TAB-NAME is nil, use current tab."
          (buf-name (if (bufferp buf) (buffer-name buf) buf))
          (tab (or tab-name (--etm-get-current-tab-name))))
     (etm-message "track-buffer: Attempting to track '%s' in tab '%s'"
-		         buf-name tab)
+		 buf-name tab)
     (if (--etm-track-buffer-excluded-p buf-name)
         (etm-message "track-buffer: '%s' excluded by pattern" buf-name)
       (when buf-name
         (let ((tracked (gethash tab etm-tab-tracked-buffers)))
           (if (member buf-name tracked)
               (etm-message
-	           "track-buffer: '%s' already tracked in '%s'" buf-name
-	           tab)
+	       "track-buffer: '%s' already tracked in '%s'"
+	       buf-name
+	       tab)
             (puthash tab (cons buf-name tracked)
-		             etm-tab-tracked-buffers)
+		     etm-tab-tracked-buffers)
             ;; Also store reverse mapping for robust lookup
             (puthash buf-name tab etm-buffer-tab-association)
             (etm-message
-	         "track-buffer: SUCCESS - '%s' now tracked in tab '%s'"
-	         buf-name tab)))))))
+	     "track-buffer: SUCCESS - '%s' now tracked in tab '%s'"
+	     buf-name tab)))))))
 
 (defun etm-untrack-buffer (&optional buffer tab-name)
   "Stop tracking BUFFER under TAB-NAME."
@@ -89,26 +90,26 @@ Returns the count of killed buffers."
          (tracked (etm-get-tracked-buffers tab))
          (killed-count 0))
     (etm-message "kill-tracked: Tab '%s' has %d tracked buffers" tab
-		         (length tracked))
+		 (length tracked))
     (etm-message "kill-tracked: Buffers to kill: %s" tracked)
     (dolist (buf-name tracked)
       (let ((buf (get-buffer buf-name)))
         (if (not buf)
             (etm-message
-	         "kill-tracked: '%s' - buffer not found (already dead)"
-	         buf-name)
+	     "kill-tracked: '%s' - buffer not found (already dead)"
+	     buf-name)
           (if (member buf-name etm-protected-buffers)
               (etm-message "kill-tracked: '%s' - protected, skipping"
-			               buf-name)
+			   buf-name)
             (etm-message "kill-tracked: Killing '%s'" buf-name)
             (kill-buffer buf)
             (setq killed-count (1+ killed-count))))))
     (etm-clear-tracked-buffers tab)
     (etm-message "kill-tracked: Killed %d buffers from tab '%s'"
-		         killed-count tab)
+		 killed-count tab)
     (when (called-interactively-p 'any)
       (message "Killed %d tracked buffers from tab '%s'" killed-count
-	           tab))
+	       tab))
     killed-count))
 
 ;; Auto-tracking hooks
@@ -119,19 +120,19 @@ Returns the count of killed buffers."
   (let ((buf-name (buffer-name))
         (major-mode-name (symbol-name major-mode)))
     (etm-message "auto-track-hook: Triggered for '%s' (mode: %s)"
-		         buf-name major-mode-name)
+		 buf-name major-mode-name)
     (if (not etm-auto-track-buffers)
         (etm-message
-	     "auto-track-hook: Skipped - etm-auto-track-buffers is nil")
+	 "auto-track-hook: Skipped - etm-auto-track-buffers is nil")
       (if (minibufferp)
           (etm-message "auto-track-hook: Skipped - minibuffer")
         (if (--etm-track-buffer-excluded-p buf-name)
             (etm-message
-	         "auto-track-hook: Skipped - excluded pattern for '%s'"
-	         buf-name)
+	     "auto-track-hook: Skipped - excluded pattern for '%s'"
+	     buf-name)
           (etm-message
-	       "auto-track-hook: Calling etm-track-buffer for '%s'"
-	       buf-name)
+	   "auto-track-hook: Calling etm-track-buffer for '%s'"
+	   buf-name)
           (etm-track-buffer))))))
 
 (defun --etm-auto-track-on-buffer-kill ()
@@ -140,7 +141,7 @@ Returns the count of killed buffers."
     (maphash (lambda (tab tracked)
                (when (member buf-name tracked)
                  (puthash tab (delete buf-name tracked)
-			              etm-tab-tracked-buffers)))
+			  etm-tab-tracked-buffers)))
              etm-tab-tracked-buffers)
     ;; Also remove from buffer-tab-association
     (remhash buf-name etm-buffer-tab-association)))
@@ -158,7 +159,8 @@ Accepts but ignores ARGS passed by rename-buffer."
 Accepts but ignores ARGS passed by rename-buffer."
   (when (and (bound-and-true-p --etm-buffer-name-before-rename)
              (not
-	          (string= --etm-buffer-name-before-rename (buffer-name))))
+	      (string= --etm-buffer-name-before-rename
+		       (buffer-name))))
     (let* ((old-name --etm-buffer-name-before-rename)
            (new-name (buffer-name))
            (tab-name (gethash old-name etm-buffer-tab-association)))
@@ -207,7 +209,7 @@ Accepts but ignores ARGS passed by rename-buffer."
                      (dolist (buf-name tracked)
                        (princ (format "  - %s%s\n" buf-name
                                       (if (get-buffer buf-name) ""
-					                    " (dead)"))))
+					" (dead)"))))
                    (princ "  (no tracked buffers)\n"))
                  (princ "\n"))
                etm-tab-tracked-buffers))))
@@ -229,7 +231,7 @@ Accepts but ignores ARGS passed by rename-buffer."
   (add-hook 'kill-buffer-hook #'--etm-auto-track-on-buffer-kill)
   ;; Track buffer renames
   (advice-add 'rename-buffer :before
-	          #'--etm-track-before-buffer-rename)
+	      #'--etm-track-before-buffer-rename)
   (advice-add 'rename-buffer :after #'--etm-track-after-buffer-rename)
   (etm-message
    "auto-track-enable: Hooks added for vterm, dired, shell, etc.")
@@ -256,7 +258,7 @@ Accepts but ignores ARGS passed by rename-buffer."
 (defun etm-auto-track-setup ()
   "Setup auto-tracking based on `etm-auto-track-buffers' setting."
   (etm-message "auto-track-setup: etm-auto-track-buffers=%s"
-	           etm-auto-track-buffers)
+	       etm-auto-track-buffers)
   (if etm-auto-track-buffers
       (etm-auto-track-enable)
     (etm-auto-track-disable)))
@@ -280,7 +282,7 @@ Useful when vterm buffers were created before tracking was enabled."
      "track-existing-vterm: Tracked %d vterm buffers in tab '%s'"
      count tab-name)
     (message "Tracked %d existing vterm buffers in tab '%s'" count
-	         tab-name)))
+	     tab-name)))
 
 (defun etm-track-existing-dired-buffers ()
   "Track all existing dired buffers in current tab."
@@ -297,7 +299,7 @@ Useful when vterm buffers were created before tracking was enabled."
      "track-existing-dired: Tracked %d dired buffers in tab '%s'"
      count tab-name)
     (message "Tracked %d existing dired buffers in tab '%s'" count
-	         tab-name)))
+	     tab-name)))
 
 (defun etm-track-buffers-by-prefix (prefix)
   "Track all buffers whose names start with PREFIX in current tab."
@@ -314,7 +316,7 @@ Useful when vterm buffers were created before tracking was enabled."
      "track-by-prefix: Tracked %d buffers with prefix '%s' in tab '%s'"
      count prefix tab-name)
     (message "Tracked %d buffers with prefix '%s' in tab '%s'" count
-	         prefix tab-name)))
+	     prefix tab-name)))
 
 (defun etm-track-all-terminal-buffers ()
   "Track all terminal-like buffers (vterm, shell, eshell, term) in current tab."
@@ -364,21 +366,21 @@ Useful when vterm buffers were created before tracking was enabled."
        (format "etm-auto-track-buffers: %s\n" etm-auto-track-buffers))
       (princ
        (format "etm-close-kills-tracked-buffers: %s\n"
-	           etm-close-kills-tracked-buffers))
+	       etm-close-kills-tracked-buffers))
       (princ (format "Current tab: %s\n\n" tab-name))
       (princ "Hook status:\n")
       (princ (format "  vterm-mode-hook has tracker: %s\n"
                      (if (and (boundp 'vterm-mode-hook)
                               (member '--etm-auto-track-buffer-hook
-				                      vterm-mode-hook))
+				      vterm-mode-hook))
                          "YES"
-		               "NO")))
+		       "NO")))
       (princ (format "  dired-mode-hook has tracker: %s\n"
                      (member '--etm-auto-track-buffer-hook
-			                 dired-mode-hook)))
+			     dired-mode-hook)))
       (princ (format "  shell-mode-hook has tracker: %s\n"
                      (member '--etm-auto-track-buffer-hook
-			                 shell-mode-hook)))
+			     shell-mode-hook)))
       (princ "\nTracked buffers for current tab:\n")
       (let ((tracked (etm-get-tracked-buffers tab-name)))
         (if tracked
@@ -392,12 +394,12 @@ Useful when vterm buffers were created before tracking was enabled."
           (when (bound-and-true-p vterm-mode)
             (let* ((buf-name (buffer-name))
                    (assoc-tab
-		            (gethash buf-name etm-buffer-tab-association)))
+		    (gethash buf-name
+			     etm-buffer-tab-association)))
               (princ (format "  - %s (associated tab: %s)\n"
                              buf-name (or assoc-tab "NONE"))))))))))
 
 ;;; etm-buffer-auto-track.el ends here
-
 
 (provide 'etm-buffer-auto-track)
 
